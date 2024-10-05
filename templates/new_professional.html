@@ -20,19 +20,20 @@
             gap: 90px;
             background-color: rgb(164, 252, 164);
             width: 60vw;
-            height: 35vh;
+            height: 600px;
             border-radius: 25px;
             padding-top: 10px;
         }
 
         #heading {
             font-size: 70px;
-            margin-bottom: 120px;
+            margin-bottom: 56px;
+            margin-top: 19px;
         }
 
         #logheading {
-            margin-bottom: 40px;
-            font-size: 45px;
+            margin-bottom: 22px;
+            font-size: 40px;
         }
 
         .credentials {
@@ -51,13 +52,15 @@
         }
 
         #loginhere {
-            font-size: 20px;
+            font-size: 18px;
+            margin-left: -18px;
         }
 
-        #services {
+        #servicesdiv {
             display: flex;
-
+            margin-left: 292px;
         }
+
         #options {
             margin-left: 30px;
         }
@@ -71,7 +74,7 @@
     <div id="main">
         <form action="backend.php">
             <div class="credentials" style="margin-top: 30px;">
-                Registered Email ID: <input style="width: 230px;" class="input-box" type="email"
+                Email ID (Username): <input style="width: 230px; margin-left: 20px;" class="input-box" type="email"
                     placeholder="Example@gmail.com" name="mail">
             </div>
             <br>
@@ -81,18 +84,37 @@
             </div>
             <div class="credentials" style="margin-left: 78px;">
                 Fullname: <input style="margin-left: 55px; width: 232px;" class="input-box" size="x-large" type="text"
-                    name="password">
+                    name="fullname" placeholder="David Malhan">
             </div>
-            <div id="services" class="credentials">
-                <div>Service Name -</div>
+            <div id="servicesdiv" class="credentials">
+                <div>Service Name: </div>
                 <div id="options">
-                    Floor moping <input type="checkbox" name="services" value="Floor moping"> <br>Dusting <input
-                        type="checkbox" name="services" value="Dusting">
+                    <input type="checkbox" name="services" value="Floor moping">Floor moping<br>
+                    <input type="checkbox" name="services" value="Dusting">Dusting <br>
                 </div>
+            </div>
+            <div class="credentials" style="margin-left: 30px;">
+                Experience(In years): <input style="margin-left: 10px; width: 232px;" class="input-box" size="x-large"
+                    type="number" name="experience">
+            </div>
+            <div class="credentials" style="margin-left: 30px;">
+                Attach Docs (.pdf): <input style="margin-left: 10px; width: 232px;" class="input-box" size="x-large"
+                    type="file" name="documents" accept=".pdf">
+            </div>
+            <div class="credentials" style="margin-left: 78px;">
+                Address: <textarea
+                    style="margin-left: 64px; width: 232px; height: 100px; text-align: left; vertical-align: top;"
+                    class="input-box" name="address" placeholder="54/2 Humphery Street"></textarea>
+            </div>
+            <div class="credentials" style="margin-left: 78px;">
+                Pin Code: <input style="margin-left: 55px; width: 232px;" class="input-box" size="x-large" type="text"
+                    name="picode">
             </div>
             <div>
                 <input type="submit" value="Register"
-                    style="margin-right: 20px; font-size: x-large;font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; margin-top: 30px; margin-bottom: 20px;">
+                    style="margin-right: 20px; font-size: x-large;font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; margin-top: 16px; margin-bottom: 13px;">
+                <input type="reset" value="Clear form"
+                    style="font-size: 21px; color: red; font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;">
             </div>
             <span id="loginhere"><strong><a style="text-decoration: none; color: black; font-style: italic;"
                         href="./new_professional.html">Login Here</a></strong></span>
