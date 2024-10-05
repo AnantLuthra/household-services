@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>Admin Login</title>
     <style>
         body {
             text-align: center;
@@ -13,7 +13,6 @@
         #main {
             margin: auto;
             text-align: center;
-            display: flex;
             align-items: center;
             justify-content: center;
             gap: 90px;
@@ -32,22 +31,27 @@
             margin-bottom: 40px;
             font-size: 45px;
         }
+
+        #pass {
+            font-size: 40px;
+        }
     </style>
 </head>
 <body>
     <h1 id="heading">Household Services</h1>
 
-    <h1 id="logheading">Login type</h1>
+    <h1 id="logheading">Admin Login</h1>
     <div id="main">
-        <div id="Admin">
-            <a href="./admin_login.html"><h1>Admin</h1></a>
-        </div>
-        <div id="Professional">
-            <a href="./prof_login.html"><h1>Service Professional</h1></a>
-        </div>
-        <div id="Customer">
-            <a href="./customer_login.html"><h1>Customer</h1></a>
-        </div>
+        <form action="backend.php">
+            <br>
+            <div id="pass">
+                Password: <input style="width: 180px; height: 28px; font-size: 20px;" size="x-large" type="password" name="password">
+            </div>
+            <div>
+                <input type="submit" value="Login" style="margin-right: 20px; font-size: x-large;font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; margin-top: 30px; margin-bottom: 20px;" >
+            </div>
+            
+        </form>
     </div>
 </body>
 </html>
