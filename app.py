@@ -1,9 +1,10 @@
 from flask import Flask
-from flask import render_template
+from flask import render_template, request, redirect
 from flask_sqlalchemy import SQLAlchemy
 from datetime import date
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import relationship, backref
+from flask_login import LoginManager, UserMixin, current_user, login_user, logout_user, login_required
 
 
 #------------ Initialisations ---------------#
@@ -13,6 +14,8 @@ db = SQLAlchemy()
 db.init_app(app)
 app.app_context().push()
 
+#------------ Global Variables --------------#
+ADMIN_PASS = "good123"
 
 #------------ Database classes ---------------#
 
@@ -66,3 +69,28 @@ class service_reqest(db.Model):
     rfeedback = db.Column(db.String, default=False)
 
 
+#------------------ Main landin route ------------------------#
+
+@app.route("/")
+def landing():
+    return render_template("main_landing.html")
+
+
+#------------------ Professional Login -----------------------#
+
+@app.route("/professional_login", methods=['GET', 'POST'])
+def prof_login():
+
+    if request.method == 'GET':
+        if current_user.is_authenticated:
+            return redirect("/professional")
+        return render_template("prof_login.html")
+
+    elif request.method == 'POST':
+        ...
+
+
+
+if __name__ == '__main__':
+
+    app.run(debug=True)
