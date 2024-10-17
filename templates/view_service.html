@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dusting Service</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+        body {
+            background-color: rgb(220, 255, 226);
+            align-items: center;
+            text-align: center;
+        }
+
+        header {
+            align-items: center;
+            display: flex;
+            padding: 15px;
+            background-color: rgb(164, 252, 164);
+        }
+
+        h1 {
+            margin-right: 15vw;
+            margin-left: 3vw;
+            font-size: 40px;
+        }
+
+        ul {
+            display: flex;
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        ul li {
+            padding-inline: 15px;
+        }
+
+        ul li a {
+            font-size: 23px;
+            text-decoration: none;
+            color: black;
+        }
+
+        ul li a:hover {
+            text-decoration: underline;
+        }
+
+
+        #main {
+            margin: auto;
+            text-align: center;
+            align-items: center;
+            justify-content: center;
+            gap: 90px;
+            background-color: rgb(255, 255, 255);
+            width: 60vw;
+            border-radius: 25px;
+            padding-top: 10px;
+            padding-bottom: 20px;
+            padding-left: 30px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        #heading {
+            font-size: 70px;
+            margin-bottom: 56px;
+            margin-top: 19px;
+        }
+
+        #logheading {
+            margin-bottom: 22px;
+            font-size: 40px;
+            margin: auto;
+            margin-top: 50px;
+            margin-bottom: 30px;
+        }
+
+        .styled-table {
+            width: 80%;
+            max-width: 600px;
+            border-collapse: collapse;
+            margin: 25px 0;
+            font-size: 18px;
+            text-align: left;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .styled-table th, .styled-table td {
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+        }
+
+        .styled-table th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+
+        .styled-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .styled-table tr:hover {
+            background-color: #ddd;
+        }
+
+        footer {
+            align-items: center;
+            text-align: center;
+            background-color: rgb(164, 252, 164);
+            height: 60px;
+            margin-top: 50px;
+        }
+
+        footer p {
+            margin: auto;
+            padding-top: 20px;
+            font-size: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Admin Portal</h1>
+        <ul>
+            <li><a href="">Home</a></li>
+            <li><a href="">Search</a></li>
+            <li><a href="">Summary</a></li>
+            <li><a href="">Logout</a></li>
+        </ul>
+    </header>
+
+    <h1 id="logheading">Dusting Service</h1>
+    <div id="main">
+        <table class="styled-table">
+            <thead>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Service Name</td>
+                    <td>Dusting</td>
+                </tr>
+                <tr>
+                    <td>Base Price</td>
+                    <td>500</td>
+                </tr>
+                <tr>
+                    <td>Time Required (Hrs)</td>
+                    <td>3</td>
+                </tr>
+                <tr>
+                    <td>Description</td>
+                    <td>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam non urna vitae odio bibendum tincidunt. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam enim perferendis rem ducimus, error facilis laborum adipisci magnam est! Cumque aspernatur quod ipsam porro nemo. Magni cum optio inventore dolorum consectetur reprehenderit soluta dignissimos adipisci, excepturi, tempore nam accusamus aut aperiam expedita.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <footer>
+        <p>
+            Developed with ❤️ by some Developer
+        </p>
+    </footer>
+</body>
+
+</html>
