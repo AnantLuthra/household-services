@@ -49,7 +49,7 @@ class service(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String, nullable=False)
     price = db.Column(db.Integer, nullable=False)
-    time_required = db.Column(db.Date, nullable=False)
+    time_required = db.Column(db.Integer, nullable=False)
     description = db.Column(db.String, nullable=False)
 
     professionals = relationship("professional", backref=backref("service", lazy=True))

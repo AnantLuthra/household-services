@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Home</title>
     <style>
-
         * {
             padding: 0;
             margin: 0;
@@ -24,7 +24,7 @@
 
         h1 {
             margin-right: 15vw;
-            margin-left: 3vw;    
+            margin-left: 3vw;
             font-size: 40px;
         }
 
@@ -39,13 +39,13 @@
             padding-inline: 15px;
         }
 
-        ul li a{
+        ul li a {
             font-size: 23px;
             text-decoration: none;
             color: black;
         }
 
-        ul li a:hover{
+        ul li a:hover {
             text-decoration: underline;
         }
 
@@ -73,7 +73,7 @@
         table {
             padding-top: 10px;
             padding-left: 20px;
-        }   
+        }
 
         #new_service_a {
             margin-left: 810px;
@@ -84,38 +84,49 @@
 
         .styled-table {
             width: 100%;
-            border-collapse: collapse; /* Remove space between table cells */
+            border-collapse: collapse;
+            /* Remove space between table cells */
         }
 
         .styled-table th {
             font-size: 20px;
         }
 
-        .styled-table th, .styled-table td {
-            padding: 10px; /* Adjust padding to decrease space between columns */
-            border: 1px solid #ddd; /* Add border to table cells */
-            text-align: left; /* Align text to the left */
+        .styled-table th,
+        .styled-table td {
+            padding: 10px;
+            /* Adjust padding to decrease space between columns */
+            border: 1px solid #ddd;
+            /* Add border to table cells */
+            text-align: left;
+            /* Align text to the left */
         }
 
         .styled-table th {
-            background-color: #f2f2f2; /* Light grey background for table headers */
+            background-color: #f2f2f2;
+            /* Light grey background for table headers */
         }
 
         .styled-table tr:nth-child(even) {
-            background-color: #f9f9f9; /* Light grey background for even rows */
+            background-color: #f9f9f9;
+            /* Light grey background for even rows */
         }
 
         .styled-table tr:hover {
-            background-color: #ddd; /* Light grey background on hover */
+            background-color: #ddd;
+            /* Light grey background on hover */
         }
 
         .styled-table a {
-            color: #007bff; /* Bootstrap primary color for links */
-            text-decoration: none; /* Remove underline from links */
+            color: #007bff;
+            /* Bootstrap primary color for links */
+            text-decoration: none;
+            /* Remove underline from links */
         }
 
         .styled-table a:hover {
-            text-decoration: underline; /* Underline links on hover */
+            text-decoration: underline;
+            /* Underline links on hover */
         }
 
         footer {
@@ -131,8 +142,74 @@
             padding-top: 20px;
             font-size: 20px;
         }
+
+
+        /* Style for the modal */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); /* Black with opacity */
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Modal content */
+        .modal-content {
+            background-color: #fefefe;
+            padding: 20px;
+            padding-top: 5px;
+            border-radius: 10px;
+            width: 400px;
+            height: 400px;
+            text-align: center;
+        }
+
+        /* Close button */
+        .close-btn {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close-btn:hover,
+        .close-btn:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        /* Button to trigger modal */
+        .open-modal-btn {
+            padding: 10px 20px;
+            background-color: rgb(23, 159, 23);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 790px;
+            margin-top: 10px;
+        }
+
+        /* new service popup window */
+        #main {
+            margin: auto;
+            text-align: center;
+            align-items: center;
+            justify-content: center;
+            gap: 70px;
+            background-color: rgb(164, 252, 164);
+            width: 100%;
+            height: 83%;
+            border-radius: 25px;
+        }
     </style>
 </head>
+
 <body>
     <header>
         <h1>Welcome to Admin</h1>
@@ -148,31 +225,67 @@
     <div class="tables">
         <table class="styled-table">
             <tr>
-              <th>ID</th>
-              <th>Service Name</th>
-              <th>Base Price</th>
-              <th>Action</th>
+                <th>ID</th>
+                <th>Service Name</th>
+                <th>Base Price</th>
+                <th>Action</th>
             </tr>
             <tr>
-              <td><a href="">1</a></td>
-              <td>Cloth Cleaning</td>
-              <td>500</td>
-              <td><a href="">Edit</a>/<a href="">Delete</a></td>
+                <td><a href="">1</a></td>
+                <td>Cloth Cleaning</td>
+                <td>500</td>
+                <td><a href="">Edit</a>/<a href="">Delete</a></td>
             </tr>
             <tr>
-              <td><a href="">2</a></td>
-              <td>Dusting</td>
-              <td>1000</td>
-              <td><a href="">Edit</a>/<a href="">Delete</a></td>
+                <td><a href="">2</a></td>
+                <td>Dusting</td>
+                <td>1000</td>
+                <td><a href="">Edit</a>/<a href="">Delete</a></td>
             </tr>
             <tr>
-              <td><a href="">2</a></td>
-              <td>Dusting</td>
-              <td>1000</td>
-              <td><a href="">Edit</a>/<a href="">Delete</a></td>
+                <td><a href="">2</a></td>
+                <td>Dusting</td>
+                <td>1000</td>
+                <td><a href="">Edit</a>/<a href="">Delete</a></td>
             </tr>
-          </table>
-        <a id="new_service_a" href="">+New Service</a>
+        </table>
+        <!-- Button to open modal -->
+        <!-- <a id="new_service_a" onclick="openModel()">+New Service</a> -->
+        <button class="open-modal-btn" onclick="openPopup()">+New Service</button>
+
+        <!-- The Modal -->
+        <div id="myModal" class="modal">
+
+            <!-- Modal content -->
+            <div class="modal-content">
+                <span class="close-btn" onclick="closeModal()">&times;</span>
+                <h2>New Service</h2>
+                <div id="main">
+                    <form action="backend.php">
+                        <br>
+                        <div id="service_name" style="margin-top: 10px;">
+                            Service name: <input style="margin-left: 40px; width: 190px; height: 28px; font-size: 20px;" size="x-large" type="text" name="name">
+                        </div>
+                        <div id="base_price" style="margin-top: 10px;">
+                            Base Price: <input style="margin-left: 60px; width: 190px; height: 28px; font-size: 20px;" size="x-large" type="number" name="price" placeholder="0">
+                        </div>
+                        <div id="time_required" style="margin-top: 10px;">
+                            Time Required (Hrs): <input style="margin-left: 3px; width: 190px; height: 28px; font-size: 20px;" size="x-large" type="number" name="time_required" placeholder="0">
+                        </div>
+                        <div style="margin-left: 10px; margin-top: 10px;">
+                            Description: <textarea
+                                style="font-size: 15px; margin-left: 50px; width: 190px; height: 100px; text-align: left; vertical-align: top;"
+                                class="input-box" name="description" placeholder="About Service"></textarea>
+                        </div>
+                        <div>
+                            <input type="submit" value="Add" style="padding: 2px 5px; margin-right: 20px; font-size: x-large;font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; margin-top: 30px; margin-bottom: 10px;" >
+                        </div>
+                        
+                    </form>
+                </div>
+            </div>
+
+        </div>
     </div>
 
     <br>
@@ -181,64 +294,64 @@
     <div class="tables">
         <table class="styled-table">
             <tr>
-              <th>ID</th>
-              <th>Name</th>
-              <th>Experience(Yrs)</th>
-              <th>Service Name</th>
-              <th>Action</th>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Experience(Yrs)</th>
+                <th>Service Name</th>
+                <th>Action</th>
             </tr>
             <tr>
-              <td><a href="">1</a></td>
-              <td>Anant</td>
-              <td>5</td>
-              <td>Moping floor</td>
-              <td><a href="">Approve</a>/<a href="">Reject</a>/<a href="">Delete</a></td>
+                <td><a href="">1</a></td>
+                <td>Anant</td>
+                <td>5</td>
+                <td>Moping floor</td>
+                <td><a href="">Approve</a>/<a href="">Reject</a>/<a href="">Delete</a></td>
             </tr>
             <tr>
-              <td><a href="">2</a></td>
-              <td>Deepa</td>
-              <td>3</td>
-              <td>Dusting</td>
-              <td><a href="">Approve</a>/<a href="">Reject</a>/<a href="">Delete</a></td>
+                <td><a href="">2</a></td>
+                <td>Deepa</td>
+                <td>3</td>
+                <td>Dusting</td>
+                <td><a href="">Approve</a>/<a href="">Reject</a>/<a href="">Delete</a></td>
             </tr>
             <tr>
-              <td><a href="">2</a></td>
-              <td>Deepa</td>
-              <td>3</td>
-              <td>Dusting</td>
-              <td><a href="">Approve</a>/<a href="">Reject</a>/<a href="">Delete</a></td>
+                <td><a href="">2</a></td>
+                <td>Deepa</td>
+                <td>3</td>
+                <td>Dusting</td>
+                <td><a href="">Approve</a>/<a href="">Reject</a>/<a href="">Delete</a></td>
             </tr>
         </table>
     </div>
-    
+
     <br>
 
     <h2>Service Requests</h2>
     <div class="tables">
         <table class="styled-table">
             <tr>
-              <th>ID</th>
-              <th>Assigned Professional</th>
-              <th>Reqested Date</th>
-              <th>Status</th>
+                <th>ID</th>
+                <th>Assigned Professional</th>
+                <th>Reqested Date</th>
+                <th>Status</th>
             </tr>
             <tr>
-              <td>1</td>
-              <td>Anant</td>
-              <td>20-05-2024</td>
-              <td>Requested/Assigned/Closed</td>
+                <td>1</td>
+                <td>Anant</td>
+                <td>20-05-2024</td>
+                <td>Requested/Assigned/Closed</td>
             </tr>
             <tr>
-              <td>2</td>
-              <td>Deepa</td>
-              <td>20-06-2024</td>
-              <td>Requested/Assigned/Closed</td>
+                <td>2</td>
+                <td>Deepa</td>
+                <td>20-06-2024</td>
+                <td>Requested/Assigned/Closed</td>
             </tr>
             <tr>
-              <td>2</td>
-              <td>Deepa</td>
-              <td>20-06-2024</td>
-              <td>Requested/Assigned/Closed</td>
+                <td>2</td>
+                <td>Deepa</td>
+                <td>20-06-2024</td>
+                <td>Requested/Assigned/Closed</td>
             </tr>
         </table>
     </div>
@@ -247,5 +360,25 @@
             Developed with ❤️ by some Developer
         </p>
     </footer>
+    <script>
+        // Open modal function
+        function openPopup() {
+            document.getElementById("myModal").style.display = "flex";
+        }
+
+        // Close modal function
+        function closeModal() {
+            document.getElementById("myModal").style.display = "none";
+        }
+
+        // Close the modal if user clicks outside of it
+        window.onclick = function (event) {
+            const modal = document.getElementById("myModal");
+            if (event.target === modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
 </body>
+
 </html>
