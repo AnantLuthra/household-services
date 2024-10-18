@@ -25,7 +25,6 @@ class professional(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String, nullable=False)
     date_created = db.Column(db.Date, nullable=False)
-    description = db.Column(db.String, nullable=False)
     service_type = db.Column()
     experience = db.Column(db.Integer, nullable=False)
     request = db.Column(db.Boolean, default=None)
