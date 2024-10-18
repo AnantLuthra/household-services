@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Search</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+        body {
+            background-color: rgb(220, 255, 226);
+            align-items: center;
+            text-align: left;
+        }
+
+        header {
+            align-items: center;
+            display: flex;
+            padding: 15px;
+            background-color: rgb(164, 252, 164);
+        }
+
+        h1 {
+            margin-right: 21vw;
+            margin-left: 3vw;
+            font-size: 40px;
+        }
+
+        ul {
+            display: flex;
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        ul li {
+            padding-inline: 15px;
+        }
+
+        ul li a {
+            font-size: 23px;
+            text-decoration: none;
+            color: black;
+        }
+
+        ul li a:hover {
+            text-decoration: underline;
+        }
+
+
+        h2 {
+            margin-top: 20px;
+            margin-left: 40px;
+            margin-bottom: 10px;
+            font-size: 30px;
+        }
+
+        #search-box {
+            margin: 20px;
+            margin-top: 40px;
+            margin-left: 400px;
+            font-size: 24px;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Style for the label */
+        #search-box label {
+            font-size: 16px;
+            margin-right: 10px;
+        }
+
+        /* Style for the dropdown */
+        #searchCriteria {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: #f9f9f9;
+            width: 200px;
+        }
+
+        /* Style for the dropdown options */
+        #searchCriteria option {
+            padding: 10px;
+        }
+
+        .tables {
+            margin-left: 20px;
+            text-align: center;
+            align-items: center;
+            justify-content: center;
+            /* background-color: rgb(196, 255, 196); */
+            width: 60vw;
+            height: 20vh;
+            border-radius: 25px;
+            padding: 20px;
+        }
+
+
+        table {
+            padding-top: 10px;
+            padding-left: 20px;
+        }
+
+        #new_service_a {
+            margin-left: 810px;
+            font-size: 18px;
+        }
+
+        /* Common styling class for tables present in this page*/
+
+        .styled-table {
+            width: 100%;
+            border-collapse: collapse;
+            /* Remove space between table cells */
+        }
+
+        .styled-table th {
+            font-size: 20px;
+        }
+
+        .styled-table th,
+        .styled-table td {
+            padding: 10px;
+            /* Adjust padding to decrease space between columns */
+            border: 1px solid #ddd;
+            /* Add border to table cells */
+            text-align: left;
+            /* Align text to the left */
+        }
+
+        .styled-table th {
+            background-color: #f2f2f2;
+            /* Light grey background for table headers */
+        }
+
+        .styled-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+            /* Light grey background for even rows */
+        }
+
+        .styled-table tr:hover {
+            background-color: #ddd;
+            /* Light grey background on hover */
+        }
+
+        .styled-table a {
+            color: #007bff;
+            /* Bootstrap primary color for links */
+            text-decoration: none;
+            /* Remove underline from links */
+        }
+
+        .styled-table a:hover {
+            text-decoration: underline;
+            /* Underline links on hover */
+        }
+
+        main {
+            height: 70vh;
+        }
+
+        footer {
+            margin-top: 50px;
+            align-items: center;
+            text-align: center;
+            background-color: rgb(164, 252, 164);
+            height: 60px;
+        }
+
+        footer p {
+            margin: auto;
+            padding-top: 20px;
+            font-size: 20px;
+        }
+
+        .active {
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Admin Portal</h1>
+        <ul>
+            <li><a href="">Home</a></li>
+            <li><a class="active" href="">Search</a></li>
+            <li><a href="">Summary</a></li>
+            <li><a href="">Logout</a></li>
+        </ul>
+    </header>
+    
+    <div id="search-box">
+        Search By: 
+        <select name="searchCriteria" id="searchCriteria">
+            <option value="email">Services</option>
+            <option value="service">Service Requests</option>
+            <option value="name">Customers</option>
+            <option value="service">Professional</option>
+        </select>
+        
+    </div>
+
+    <h2>Services (Dusting)</h2>
+    <div class="tables">
+        <table class="styled-table">
+            <tr>
+                <th>ID</th>
+                <th>Service Name</th>
+                <th>Base Price</th>
+                <th>Action</th>
+            </tr>
+            <tr>
+                <td><a href="">1</a></td>
+                <td>Dusting</td>
+                <td>500</td>
+                <td><a href="">Edit</a>/<a href="">Delete</a></td>
+            </tr>
+            <tr>
+                <td><a href="">2</a></td>
+                <td>Dusting</td>
+                <td>1000</td>
+                <td><a href="">Edit</a>/<a href="">Delete</a></td>
+            </tr>
+            <tr>
+                <td><a href="">2</a></td>
+                <td>Dusting</td>
+                <td>1000</td>
+                <td><a href="">Edit</a>/<a href="">Delete</a></td>
+            </tr>
+        </table>
+    </div>
+
+    <br>
+    <h2>Customer - Pincode (253001)</h2>
+    <div class="tables">
+        <table class="styled-table">
+            <tr>
+                <th>ID</th>
+                <th>Email ID</th>
+                <th>Full Name</th>
+                <th>Address</th>
+                <th>Pin Code</th>
+                <th>Action</th>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>anant@gmail.com</td>
+                <td>Anant Luthra</td>
+                <td>Shaun sheep mall road</td>
+                <td>253001</td>
+                <td><a href="">Approve</a>/<a href="">Reject</a>/<a href="">Delete</a></td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>shivam@gmail.com</td>
+                <td>Shivam kumar</td>
+                <td>Toun mark, stefen, mall road</td>
+                <td>253001</td>
+                <td><a href="">Approve</a>/<a href="">Reject</a>/<a href="">Delete</a></td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>sam@gmail.com</td>
+                <td>Sam sheep</td>
+                <td>Ifel tower, England, Afrika</td>
+                <td>253001</td>
+                <td><a href="">Approve</a>/<a href="">Reject</a>/<a href="">Delete</a></td>
+            </tr>
+        </table>
+    </div>
+
+    <br>
+
+    <h2>Professionals - Experience (5)</h2>
+    <div class="tables">
+        <table class="styled-table">
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Experience(Yrs)</th>
+                <th>Service Name</th>
+                <th>Action</th>
+            </tr>
+            <tr>
+                <td><a href="">1</a></td>
+                <td>Anant</td>
+                <td>5</td>
+                <td>Moping floor</td>
+                <td><a href="">Approve</a>/<a href="">Reject</a>/<a href="">Delete</a></td>
+            </tr>
+            <tr>
+                <td><a href="">2</a></td>
+                <td>Deepa</td>
+                <td>3</td>
+                <td>Dusting</td>
+                <td><a href="">Approve</a>/<a href="">Reject</a>/<a href="">Delete</a></td>
+            </tr>
+            <tr>
+                <td><a href="">2</a></td>
+                <td>Deepa</td>
+                <td>3</td>
+                <td>Dusting</td>
+                <td><a href="">Approve</a>/<a href="">Reject</a>/<a href="">Delete</a></td>
+            </tr>
+        </table>
+    </div>
+
+    <br>
+
+    <h2>Service Requests (Requested)</h2>
+    <div class="tables">
+        <table class="styled-table">
+            <tr>
+                <th>ID</th>
+                <th>Assigned Professional</th>
+                <th>Reqested Date</th>
+                <th>Status</th>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>Anant</td>
+                <td>20-05-2024</td>
+                <td>Requested</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>Deepa</td>
+                <td>20-06-2024</td>
+                <td>Requested</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>Deepa</td>
+                <td>20-06-2024</td>
+                <td>Requested</td>
+            </tr>
+        </table>
+    </div>
+    <footer>
+        <p>
+            Developed with ❤️ by some Developer
+        </p>
+    </footer>
+</body>
+
+</html>
