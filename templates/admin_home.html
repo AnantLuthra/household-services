@@ -218,10 +218,10 @@
     <header>
         <h1>Welcome to Admin</h1>
         <ul>
-            <li><a class="active" href="">Home</a></li>
-            <li><a href="">Search</a></li>
+            <li><a class="active" href="/admin_home">Home</a></li>
+            <li><a href="/admin_search">Search</a></li>
             <li><a href="">Summary</a></li>
-            <li><a href="">Logout</a></li>
+            <li><a href="/admin_logout">Logout</a></li>
         </ul>
     </header>
 
@@ -235,19 +235,19 @@
                 <th>Action</th>
             </tr>
             <tr>
-                <td><a href="">1</a></td>
+                <td><a href="/view_service">1</a></td>
                 <td>Cloth Cleaning</td>
                 <td>500</td>
                 <td><a href="">Edit</a>/<a href="">Delete</a></td>
             </tr>
             <tr>
-                <td><a href="">2</a></td>
+                <td><a href="/view_service">2</a></td>
                 <td>Dusting</td>
                 <td>1000</td>
                 <td><a href="">Edit</a>/<a href="">Delete</a></td>
             </tr>
             <tr>
-                <td><a href="">2</a></td>
+                <td><a href="/view_service">3</a></td>
                 <td>Dusting</td>
                 <td>1000</td>
                 <td><a href="">Edit</a>/<a href="">Delete</a></td>
@@ -263,21 +263,21 @@
                 <span class="close-btn" onclick="closeModal()">&times;</span>
                 <h2>New Service</h2>
                 <div id="main">
-                    <form action="backend.php">
+                    <form action="/admin_home" method="POST">
                         <br>
                         <div id="service_name" style="margin-top: 10px;">
-                            Service name: <input style="margin-left: 40px; width: 190px; height: 28px; font-size: 20px;" size="x-large" type="text" name="name">
+                            Service name: <input style="margin-left: 40px; width: 190px; height: 28px; font-size: 20px;" size="x-large" type="text" name="name" required>
                         </div>
                         <div id="base_price" style="margin-top: 10px;">
-                            Base Price: <input style="margin-left: 60px; width: 190px; height: 28px; font-size: 20px;" size="x-large" type="number" name="price" placeholder="0">
+                            Base Price: <input style="margin-left: 60px; width: 190px; height: 28px; font-size: 20px;" size="x-large" type="number" name="price" placeholder="0" required>
                         </div>
                         <div id="time_required" style="margin-top: 10px;">
-                            Time Required (Hrs): <input style="margin-left: 3px; width: 190px; height: 28px; font-size: 20px;" size="x-large" type="number" name="time_required" placeholder="0">
+                            Time Required (Hrs): <input style="margin-left: 3px; width: 190px; height: 28px; font-size: 20px;" size="x-large" type="number" name="time_required" placeholder="0" required>
                         </div>
                         <div style="margin-left: 10px; margin-top: 10px;">
                             Description: <textarea
                                 style="font-size: 15px; margin-left: 50px; width: 190px; height: 100px; text-align: left; vertical-align: top;"
-                                class="input-box" name="description" placeholder="About Service"></textarea>
+                                class="input-box" name="description" placeholder="About Service" required></textarea>
                         </div>
                         <div>
                             <input type="submit" value="Add" style="padding: 2px 5px; margin-right: 20px; font-size: x-large;font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; margin-top: 30px; margin-bottom: 10px;" >
@@ -303,21 +303,21 @@
                 <th>Action</th>
             </tr>
             <tr>
-                <td><a href="">1</a></td>
+                <td><a href="/view_professional">1</a></td>
                 <td>Anant</td>
                 <td>5</td>
                 <td>Moping floor</td>
                 <td><a href="">Approve</a>/<a href="">Reject</a>/<a href="">Delete</a></td>
             </tr>
             <tr>
-                <td><a href="">2</a></td>
+                <td><a href="/view_professional">2</a></td>
                 <td>Deepa</td>
                 <td>3</td>
                 <td>Dusting</td>
                 <td><a href="">Approve</a>/<a href="">Reject</a>/<a href="">Delete</a></td>
             </tr>
             <tr>
-                <td><a href="">2</a></td>
+                <td><a href="/view_professional">3</a></td>
                 <td>Deepa</td>
                 <td>3</td>
                 <td>Dusting</td>
@@ -357,6 +357,46 @@
             </tr>
         </table>
     </div>
+
+    <br>
+    <h2>Customer</h2>
+    <div class="tables">
+        <table class="styled-table">
+            <tr>
+                <th>ID</th>
+                <th>Email ID</th>
+                <th>Full Name</th>
+                <th>Address</th>
+                <th>Pin Code</th>
+                <th>Action</th>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>anant@gmail.com</td>
+                <td>Anant Luthra</td>
+                <td>Shaun sheep mall road</td>
+                <td>253001</td>
+                <td><a href="">Approve</a>/<a href="">Reject</a>/<a href="">Delete</a></td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>shivam@gmail.com</td>
+                <td>Shivam kumar</td>
+                <td>Toun mark, stefen, mall road</td>
+                <td>253001</td>
+                <td><a href="">Approve</a>/<a href="">Reject</a>/<a href="">Delete</a></td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>sam@gmail.com</td>
+                <td>Sam sheep</td>
+                <td>Ifel tower, England, Afrika</td>
+                <td>253001</td>
+                <td><a href="">Approve</a>/<a href="">Reject</a>/<a href="">Delete</a></td>
+            </tr>
+        </table>
+    </div>
+
     <footer>
         <p>
             Developed with ❤️ by some Developer

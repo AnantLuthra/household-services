@@ -51,18 +51,18 @@
 
     <h1 id="logheading">Customer Login</h1>
     <div id="main">
-        <form action="backend.php">
+        <form action="/customer_login" method="POST">
             <div class="credentials" style="margin-top: 30px;">
-                Registered Email ID: <input  style="width: 230px;" class="input-box" type="email" placeholder="Example@gmail.com" name="mail">
+                Registered Email ID: <input  style="width: 230px;" class="input-box" type="email" placeholder="Example@gmail.com" name="mail" required>
             </div>
             <br>
             <div class="credentials" style="margin-left: 78px;">
-                Password:  <input style="margin-left: 55px; width: 232px;" class="input-box" size="x-large" type="password" name="password">
+                Password:  <input style="margin-left: 55px; width: 232px;" class="input-box" size="x-large" type="password" name="password" required>
             </div>
             <div>
                 <input type="submit" value="Login" style="margin-right: 20px; font-size: x-large;font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; margin-top: 30px; margin-bottom: 20px;" >
             </div>
-            <span id="notlogined">Don't have an account? <strong><a href="./new_customer.html">Sign up</a></strong></span>
+            <span id="notlogined">Don't have an account? <strong><a href="/new_customer">Sign up</a></strong></span>
         </form>
     </div>
 </body>

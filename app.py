@@ -75,18 +75,140 @@ def landing():
     return render_template("main_landing.html")
 
 
+#------------------- Admin Login -----------------------------#
+
+@app.route("/admin_login", methods=['GET', 'POST'])
+def admin_login():
+
+    if request.method == 'GET':
+        # if current_user.is_authenticated:
+        #     return redirect("/professional")
+        return render_template("admin_login.html")
+
+    elif request.method == 'POST':
+        
+        password = request.form.get('password')
+
+        if ADMIN_PASS == password:
+            return redirect("/admin_home")
+
+
 #------------------ Professional Login -----------------------#
 
 @app.route("/professional_login", methods=['GET', 'POST'])
 def prof_login():
 
     if request.method == 'GET':
-        if current_user.is_authenticated:
-            return redirect("/professional")
+        # if current_user.is_authenticated:
+        #     return redirect("/professional")
         return render_template("prof_login.html")
 
     elif request.method == 'POST':
-        ...
+        
+        email = request.form.get('mail')
+        password = request.form.get('password')
+
+        return f"Email: {email}, Password: {password}"
+
+
+
+#-------------------- New Professional Page -----------------------#
+
+@app.route("/new_professional", methods = ['GET', 'POST'])
+def new_professional():
+
+    if request.method == 'GET':
+        return render_template("new_professional.html")
+    
+    elif request.method == 'POST':
+
+        email = request.form.get('mail')
+        password = request.form.get('password')
+        fullname = request.form.get('fullname')
+        service_type = request.form.get('service_type')
+        experience = request.form.get('experience')
+        documents = request.form.get('documents')
+        address = request.form.get('address')
+        pin_code = request.form.get('pincode')
+
+        return f"Email: {email}, Password: {password}, Fullname: {fullname}, Service Type: {service_type}, Experience: {experience}, Documents: {documents}, Address: {address}, Pin Code: {pin_code}"
+    
+
+#-------------------- Customer Login page --------------------------#
+
+@app.route("/customer_login", methods=['GET', 'POST'])
+def customer_login():
+
+    if request.method == 'GET':
+        # if current_user.is_authenticated:
+            # return redirect("/professional")
+        return render_template("customer_login.html")
+
+    elif request.method == 'POST':
+        
+        email = request.form.get('mail')
+        password = request.form.get('password')
+
+        return f"Email: {email}, Password: {password}"
+
+
+#--------------------- New Customer Page --------------------------#
+
+@app.route("/new_customer", methods = ['GET', 'POST'])
+def new_customer():
+
+    if request.method == 'GET':
+        return render_template("new_customer.html")
+    
+    elif request.method == 'POST':
+
+        email = request.form.get('mail')
+        password = request.form.get('password')
+        fullname = request.form.get('fullname')
+        address = request.form.get('address')
+        pin_code = request.form.get('pincode')
+
+        return f"Email: {email}, Password: {password}, Fullname: {fullname}, Address: {address}, Pin Code: {pin_code}"
+
+#-------------------- Admin Home page -------------------------#
+
+@app.route('/admin_home', methods = ['GET', 'POST'])
+def admin_home():
+
+    if request.method == 'GET':
+        return render_template('admin_home.html')
+    
+    elif request.method == 'POST':
+
+        service_name = request.form.get('name')
+        base_price = request.form.get('price')
+        time_required = request.form.get('time_required')
+        description = request.form.get('description')
+    
+        return f"Service name: {service_name}, Price: {base_price}, Time Req: {time_required}, Description: {description}"
+
+#---------------------- View Service page ------------------------#
+
+@app.route("/view_service")
+def view_service():
+
+    if request.method == "GET":
+        return render_template("view_service.html")
+
+    else:
+        return "Invalid Request"
+
+
+#---------------------- View Professional Page --------------------#
+
+@app.route("/view_professional")
+def view_professional():
+
+    if request.method == "GET":
+        return render_template("view_professional.html")
+
+    else:
+        return "Invalid Request"
 
 
 #---------------------- Admin Search page ------------------------#
@@ -98,13 +220,22 @@ def admin_search():
         return render_template('admin_search.html')
     
     elif request.method == 'POST':
-        
+
         search_criteria = request.form.get('searchCriteria')
         search_by = request.form.get('searchBy')
         value_of_search = request.form.get('valueofsearch')
     
     # Process the data as needed
     return f"Received: {search_criteria}, {search_by}, {value_of_search}"
+
+#---------------------- Admin Logout -------------------------------#
+
+@app.route('/admin_logout', methods = ['GET', 'POST'])
+def admin_logout():
+
+    if request.method == 'GET':
+        return redirect("/")
+
 
 if __name__ == '__main__':
 

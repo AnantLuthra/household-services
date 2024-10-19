@@ -41,6 +41,26 @@
             margin-bottom: 10px;
         }
 
+        .credentials input{
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+        }
+
+        #service_type {
+            padding: 10px;
+            margin-right: 15px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: #f9f9f9;
+            width: 240px;
+            margin-left: 66px;
+        }
+
+        #service_type option {
+            padding: 10px;
+        }
+
         .input-box {
             width: 180px;
             height: 28px;
@@ -65,9 +85,6 @@
             margin-left: 292px;
         }
 
-        #options {
-            margin-left: 30px;
-        }
     </style>
 </head>
 
@@ -76,43 +93,45 @@
 
     <h1 id="logheading">Service Professional Signup</h1>
     <div id="main">
-        <form action="backend.php">
+        <form action="/new_professional" method="POST">
             <div class="credentials" style="margin-top: 17px; margin-bottom: -1px;">
                 Email ID (Username): <input style="width: 230px; margin-left: 20px;" class="input-box" type="email"
-                    placeholder="Example@gmail.com" name="mail">
+                    placeholder="Example@gmail.com" name="mail" required>
             </div>
             <br>
             <div class="credentials" style="margin-left: 78px; margin-top: -3px;">
                 Password: <input style="margin-left: 55px; width: 232px;" class="input-box" size="x-large"
-                    type="password" name="password">
+                    type="password" name="password" required>
             </div>
             <div class="credentials" style="margin-left: 78px;">
                 Fullname: <input style="margin-left: 55px; width: 232px;" class="input-box" size="x-large" type="text"
-                    name="fullname" placeholder="David Malhan">
+                    name="fullname" placeholder="David Malhan" required>
             </div>
             <div id="servicesdiv" class="credentials">
-                <div>Service Name: </div>
-                <div id="options">
-                    <input type="checkbox" name="services" value="Floor moping">Floor moping<br>
-                    <input type="checkbox" name="services" value="Dusting">Dusting <br>
-                </div>
+                <label for="searchCriteria">Search On:</label>
+                <select name="service_type" id="service_type">
+                    <option value="dusting">Dusting</option>
+                    <option value="clearning">Cleaning</option>
+                    <option value="ac_cleaning">AC clearning</option>
+                    <option value="roof_clearning">Roof Clearning</option>
+                </select>
             </div>
             <div class="credentials" style="margin-left: 30px;">
                 Experience(In years): <input style="margin-left: 10px; width: 232px;" class="input-box" size="x-large"
-                    type="number" name="experience">
+                    type="number" name="experience" required>
             </div>
             <div class="credentials" style="margin-left: 30px;">
                 Attach Docs (.pdf): <input style="margin-left: 10px; width: 232px;" class="input-box" size="x-large"
-                    type="file" name="documents" accept=".pdf">
+                    type="file" name="documents" accept=".pdf" required>
             </div>
             <div class="credentials" style="margin-left: 78px;">
                 Address: <textarea
-                    style="margin-left: 64px; width: 232px; height: 100px; text-align: left; vertical-align: top;"
-                    class="input-box" name="address" placeholder="54/2 Humphery Street"></textarea>
+                    style="margin-left: 64px; width: 232px; height: 100px; text-align: left; vertical-align: top; border: 1px solid #ccc; background-color: #f9f9f9;"
+                    class="input-box" name="address" placeholder="54/2 Humphery Street" required></textarea>
             </div>
             <div class="credentials" style="margin-left: 78px;">
-                Pin Code: <input style="margin-left: 55px; width: 232px;" class="input-box" size="x-large" type="text"
-                    name="picode">
+                Pin Code: <input style="margin-left: 55px; width: 232px;" class="input-box" size="x-large" type="number"
+                    name="pincode" required>
             </div>
             <div>
                 <input type="submit" value="Register"
@@ -121,7 +140,7 @@
                     style="font-size: 21px; color: red; font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; height: 32px;">
             </div>
             <span id="loginhere"><strong><a style="text-decoration: none; color: black; font-style: italic;"
-                        href="./prof_login.html">Login Here</a></strong></span>
+                        href="/professional_login">Login Here</a></strong></span>
         </form>
     </div>
 </body>

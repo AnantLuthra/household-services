@@ -77,28 +77,28 @@
 
     <h1 id="logheading">Customer Signup</h1>
     <div id="main">
-        <form action="backend.php">
+        <form action="/new_customer" method="POST">
             <div class="credentials" style="margin-top: 17px; margin-bottom: -1px;">
                 Email ID (Username): <input style="width: 230px; margin-left: 20px;" class="input-box" type="email"
-                    placeholder="Example@gmail.com" name="mail">
+                    placeholder="Example@gmail.com" name="mail" required>
             </div>
             <br>
             <div class="credentials" style="margin-left: 78px; margin-top: -3px;">
                 Password: <input style="margin-left: 55px; width: 232px;" class="input-box" size="x-large"
-                    type="password" name="password">
+                    type="password" name="password" required>
             </div>
             <div class="credentials" style="margin-left: 78px;">
                 Fullname: <input style="margin-left: 55px; width: 232px;" class="input-box" size="x-large" type="text"
-                    name="fullname" placeholder="David Malhan">
+                    name="fullname" placeholder="David Malhan" required>
             </div>
             <div class="credentials" style="margin-left: 78px;">
                 Address: <textarea
                     style="margin-left: 64px; width: 232px; height: 100px; text-align: left; vertical-align: top;"
-                    class="input-box" name="address" placeholder="54/2 Humphery Street"></textarea>
+                    class="input-box" name="address" placeholder="54/2 Humphery Street" required></textarea>
             </div>
             <div class="credentials" style="margin-left: 78px;">
-                Pin Code: <input style="margin-left: 55px; width: 232px;" class="input-box" size="x-large" type="text"
-                    name="picode">
+                Pin Code: <input style="margin-left: 55px; width: 232px;" class="input-box" size="x-large" type="number"
+                    name="pincode" required>
             </div>
             <div>
                 <input type="submit" value="Register"
@@ -107,7 +107,7 @@
                     style="font-size: 21px; color: red; font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; height: 32px;">
             </div>
             <span id="loginhere"><strong><a style="text-decoration: none; color: black; font-style: italic;"
-                        href="./customer_login.html">Login Here</a></strong></span>
+                        href="/customer_login">Login Here</a></strong></span>
         </form>
     </div>
 </body>
