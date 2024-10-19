@@ -68,13 +68,11 @@
             font-family: Arial, sans-serif;
         }
 
-        /* Style for the label */
         #search-box label {
             font-size: 16px;
             margin-right: 10px;
         }
 
-        /* Style for the dropdown */
         #searchCriteria {
             padding: 10px;
             margin-right: 15px;
@@ -129,7 +127,6 @@
             text-align: center;
             align-items: center;
             justify-content: center;
-            /* background-color: rgb(196, 255, 196); */
             width: 60vw;
             height: 20vh;
             border-radius: 25px;
@@ -148,11 +145,9 @@
         }
 
         /* Common styling class for tables present in this page*/
-
         .styled-table {
             width: 100%;
             border-collapse: collapse;
-            /* Remove space between table cells */
         }
 
         .styled-table th {
@@ -162,38 +157,29 @@
         .styled-table th,
         .styled-table td {
             padding: 10px;
-            /* Adjust padding to decrease space between columns */
             border: 1px solid #ddd;
-            /* Add border to table cells */
             text-align: left;
-            /* Align text to the left */
         }
 
         .styled-table th {
             background-color: #f2f2f2;
-            /* Light grey background for table headers */
         }
 
         .styled-table tr:nth-child(even) {
             background-color: #f9f9f9;
-            /* Light grey background for even rows */
         }
 
         .styled-table tr:hover {
             background-color: #ddd;
-            /* Light grey background on hover */
         }
 
         .styled-table a {
             color: #007bff;
-            /* Bootstrap primary color for links */
             text-decoration: none;
-            /* Remove underline from links */
         }
 
         .styled-table a:hover {
             text-decoration: underline;
-            /* Underline links on hover */
         }
 
         main {
@@ -244,7 +230,7 @@
             
             <label for="searchBy">Search By:</label>
             <select name="searchBy" id="searchBy" onchange="updateInputType()">
-                <!-- Options will be populated based on the first dropdown selection -->
+                <!-- Dropdown options dynamically added through javascript -->
             </select>
             
             <label for="value">Value:</label>
@@ -404,12 +390,10 @@
             const searchCriteria = document.getElementById('searchCriteria').value;
             const searchOptions = document.getElementById('searchBy');
 
-            // Clear existing options
             searchOptions.innerHTML = '';
 
             let options = [];
     
-            // Define options based on the first dropdown selection
             if (searchCriteria == 'services') {
                 options = ['Service Name', 'Price >='];
             } else if (searchCriteria == 'service_request') {
@@ -420,7 +404,7 @@
                 options = ['Name', 'Experience >=', 'Service Name'];
             }
 
-            // Populate the second dropdown with the new options
+            
             options.forEach(option => {
                 const opt = document.createElement('option');
                 opt.value = option.toLowerCase();
@@ -446,7 +430,6 @@
             }
         }
 
-        // Initialize the second dropdown on page load
         document.addEventListener('DOMContentLoaded', updateSecondDropdown);
     </script>
 </body>
