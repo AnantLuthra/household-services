@@ -421,12 +421,34 @@
             const valueOfSearch = document.getElementById('valueofsearch');
 
             
+            // Updating input type
             if (searchBy.includes('>=') || searchBy.includes('code')) {
                 valueOfSearch.type = 'number';
             } else if (searchBy.includes('email')) {
                 valueOfSearch.type = 'email';
             } else {
                 valueOfSearch.type = 'text';
+            }
+            
+
+            // Updating input placeholder as per searchBy dropdown value
+            if (searchBy.includes("status")) {
+                valueOfSearch.placeholder = "Reqested/Assigned/Closed";
+            }
+            else if (searchBy.includes('name')) {
+                valueOfSearch.placeholder = 'Enter Name';
+            } 
+            else if (searchBy.includes('>=')) {
+                valueOfSearch.placeholder = "0"
+            }
+            else if (searchBy.includes('code')) {
+                valueOfSearch.placeholder = '600036';
+            }
+            else if (searchBy.includes('email')) {
+                valueOfSearch.placeholder = 'exampl@gmail.com';
+            }
+            else {
+                valueOfSearch.placeholder = '';
             }
         }
 
