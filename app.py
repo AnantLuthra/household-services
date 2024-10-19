@@ -89,6 +89,22 @@ def prof_login():
         ...
 
 
+#---------------------- Admin Search page ------------------------#
+
+@app.route('/admin_search', methods = ['GET', 'POST'])
+def admin_search():
+
+    if request.method == 'GET':
+        return render_template('admin_search.html')
+    
+    elif request.method == 'POST':
+        
+        search_criteria = request.form.get('searchCriteria')
+        search_by = request.form.get('searchBy')
+        value_of_search = request.form.get('valueofsearch')
+    
+    # Process the data as needed
+    return f"Received: {search_criteria}, {search_by}, {value_of_search}"
 
 if __name__ == '__main__':
 

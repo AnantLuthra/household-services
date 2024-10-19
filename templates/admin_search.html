@@ -62,7 +62,8 @@
         #search-box {
             margin: 20px;
             margin-top: 40px;
-            margin-left: 400px;
+            margin-left: 250px;
+            margin-bottom: 40px;
             font-size: 24px;
             font-family: Arial, sans-serif;
         }
@@ -76,6 +77,7 @@
         /* Style for the dropdown */
         #searchCriteria {
             padding: 10px;
+            margin-right: 15px;
             font-size: 16px;
             border: 1px solid #ccc;
             border-radius: 4px;
@@ -86,6 +88,40 @@
         /* Style for the dropdown options */
         #searchCriteria option {
             padding: 10px;
+        }
+
+        #searchBy {
+            margin-right: 20px;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: #f9f9f9;
+            width: 200px;
+        }
+
+        /* Style for the dropdown options */
+        #searchBy option {
+            padding: 10px;
+        }
+
+        #valueofsearch {
+            margin-right: 20px;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: #f9f9f9;
+            width: 200px;
+        }
+
+        #search_submit_button {
+            margin-right: 20px;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 100px;
         }
 
         .tables {
@@ -197,14 +233,25 @@
     </header>
     
     <div id="search-box">
-        Search By: 
-        <select name="searchCriteria" id="searchCriteria">
-            <option value="email">Services</option>
-            <option value="service">Service Requests</option>
-            <option value="name">Customers</option>
-            <option value="service">Professional</option>
-        </select>
-        
+        <form action="/admin_search" method="POST">
+            <label for="searchCriteria">Search On:</label>
+            <select name="searchCriteria" id="searchCriteria" onchange="updateSecondDropdown()">
+                <option value="services">Services</option>
+                <option value="service_request">Service Requests</option>
+                <option value="customers">Customers</option>
+                <option value="professional">Professional</option>
+            </select>
+            
+            <label for="searchBy">Search By:</label>
+            <select name="searchBy" id="searchBy" onchange="updateInputType()">
+                <!-- Options will be populated based on the first dropdown selection -->
+            </select>
+            
+            <label for="value">Value:</label>
+            <input id="valueofsearch" name="valueofsearch" type="text" value="">
+            
+            <input id="search_submit_button" type="submit" value="Search">
+        </form>
     </div>
 
     <h2>Services (Dusting)</h2>
@@ -320,24 +367,28 @@
             <tr>
                 <th>ID</th>
                 <th>Assigned Professional</th>
+                <th>Customer Requested</th>
                 <th>Reqested Date</th>
                 <th>Status</th>
             </tr>
             <tr>
                 <td>1</td>
                 <td>Anant</td>
+                <td>Shivam</td>
                 <td>20-05-2024</td>
                 <td>Requested</td>
             </tr>
             <tr>
                 <td>2</td>
                 <td>Deepa</td>
+                <td>Sheja</td>
                 <td>20-06-2024</td>
                 <td>Requested</td>
             </tr>
             <tr>
                 <td>2</td>
                 <td>Deepa</td>
+                <td>Sam</td>
                 <td>20-06-2024</td>
                 <td>Requested</td>
             </tr>
@@ -348,6 +399,56 @@
             Developed with ❤️ by some Developer
         </p>
     </footer>
+    <script>
+        function updateSecondDropdown() {
+            const searchCriteria = document.getElementById('searchCriteria').value;
+            const searchOptions = document.getElementById('searchBy');
+
+            // Clear existing options
+            searchOptions.innerHTML = '';
+
+            let options = [];
+    
+            // Define options based on the first dropdown selection
+            if (searchCriteria == 'services') {
+                options = ['Service Name', 'Price >='];
+            } else if (searchCriteria == 'service_request') {
+                options = ['Status', 'Customer Requested', 'Professional Assigned'];
+            } else if (searchCriteria == 'customers') {
+                options = ['Email ID', 'Name', 'Pin Code'];
+            } else if (searchCriteria == 'professional') {
+                options = ['Name', 'Experience >=', 'Service Name'];
+            }
+
+            // Populate the second dropdown with the new options
+            options.forEach(option => {
+                const opt = document.createElement('option');
+                opt.value = option.toLowerCase();
+                opt.textContent = option;
+                searchOptions.appendChild(opt);
+            });
+
+            updateInputType();
+        }
+        
+
+        function updateInputType() {
+            const searchBy = document.getElementById('searchBy').value;
+            const valueOfSearch = document.getElementById('valueofsearch');
+
+            
+            if (searchBy.includes('>=') || searchBy.includes('code')) {
+                valueOfSearch.type = 'number';
+            } else if (searchBy.includes('email')) {
+                valueOfSearch.type = 'email';
+            } else {
+                valueOfSearch.type = 'text';
+            }
+        }
+
+        // Initialize the second dropdown on page load
+        document.addEventListener('DOMContentLoaded', updateSecondDropdown);
+    </script>
 </body>
 
 </html>
