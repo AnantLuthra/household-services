@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Search</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+        body {
+            background-color: rgb(220, 255, 226);
+            align-items: center;
+            text-align: left;
+        }
+
+        header {
+            align-items: center;
+            display: flex;
+            padding: 15px;
+            background-color: rgb(164, 252, 164);
+        }
+
+        h1 {
+            margin-right: 21vw;
+            margin-left: 3vw;
+            font-size: 40px;
+        }
+
+        ul {
+            display: flex;
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        ul li {
+            padding-inline: 15px;
+        }
+
+        ul li a {
+            font-size: 23px;
+            text-decoration: none;
+            color: black;
+        }
+
+        ul li a:hover {
+            text-decoration: underline;
+        }
+
+
+        h2 {
+            margin-top: 20px;
+            margin-left: 40px;
+            margin-bottom: 10px;
+            font-size: 30px;
+        }
+
+        main {
+            height: 70vh;
+        }
+
+        footer {
+            margin-top: 50px;
+            align-items: center;
+            text-align: center;
+            background-color: rgb(164, 252, 164);
+            height: 60px;
+        }
+
+        footer p {
+            margin: auto;
+            padding-top: 20px;
+            font-size: 20px;
+        }
+
+        .active {
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Admin Portal</h1>
+        <ul>
+            <li><a href="/admin_home">Home</a></li>
+            <li><a href="/admin_search">Search</a></li>
+            <li><a class="active" href="/admin_summary">Summary</a></li>
+            <li><a href="/admin_logout">Logout</a></li>
+        </ul>
+    </header>
+    
+    <footer>
+        <p>
+            Developed with ❤️ by some Developer
+        </p>
+    </footer>
+</body>
+
+</html>

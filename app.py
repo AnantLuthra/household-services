@@ -91,6 +91,8 @@ def admin_login():
 
         if ADMIN_PASS == password:
             return redirect("/admin_home")
+        else:
+            return f"Wrong password"
 
 
 #------------------ Professional Login -----------------------#
@@ -227,6 +229,21 @@ def admin_search():
     
     # Process the data as needed
     return f"Received: {search_criteria}, {search_by}, {value_of_search}"
+
+
+#----------------------- Admin Summary -----------------------------#
+
+@app.route('/admin_summary', methods = ['GET', 'POST'])
+def admin_summary():
+
+    if request.method == 'GET':
+        return render_template('admin_summary.html')
+    
+    elif request.method == 'POST':
+
+        return f"You did a post request"
+
+
 
 #---------------------- Admin Logout -------------------------------#
 
