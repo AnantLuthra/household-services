@@ -16,6 +16,8 @@ app.app_context().push()
 
 #------------ Global Variables --------------#
 ADMIN_PASS = "good123"
+DUMMY_PROFESSION_PASS = ADMIN_PASS
+DUMMY_CUSTOMER_PASS = ADMIN_PASS
 
 #------------ Database classes ---------------#
 
@@ -192,7 +194,7 @@ def admin_home():
 #---------------------- View Service page ------------------------#
 
 @app.route("/view_service")
-def view_service():
+def view_service():     
 
     if request.method == "GET":
         return render_template("view_service.html")
@@ -252,6 +254,26 @@ def admin_logout():
 
     if request.method == 'GET':
         return redirect("/")
+
+
+#----------------------- Professional Home ---------------------------#
+
+@app.route('/professional_home', methods=['GET', 'POST'])
+def prof_home():
+
+    if request.method == 'GET':
+        return render_template("prof_home.html")
+
+#----------------------- Professional edit profile ----------------------#
+
+@app.route('/professional_home/edit_profile/<int:id>', methods=['GET', 'POST'])
+def prof_profile_edit(id):
+
+    if request.method == 'GET':
+        return render_template("prof_edit_profile.html")
+
+    elif request.method == 'POST':
+        return f"form edited"
 
 
 if __name__ == '__main__':
