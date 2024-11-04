@@ -264,7 +264,18 @@ def prof_home():
     if request.method == 'GET':
         return render_template("prof_home.html")
 
-#----------------------- Professional edit profile ----------------------#
+#----------------------- Professional view profile ----------------------#
+
+@app.route('/professional_home/view_profile/<int:id>', methods=['GET', 'POST'])
+def prof_view_profile(id):
+
+    if request.method == 'GET':
+        return render_template("prof_view_profile.html")
+
+    elif request.method == 'POST':
+        return f"form edited"
+    
+#----------------------- Professional Edit Profile ------------------------#
 
 @app.route('/professional_home/edit_profile/<int:id>', methods=['GET', 'POST'])
 def prof_profile_edit(id):
@@ -273,7 +284,32 @@ def prof_profile_edit(id):
         return render_template("prof_edit_profile.html")
 
     elif request.method == 'POST':
-        return f"form edited"
+        
+        password = request.form.get('password')
+        fullname = request.form.get('fullname')
+        experience = request.form.get('experience')
+        address = request.form.get('address')
+        pin_code = request.form.get('pincode')
+        new_pic = request.form.get('new_pic')
+
+        return {
+        "Id": id,
+        "Password": password,
+        "Fullname": fullname,
+        "Experience": experience,
+        "Address": address,
+        "Pin Code": pin_code,
+        "New_pic": new_pic
+    }
+
+
+#------------------------ Professional Logout --------------------#
+
+@app.route("/professional_logout", methods=['GET'])
+def prof_logout():
+
+    if request.method == 'GET':
+        return redirect("/")
 
 
 if __name__ == '__main__':
