@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/profile-block.css">
+    <link rel="stylesheet" href="/static/css/basic.css">
+    <link rel="stylesheet" href="/static/css/table-styling.css">
+    <title>Professional Search</title>
+    <style>
+        h1 {
+            margin-right: 17vw;
+            margin-left: 1vw;
+            font-size: 40px;
+        }
+
+
+        h2 {
+            margin-top: 20px;
+            margin-left: 40px;
+            margin-bottom: 10px;
+            font-size: 30px;
+        }
+
+        #search-box {
+            margin: 20px;
+            margin-top: 8vh;
+            margin-left: 25vw;
+            margin-bottom: 40px;
+            font-size: 24px;
+            font-family: Arial, sans-serif;
+        }
+
+        #search-box label {
+            font-size: 16px;
+            margin-right: 10px;
+        }
+
+
+        #searchBy {
+            margin-right: 20px;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: #f9f9f9;
+            width: 200px;
+        }
+
+        /* Style for the dropdown options */
+        /* #searchBy option {
+            padding: 10px;
+        } */
+
+        #valueofsearch {
+            margin-right: 20px;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: #f9f9f9;
+            width: 200px;
+        }
+
+        #search_submit_button {
+            margin-right: 20px;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 100px;
+        }
+
+        footer {
+            margin-top: 35vh;
+            align-items: center;
+            text-align: center;
+            background-color: rgb(164, 252, 164);
+            height: 60px;
+        }
+
+        footer p {
+            margin: auto;
+            padding-top: 20px;
+            font-size: 20px;
+        }
+
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Professional Portal</h1>
+        <ul>
+            <li><a href="/professional_home/1">Home</a></li>
+            <li><a class="active" href="/professional_search/1">Search</a></li>
+            <li><a href="/professional_summary/1">Summary</a></li>
+            <li><a href="/professional_logout/1">Logout</a></li>
+        </ul>
+        <div id="user-info">
+            <img id="user-pic" src="/static/anant-pic.jpg" alt="Profile Picture">
+            <div>Shivam Kumar</div>
+        </div>
+    </header>
+    
+    <div id="search-box">
+        <form action="/professional_search/1" method="POST">
+            <label for="searchBy">Search By:</label>
+            <select name="searchBy" id="searchBy" onchange="updateInputType()">
+                <option value="date">Date</option>
+                <option value="location_name">Location Name</option>
+                <option value="pincode">Pincode</option>
+                <option value="rating >=">Rating >=</option>
+            </select>
+            
+            <label for="value">Value:</label>
+            <input id="valueofsearch" name="valueofsearch" type="text" value="" required>
+            
+            <input id="search_submit_button" type="submit" value="Search">
+        </form>
+    </div>
+
+    <br>
+
+    <h2>Pin Code (600036)</h2>
+    <div class="tables">
+        <table class="styled-table">
+            <tr>
+                <th>ID</th>
+                <th>Customer Name</th>
+                <th>Contact Phone</th>
+                <th>Location</th>
+                <th>Date</th>
+                <th>Rating</th>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>Anant</td>
+                <td>9998756145</td>
+                <td>Lal Colony, Raj bihar, New York, 600036</td>
+                <td>20-05-2024</td>
+                <td>Pending</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>Rudra</td>
+                <td>9998756145</td>
+                <td>Lal Colony, Raj bihar, New York, 600036</td>
+                <td>20-05-2024</td>
+                <td>3.2</td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>Shivam</td>
+                <td>6586965875</td>
+                <td>Phool Colony, Raj bihar, Punjab, 600036</td>
+                <td>30-05-2024</td>
+                <td>4.5</td>
+            </tr>
+        </table>
+    </div>
+    <footer>
+        <p>
+            Developed with ❤️ by some Developer
+        </p>
+    </footer>
+    <script>
+        
+        function updateInputType() {
+            const searchBy = document.getElementById('searchBy').value;
+            const valueOfSearch = document.getElementById('valueofsearch');
+
+            // Updating input type
+            if (searchBy.includes('>=') || searchBy.includes('code')) {
+                valueOfSearch.type = 'number';
+            } else if (searchBy.includes('email')) {
+                valueOfSearch.type = 'email';
+            } 
+            else if (searchBy.includes('date')){
+                valueOfSearch.type = 'date'
+            }
+            else {
+                valueOfSearch.type = 'text';
+            }
+
+
+            // Updating input placeholder as per searchBy dropdown value
+            if (searchBy.includes('name')) {
+                valueOfSearch.placeholder = 'Enter Name';
+            } 
+            else if (searchBy.includes('>=')) {
+                valueOfSearch.placeholder = "0"
+            }
+            else if (searchBy.includes('code')) {
+                valueOfSearch.placeholder = '600036';
+            }
+            else if (searchBy.includes('email')) {
+                valueOfSearch.placeholder = 'exampl@gmail.com';
+            }
+            else {
+                valueOfSearch.placeholder = '';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', updateInputType);
+    </script>
+</body>
+
+</html>

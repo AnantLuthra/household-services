@@ -1,0 +1,43 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    background-color: rgb(220, 255, 226);
+    align-items: center;
+    text-align: left;
+}
+
+header {
+    align-items: center;
+    display: flex;
+    padding: 15px;
+    background-color: rgb(164, 252, 164);
+}
+
+ul {
+    display: flex;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+ul li {
+    padding-inline: 15px;
+}
+
+ul li a {
+    font-size: 23px;
+    text-decoration: none;
+    color: black;
+}
+
+ul li a:hover {
+    text-decoration: underline;
+}
+
+.active {
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-weight: bold;
+}

@@ -311,7 +311,11 @@ def prof_search(id):
         return render_template("prof_search.html")
 
     elif request.method == 'POST':
-        return "POST METHOD USED"
+        search_by = request.form.get('searchBy')
+        value_of_search = request.form.get('valueofsearch')
+    
+        # Process the data as needed
+        return f"Received: {search_by}, {value_of_search}"
 
 
 #------------------------ Professional Logout --------------------#

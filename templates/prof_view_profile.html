@@ -4,49 +4,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/profile-block.css">
+    <link rel="stylesheet" href="/static/css/basic.css">
+    <link rel="stylesheet" href="/static/css/table-styling.css">
     <title>Professional Profile</title>
     <style>
-        * {
-            padding: 0;
-            margin: 0;
-        }
-
-        body {
-            background-color: rgb(220, 255, 226);
-        }
-
-        header {
-            align-items: center;
-            display: flex;
-            padding: 15px;
-            background-color: rgb(164, 252, 164);
-        }
-
         h1 {
             margin-right: 17.1vw;
             margin-left: 1vw;
             font-size: 40px;
-        }
-
-        ul {
-            display: flex;
-            list-style-type: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        ul li {
-            padding-inline: 15px;
-        }
-
-        ul li a {
-            font-size: 23px;
-            text-decoration: none;
-            color: black;
-        }
-
-        ul li a:hover {
-            text-decoration: underline;
         }
 
         #edit_profile_button {
@@ -179,10 +145,6 @@
         }
 
 
-        .active {
-            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-            font-weight: bold;
-        }
     </style>
 </head>
 
@@ -195,6 +157,10 @@
             <li><a href="/professional_summary/1">Summary</a></li>
             <li><a href="/professional_logout/1">Logout</a></li>
         </ul>
+        <div id="user-info">
+            <img id="user-pic" src="/static/anant-pic.jpg" alt="Profile Picture">
+            <div>Shivam Kumar</div>
+        </div>
     </header>
 
     <button id="edit_profile_button" onclick="gotoroute('/professional_home/edit_profile/2')">Edit Profile</button>

@@ -1,0 +1,22 @@
+#user-info {
+    margin-left: 10vw;
+    width: 19vw;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+#user-info img{
+    min-width: 50px;
+    min-height: 50px;
+    max-width: 55px;
+    max-height: 55px;
+    border-radius: 50px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+#user-info div{
+    font-size: 30px;
+    text-align: center;
+}
