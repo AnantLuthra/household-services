@@ -258,8 +258,8 @@ def admin_logout():
 
 #----------------------- Professional Home ---------------------------#
 
-@app.route('/professional_home', methods=['GET', 'POST'])
-def prof_home():
+@app.route('/professional_home/<int:id>', methods=['GET', 'POST'])
+def prof_home(id):
 
     if request.method == 'GET':
         return render_template("prof_home.html")
@@ -302,11 +302,22 @@ def prof_profile_edit(id):
         "New_pic": new_pic
     }
 
+#------------------------ Professional Search page ---------------#
+
+@app.route('/professional_search/<int:id>', methods = ['GET', 'POST'])
+def prof_search(id):
+
+    if request.method == 'GET':
+        return render_template("prof_search.html")
+
+    elif request.method == 'POST':
+        return "POST METHOD USED"
+
 
 #------------------------ Professional Logout --------------------#
 
-@app.route("/professional_logout", methods=['GET'])
-def prof_logout():
+@app.route("/professional_logout/<int:id>", methods=['GET'])
+def prof_logout(id):
 
     if request.method == 'GET':
         return redirect("/")
