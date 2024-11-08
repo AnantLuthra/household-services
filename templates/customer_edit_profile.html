@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/basic.css">
+    <title>Customer Profile</title>
+    <style>
+
+        h1 {
+            margin-right: 17.1vw;
+            margin-left: 1vw;
+            font-size: 40px;
+        }
+
+        #edit_profile_button {
+            padding: 10px 20px;
+            background-color: rgb(23, 159, 23);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            margin-left: 88vw;
+            margin-top: 20px;
+        }
+
+        #box {
+            display: flex;
+            gap: 7vw;
+            margin: auto;
+            margin-top: 8vh;
+            justify-content: space-evenly;
+            flex-wrap: wrap;
+        }
+
+        #box1 {
+            margin-top: 60px;
+            align-items: center;
+            text-align: center;
+            justify-content: center;
+        }
+
+        #user-pic {
+            min-width: 200px;
+            min-height: 200px;
+            max-width: 210px;
+            max-height: 210px;
+            border-radius: 100px;
+            margin-left: 10px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        }
+
+        h2 {
+            margin-top: 20px;
+            margin-left: 40px;
+            margin-bottom: 10px;
+            font-size: 30px;
+        }
+
+        #form-box {
+            background-color: rgba(162, 227, 174, 0.537);
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .credentials {
+            font-size: 22px;
+            margin-bottom: 10px;
+        }
+
+        .credentials input {
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+        }
+
+
+        .input-box,
+        .file-upload {
+            padding: 7px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+            font-size: 17px;
+        }
+
+        .file-upload:hover,
+        .input-box:hover {
+            background-color: #e9e9e9;
+        }
+
+        footer {
+            align-items: center;
+            text-align: center;
+            background-color: rgb(164, 252, 164);
+            height: 60px;
+            margin-top: 15vh;
+        }
+
+        footer p {
+            margin: auto;
+            padding-top: 20px;
+            font-size: 20px;
+        }
+
+
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Customer Portal</h1>
+        <ul>
+            <li><a class="active" href="/customer_home/1">Home</a></li>
+            <li><a href="/customer_search/1">Search</a></li>
+            <li><a href="/customer_summary/1">Summary</a></li>
+            <li><a href="/customer_logout/1">Logout</a></li>
+        </ul>
+    </header>
+
+    <button id="edit_profile_button" onclick="gotoroute('/customer_home/view_profile/2')">View Profile</button>
+
+    <div id="box">
+        <div id="box1">
+            <img id="user-pic" src="/static/default_user_pic.png" alt="Profile Picture">
+            <h2 style="font-size: 40px;">Shivam Kumar</h2>
+        </div>
+        <div id="box2">
+            <div id="form-box">
+                <form action="/customer_home/edit_profile/2" method="POST">
+                    <div class="credentials" style="margin-left: 78px; margin-top: -3px;">
+                        Password: <input style="margin-left: 55px; width: 232px;" class="input-box" size="x-large"
+                            type="text" name="password" value="gOOd123(129)98(*&&)" required>
+                    </div>
+                    <div class="credentials" style="margin-left: 78px;">
+                        Fullname: <input style="margin-left: 55px; width: 232px;" class="input-box" size="x-large"
+                            type="text" name="fullname" placeholder="David Malhan" value="Shivam Dwivedi" required>
+                    </div>
+                    <div class="credentials" style="margin-left: 78px;">
+                        Address: <textarea
+                            style="margin-left: 64px; width: 232px; height: 100px; text-align: left; vertical-align: top; border: 1px solid #ccc; background-color: #f9f9f9;"
+                            class="input-box" name="address" placeholder="54/2 Humphery Street"
+                            required>1234 Elm Street, Springfield, IL 62704</textarea>
+                    </div>
+                    <div class="credentials" style="margin-left: 78px;">
+                        Pin Code: <input style="margin-left: 55px; width: 232px;" class="input-box" size="x-large"
+                            type="number" name="pincode" value="600036" required>
+                    </div>
+                    <div class="credentials" style="margin-left: 30px;">
+                        New Profile Pic: <input style="margin-left: 43px; width: 232px;" class="file-upload"
+                            size="x-large" type="file" name="new_pic" accept=".png, .jpg, .jpeg"
+                            onchange="preview_img(event)">
+                    </div>
+                    <div>
+                        <input type="submit" value="Save"
+                            style="margin-right: 20px; font-size: x-large;font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; margin-top: 16px; margin-bottom: 13px; padding: 4px; border-radius: 5px;">
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+    <br>
+
+    <footer>
+        <p>
+            Developed with ❤️ by some Developer
+        </p>
+    </footer>
+    <script>
+
+        function gotoroute(route) {
+            window.location.href = route;
+        }
+
+        function preview_img(event) {
+            const reader = new FileReader();
+            reader.onload = function () {
+                const user_pic_element = document.getElementById('user-pic');
+                user_pic_element.src = reader.result;
+            };
+            reader.readAsDataURL(event.target.files[0]);
+        }
+
+    </script>
+</body>
+
+</html>

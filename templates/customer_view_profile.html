@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/profile-block.css">
+    <link rel="stylesheet" href="/static/css/basic.css">
+    <link rel="stylesheet" href="/static/css/table-styling.css">
+    <title>Customer Profile</title>
+    <style>
+        h1 {
+            margin-right: 17.1vw;
+            margin-left: 1vw;
+            font-size: 40px;
+        }
+
+        #edit_profile_button {
+            padding: 10px 20px;
+            background-color: rgb(23, 159, 23);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            margin-left: 88vw;
+            margin-top: 20px;
+        }
+
+        #box {
+            margin-top: 8vh;
+            display: flex;
+            gap: 7vw;
+            margin-left: 8vw;
+        }
+
+        #box1 {
+            margin-top: 60px;
+            align-items: center;
+            text-align: center;
+            justify-content: center;
+        }
+
+        #user-pic {
+            min-width: 200px;
+            min-height: 200px;
+            max-width: 210px;
+            max-height: 210px;
+            border-radius: 100px;
+            margin-left: 10px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        }
+        
+        h2 {
+            margin-top: 20px;
+            margin-left: 40px;
+            margin-bottom: 10px;
+            font-size: 30px;
+        }
+
+        .tables {
+            margin-left: 20px;
+            text-align: center;
+            align-items: center;
+            justify-content: center;
+            /* background-color: rgb(196, 255, 196); */
+            width: 50vw;
+            height: 20vh;
+            border-radius: 25px;
+            padding: 20px;
+        }
+
+
+        table {
+            /* padding-top: 10px;
+            padding-left: 20px; */
+            border-collapse: separate;
+            /* Ensure border-radius works */
+            border-spacing: 0;
+            /* Remove spacing between cells */
+            width: 100%;
+            max-width: 600px;
+            margin: 20px auto;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            /* Optional: Add shadow for better appearance */
+            border-radius: 15px;
+            /* Round the corners */
+            overflow: hidden;
+        }
+
+        /* Common styling class for tables present in this page*/
+
+        .styled-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 19px;
+            /* Remove space between table cells */
+        }
+
+        .styled-table th {
+            font-size: 23px;
+        }
+
+        .styled-table th,
+        .styled-table td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        .styled-table th {
+            background-color: #f2f2f2;
+            font-size: 23px;
+        }
+
+        .styled-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .styled-table tr:hover {
+            background-color: #ddd;
+        }
+
+        .styled-table a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .styled-table a:hover {
+            text-decoration: underline;
+        }
+
+
+        footer {
+            align-items: center;
+            text-align: center;
+            background-color: rgb(164, 252, 164);
+            height: 60px;
+            margin-top: 25vh;
+        }
+
+        footer p {
+            margin: auto;
+            padding-top: 20px;
+            font-size: 20px;
+        }
+
+
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Customer Portal</h1>
+        <ul>
+            <li><a class="active" href="/customer_home/1">Home</a></li>
+            <li><a href="/customer_search/1">Search</a></li>
+            <li><a href="/customer_summary/1">Summary</a></li>
+            <li><a href="/customer_logout/1">Logout</a></li>
+        </ul>
+        <div id="user-info">
+            <img id="user-pic" src="/static/anant-pic.jpg" alt="Profile Picture">
+            <div>Shivam Kumar</div>
+        </div>
+    </header>
+
+    <button id="edit_profile_button" onclick="gotoroute('/customer_home/edit_profile/2')">Edit Profile</button>
+
+    <div id="box">
+        <div id="box1">
+            <img id="user-pic" src="/static/default_user_pic.png" alt="Profile Picture">
+            <h2 style="font-size: 40px;">Shivam Kumar</h2>
+        </div>
+        <div id="box2">
+            <div class="tables">
+                <table class="styled-table">
+                    <thead>
+                        <tr>
+                            <th>Attribute</th>
+                            <th>Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Name</td>
+                            <td>Shivam Dwivedi</td>
+                        </tr>
+                        <tr>
+                            <td>Gmail</td>
+                            <td>shivam.mail@gmail.com</td>
+                        </tr>
+                        <tr>
+                            <td>Password</td>
+                            <td>gOOd123(129)98(*&&)</td>
+                        </tr>
+                        <tr>
+                            <td>Address</td>
+                            <td>1234 Elm Street, Springfield, IL 62704</td>
+                        </tr>
+                        <tr>
+                            <td>Pin Code</td>
+                            <td>600036</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+    <br>
+
+    <footer>
+        <p>
+            Developed with ❤️ by some Developer
+        </p>
+    </footer>
+    <script>
+
+        function gotoroute(route) {
+            window.location.href = route;
+        }
+
+    </script>
+</body>
+
+</html>

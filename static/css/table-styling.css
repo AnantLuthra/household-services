@@ -9,15 +9,12 @@
     padding: 20px;
 }
 
-table {
-    padding-top: 10px;
-    padding-left: 20px;
-}
-
 /* Common styling class for tables */
 .styled-table {
     width: 100%;
-    border-collapse: collapse;
+    /* border-collapse: separate; */
+    /* border-spacing: 0; */
+    border: 1px solid black;
 }
 
 .styled-table th {

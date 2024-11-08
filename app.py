@@ -339,6 +339,75 @@ def prof_logout(id):
     if request.method == 'GET':
         return redirect("/")
 
+#------------------------ Customer home -------------------------#
+
+@app.route('/customer_home/<int:id>', methods=['GET', 'POST'])
+def customer_home(id):
+
+    if request.method == 'GET':
+
+        params = request.args
+        service_id = params.get('service_id')
+        service_name = "Cleaning"
+
+        if service_id == None:
+            return render_template("customer_home.html", service_name = False)
+        else:
+            return render_template("customer_home.html", service_name = service_name)
+            
+#----------------------- Professional view profile ----------------------#
+
+@app.route('/customer_home/view_profile/<int:id>', methods=['GET', 'POST'])
+def customer_view_profile(id):
+
+    if request.method == 'GET':
+        return render_template("customer_view_profile.html")
+
+    elif request.method == 'POST':
+        return f"form edited"
+    
+#----------------------- Professional Edit Profile ------------------------#
+
+@app.route('/customer_home/edit_profile/<int:id>', methods=['GET', 'POST'])
+def customer_profile_edit(id):
+
+    if request.method == 'GET':
+        return render_template("customer_edit_profile.html")
+
+    elif request.method == 'POST':
+        
+        password = request.form.get('password')
+        fullname = request.form.get('fullname')
+        address = request.form.get('address')
+        pin_code = request.form.get('pincode')
+        new_pic = request.form.get('new_pic')
+
+        return {
+        "Id": id,
+        "Password": password,
+        "Fullname": fullname,
+        "Address": address,
+        "Pin Code": pin_code,
+        "New_pic": new_pic
+    }
+
+
+#------------------------ Customer Book Service request ---------------------------#
+
+@app.route('/customer_home/<int:id>/service_book/<int:service_id>', methods=['GET', 'POST'])
+def service_book_req(id, service_id):
+
+    if request.method == 'GET':
+
+        return {
+            "id": id,
+            "service_id": service_id
+        }
+
+    else:
+        return "I don't know about this"
+
+
 
 if __name__ == '__main__':
 

@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/profile-block.css">
+    <link rel="stylesheet" href="/static/css/table-styling.css">
+    <link rel="stylesheet" href="/static/css/basic.css">
+    <title>Customer Home</title>
+    <style>
+        h1 {
+            margin-right: 11.1vw;
+            margin-left: 1vw;
+            font-size: 40px;
+        }
+
+        #edit_profile_button {
+            padding: 10px 20px;
+            background-color: rgb(23, 159, 23);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            margin-left: 88vw;
+            margin-top: 20px;
+        }
+
+        h2 {
+            margin-top: 20px;
+            margin-left: 40px;
+            margin-bottom: 10px;
+            font-size: 30px;
+        }
+
+        #box-heading {
+            font-size: 40px;
+            text-align: center;
+        }
+
+        #service-select {
+            display: flex;
+            flex-wrap: wrap;
+            flex-direction: row;
+            padding: 20px;
+            margin: 15px auto 60px auto;
+            max-width: 70vw;
+            max-height: 30vh;
+            background-color: rgb(201, 255, 201);
+            border-radius: 10px;
+            border: 1px solid black;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow: auto;
+        }
+
+        .service-box {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            max-width: 80px;
+            max-height: 55px;
+            margin: 12px;
+            padding: 15px;
+            border-radius: 20px;
+            background-color: rgb(105, 175, 105);
+            font-size: 20px;
+            text-align: center;
+            border: 1px solid black;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: box-shadow 0.2s ease-in-out;
+        }
+
+        .service-box:hover {
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+        }
+
+        .service-box a {
+            color: black;
+            text-decoration: none;
+        }
+
+        #service-select ol {
+            margin-left: 20px;
+            padding-left: 20px;
+            /* Add padding for better spacing */
+            list-style-type: decimal;
+            /* Use decimal numbers for list items */
+            font-size: 18px;
+            /* Adjust font size */
+        }
+
+        #service-select ol li {
+            margin-bottom: 10px;
+            padding: 10px;
+            background-color: #e0ffe0;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        #service-select ol li a{
+            text-decoration: none;
+            min-width: 30px;
+            height: 20px;
+            background-color: rgb(23, 159, 23);
+            padding: 6.5px;
+            border-radius: 5px;
+            margin-left: 20px;
+            color: white;
+        }
+
+        #service-select ol li:hover {
+            background-color: #c8f7c5;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        footer {
+            align-items: center;
+            text-align: center;
+            background-color: rgb(164, 252, 164);
+            height: 60px;
+            margin-top: 20vh;
+        }
+
+        footer p {
+            margin: auto;
+            padding-top: 20px;
+            font-size: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Welcome to Customer</h1>
+        <ul>
+            <li><a class="active" href="/customer_home/1">Home</a></li>
+            <li><a href="/customer_search/1">Search</a></li>
+            <li><a href="/customer_summary/1">Summary</a></li>
+            <li><a href="/customer_logout/1">Logout</a></li>
+        </ul>
+        <div id="user-info">
+            <img id="user-pic" src="/static/anant-pic.jpg" alt="Profile Picture">
+            <div>Shivam Kumar</div>
+        </div>
+    </header>
+
+    <button id="edit_profile_button" onclick="gotoroute('/customer_home/view_profile/2')">View/Edit Profile</button>
+
+    <div id="box-heading">
+        {% if service_name %}
+        Best {{service_name}} Packages
+        {% else %}
+        Looking For?
+        {% endif %}
+    </div>
+
+    {% if service_name %}
+
+    <div id="service-select" style="flex-direction: column; align-items: center; width:40vw;">
+        <ol>
+            <li>Full Home cleaning services - ratings, price, etc. Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum praesentium reiciendis vel quos ab ut maxime libero, in dolor veniam aperiam veritatis quod quasi nisi, eos rerum esse cumque molestias, aliquam illo minus ducimus officiis expedita. Blanditiis, iste, nemo et architecto dolore voluptate incidunt aut dolorum repudiandae sapiente cum hic?<a href="/customer_home/{{id}}/{{service_id}}">Book</a></li>
+            <li>Toilet cleaning services - ratings, price, etc.<a href="/customer_home/1/service_book/1">Book</a></li>
+            <li>Kitchen cleaning services - ratings, price, etc.<a href="/customer_home/{{id}}/service_book/{{service_id}}">Book</a></li>
+            <li>Sofa/Carpet cleaning services - ratings, price, etc.<a href="/customer_home/{{id}}/service_book/{{service_id}}">Book</a></li>
+            <li>Sofa/Carpet cleaning services - ratings, price, etc.<a href="/customer_home/{{id}}/service_book/{{service_id}}">Book</a></li>
+            <li>Sofa/Carpet cleaning services - ratings, price, etc.<a href="/customer_home/{{id}}/service_book/{{service_id}}">Book</a></li>
+            <li>Sofa/Carpet cleaning services - ratings, price, etc.<a href="/customer_home/{{id}}/service_book/{{service_id}}">Book</a></li>
+            <li>Sofa/Carpet cleaning services - ratings, price, etc.<a href="/customer_home/{{id}}/service_book/{{service_id}}">Book</a></li>
+        </ol>
+    </div>
+
+    {% else %}
+
+    <div id="service-select">
+        <div class="service-box"><a href="/customer_home/1?service_id=1">AC Repair</a></div>
+        <div class="service-box"><a href="/customer_home/1?service_id=2">Saloon</a></div>
+        <div class="service-box"><a href="/customer_home/1?service_id=3">Clearning</a></div>
+        <div class="service-box"><a href="/customer_home/1?service_id=4">Electrician</a></div>
+        <div class="service-box"><a href="/customer_home/1?service_id=5">Floor Clearning</a></div>
+        <div class="service-box"><a href="/customer_home/1?service_id=6">Mop Floor</a></div>
+        <div class="service-box"><a href="/customer_home/1?service_id=7">Barbar</a></div>
+        <div class="service-box"><a href="/customer_home/1?service_id=8">Waxing service</a></div>
+        <div class="service-box"><a href="/customer_home/1?service_id=9">Electrician</a></div>
+        <div class="service-box"><a href="/customer_home/1?service_id=10">Electrician</a></div>
+        <div class="service-box"><a href="/customer_home/1?service_id=11">Electrician</a></div>
+        <div class="service-box"><a href="/customer_home/1?service_id=12">Electrician</a></div>
+        <div class="service-box"><a href="/customer_home/1?service_id=13">Electrician</a></div>
+        <div class="service-box"><a href="/customer_home/1?service_id=14">Electrician</a></div>
+        <div class="service-box"><a href="/customer_home/1?service_id=15">Electrician</a></div>
+        <div class="service-box"><a href="/customer_home/1?service_id=16">Electrician</a></div>
+    </div>
+
+    {% endif %}
+
+    <h2>Service History</h2>
+    <div class="tables">
+        <table class="styled-table">
+            <tr>
+                <th>ID</th>
+                <th>Service Name</th>
+                <th>Professional Name</th>
+                <th>Phone No.</th>
+                <th>Status</th>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>House Clearning</td>
+                <td>Shivam Sharma</td>
+                <td>98965854475</td>
+                <td>Closed</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>Floor Moping</td>
+                <td>Priya Rastogi</td>
+                <td>9896815226</td>
+                <td><a href="">Close it</a></td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>House Clearning</td>
+                <td>Shivam Sharma</td>
+                <td>98965854475</td>
+                <td>Requested</td>
+            </tr>
+            <tr>
+                <td>4</td>
+                <td>Barber</td>
+                <td>Shivalik Tomer</td>
+                <td>98965253654</td>
+                <td>Requested</td>
+            </tr>
+
+        </table>
+
+    </div>
+
+    <br>
+
+    <footer>
+        <p>
+            Developed with ❤️ by some Developer
+        </p>
+    </footer>
+    <script>
+
+        function gotoroute(route) {
+            window.location.href = route;
+        }
+
+    </script>
+</body>
+
+</html>
