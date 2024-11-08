@@ -317,6 +317,19 @@ def prof_search(id):
         # Process the data as needed
         return f"Received: {search_by}, {value_of_search}"
 
+#------------------------ Professional Summary --------------------#
+
+@app.route('/professional_summary/<int:id>', methods = ['GET', 'POST'])
+def prof_summary(id):
+    
+    if request.method == 'GET':
+        return render_template("prof_summary.html")
+
+    elif request.method == 'POST':
+        return 'POST request made'
+    
+    else:
+        return f"I don't know this."
 
 #------------------------ Professional Logout --------------------#
 
