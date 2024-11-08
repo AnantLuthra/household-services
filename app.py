@@ -408,6 +408,69 @@ def service_book_req(id, service_id):
         return "I don't know about this"
 
 
+#------------------------ Customer Close Service ------------------------------------#
+
+@app.route('/customer_home/close_service/<int:id>/<int:service_request_id>', methods=['GET', 'POST'])
+def close_service_request(id, service_request_id):
+
+    if request.method == 'GET':
+        return render_template("customer_close_service.html")
+
+    elif request.method == 'POST':
+
+        rating = request.form.get('rating')
+        remarks = request.form.get('remarks')
+
+        
+        return {
+            "id": id,
+            "service_request_id": service_request_id,
+            "Rating": rating,
+            "Remarks": remarks
+        }
+
+
+    else:
+        return "I don't know about this."
+
+#------------------------ Customer Search page ---------------#
+
+@app.route('/customer_search/<int:id>', methods = ['GET', 'POST'])
+def customer_search(id):
+
+    if request.method == 'GET':
+        return render_template("customer_search.html")
+
+    elif request.method == 'POST':
+        search_by = request.form.get('searchBy')
+        value_of_search = request.form.get('valueofsearch')
+    
+        # Process the data as needed
+        return f"Received: {search_by}, {value_of_search}"
+
+
+#------------------------ Customer Summary --------------------#
+
+@app.route('/customer_summary/<int:id>', methods = ['GET', 'POST'])
+def customer_summary(id):
+    
+    if request.method == 'GET':
+        return render_template("customer_summary.html")
+
+    elif request.method == 'POST':
+        return 'POST request made'
+    
+    else:
+        return f"I don't know this."
+
+#------------------------ Customer Logout --------------------#
+
+@app.route("/customer_logout/<int:id>", methods=['GET'])
+def customer_logout(id):
+
+    if request.method == 'GET':
+        return redirect("/")
+
 
 if __name__ == '__main__':
 
