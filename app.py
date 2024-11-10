@@ -16,6 +16,7 @@ app.app_context().push()
 
 #------------ Global Variables --------------#
 ADMIN_PASS = "good123"
+ADMIN_NAME = "Anant Luthra"
 DUMMY_PROFESSION_PASS = ADMIN_PASS
 DUMMY_CUSTOMER_PASS = ADMIN_PASS
 
@@ -180,7 +181,7 @@ def new_customer():
 def admin_home():
 
     if request.method == 'GET':
-        return render_template('admin_home.html')
+        return render_template('admin_home.html', admin_name = ADMIN_NAME)
     
     elif request.method == 'POST':
 
@@ -221,7 +222,7 @@ def view_professional():
 def admin_search():
 
     if request.method == 'GET':
-        return render_template('admin_search.html')
+        return render_template('admin_search.html', admin_name = ADMIN_NAME)
     
     elif request.method == 'POST':
 
@@ -239,7 +240,7 @@ def admin_search():
 def admin_summary():
 
     if request.method == 'GET':
-        return render_template('admin_summary.html')
+        return render_template('admin_summary.html', admin_name = ADMIN_NAME)
     
     elif request.method == 'POST':
 

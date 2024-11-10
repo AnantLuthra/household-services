@@ -4,51 +4,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/profile-block.css">
+    <link rel="stylesheet" href="/static/css/table-styling.css">
+    <link rel="stylesheet" href="/static/css/basic.css">
     <title>Admin Search</title>
     <style>
-        * {
-            padding: 0;
-            margin: 0;
-        }
-
-        body {
-            background-color: rgb(220, 255, 226);
-            align-items: center;
-            text-align: left;
-        }
-
-        header {
-            align-items: center;
-            display: flex;
-            padding: 15px;
-            background-color: rgb(164, 252, 164);
-        }
-
         h1 {
             margin-right: 21vw;
             margin-left: 3vw;
             font-size: 40px;
-        }
-
-        ul {
-            display: flex;
-            list-style-type: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        ul li {
-            padding-inline: 15px;
-        }
-
-        ul li a {
-            font-size: 23px;
-            text-decoration: none;
-            color: black;
-        }
-
-        ul li a:hover {
-            text-decoration: underline;
         }
 
 
@@ -122,64 +86,9 @@
             width: 100px;
         }
 
-        .tables {
-            margin-left: 20px;
-            text-align: center;
-            align-items: center;
-            justify-content: center;
-            width: 60vw;
-            height: 20vh;
-            border-radius: 25px;
-            padding: 20px;
-        }
-
-
-        table {
-            padding-top: 10px;
-            padding-left: 20px;
-        }
-
         #new_service_a {
             margin-left: 810px;
             font-size: 18px;
-        }
-
-        /* Common styling class for tables present in this page*/
-        .styled-table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        .styled-table th {
-            font-size: 20px;
-        }
-
-        .styled-table th,
-        .styled-table td {
-            padding: 10px;
-            border: 1px solid #ddd;
-            text-align: left;
-        }
-
-        .styled-table th {
-            background-color: #f2f2f2;
-        }
-
-        .styled-table tr:nth-child(even) {
-            background-color: #f9f9f9;
-        }
-
-        .styled-table tr:hover {
-            background-color: #ddd;
-        }
-
-        .styled-table a {
-            color: #007bff;
-            text-decoration: none;
-        }
-
-        .styled-table a:hover {
-            text-decoration: underline;
         }
 
         main {
@@ -200,10 +109,6 @@
             font-size: 20px;
         }
 
-        .active {
-            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-            font-weight: bold;
-        }
     </style>
 </head>
 
@@ -216,6 +121,10 @@
             <li><a href="/admin_summary">Summary</a></li>
             <li><a href="/admin_logout">Logout</a></li>
         </ul>
+        <div id="user-info">
+            <img id="user-pic" src="/static/anant-pic.jpg" alt="Profile Picture">
+            <div>{{admin_name}}</div>
+        </div>
     </header>
     
     <div id="search-box">
