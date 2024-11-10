@@ -134,18 +134,18 @@
     <header>
         <h1>Welcome to Customer</h1>
         <ul>
-            <li><a class="active" href="/customer_home/1">Home</a></li>
-            <li><a href="/customer_search/1">Search</a></li>
-            <li><a href="/customer_summary/1">Summary</a></li>
-            <li><a href="/customer_logout/1">Logout</a></li>
+            <li><a class="active" href="/customer_home/{{customer.id}}">Home</a></li>
+            <li><a href="/customer_search/{{customer.id}}">Search</a></li>
+            <li><a href="/customer_summary/{{customer.id}}">Summary</a></li>
+            <li><a href="/customer_logout/{{customer.id}}">Logout</a></li>
         </ul>
         <div id="user-info">
             <img id="user-pic" src="/static/anant-pic.jpg" alt="Profile Picture">
-            <div>Shivam Kumar</div>
+            <div>{{customer.fullname}}</div>
         </div>
     </header>
 
-    <button id="edit_profile_button" onclick="gotoroute('/customer_home/view_profile/2')">View/Edit Profile</button>
+    <button id="edit_profile_button" onclick="gotoroute('/customer_home/view_profile/{{customer.id}}')">View/Edit Profile</button>
 
     <div id="box-heading">
         {% if service_name %}

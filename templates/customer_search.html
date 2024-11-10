@@ -171,14 +171,14 @@
     <header>
         <h1>Customer Portal</h1>
         <ul>
-            <li><a href="/customer_home/1">Home</a></li>
-            <li><a class="active" href="/customer_search/1">Search</a></li>
-            <li><a href="/customer_summary/1">Summary</a></li>
-            <li><a href="/customer_logout/1">Logout</a></li>
+            <li><a href="/customer_home/{{customer.id}}">Home</a></li>
+            <li><a class="active" href="/customer_search/{{customer.id}}">Search</a></li>
+            <li><a href="/customer_summary/{{customer.id}}">Summary</a></li>
+            <li><a href="/customer_logout/{{customer.id}}">Logout</a></li>
         </ul>
         <div id="user-info">
             <img id="user-pic" src="/static/anant-pic.jpg" alt="Profile Picture">
-            <div>Shivam Kumar</div>
+            <div>{{customer.fullname}}</div>
         </div>
     </header>
     
@@ -205,8 +205,8 @@
 
     <div id="service-select" style="flex-direction: column; align-items: center; width:50vw;">
         <ol>
-            <li>Full Home cleaning services - ratings, price, etc. Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum praesentium reiciendis vel quos ab ut maxime libero, in dolor veniam.<a href="/customer_home/{{id}}/{{service_id}}">Book</a></li>
-            <li>Toilet cleaning services - ratings, price, etc.<a href="/customer_home/1/service_book/1">Book</a></li>
+            <li>Full Home cleaning services - ratings, price, etc. Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum praesentium reiciendis vel quos ab ut maxime libero, in dolor veniam.<a href="/customer_home/{{customer.id}}/{{service_id}}">Book</a></li>
+            <li>Toilet cleaning services - ratings, price, etc.<a href="/customer_home/{{customer.id}}/service_book/1">Book</a></li>
             <li>Kitchen cleaning services - ratings, price, etc.<a href="/customer_home/{{id}}/service_book/{{service_id}}">Book</a></li>
             <li>Sofa/Carpet cleaning services - ratings, price, etc.<a href="/customer_home/{{id}}/service_book/{{service_id}}">Book</a></li>
             <li>Sofa/Carpet cleaning services - ratings, price, etc.<a href="/customer_home/{{id}}/service_book/{{service_id}}">Book</a></li>

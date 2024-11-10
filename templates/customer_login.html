@@ -61,6 +61,11 @@
             </div>
             <div>
                 <input type="submit" value="Login" style="margin-right: 20px; font-size: x-large;font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; margin-top: 30px; margin-bottom: 20px;" >
+                {% if message == "wrong_pass" %}
+                    <div style="color: red; margin-bottom: 10px;">Wrong password! Try Again!</div>
+                {% elif message == "no_account" %}
+                    <div style="color: red; margin-bottom: 10px;">No Account found with this email! SignUp First!!</div>
+                {% endif %}
             </div>
             <span id="notlogined">Don't have an account? <strong><a href="/new_customer">Sign up</a></strong></span>
         </form>

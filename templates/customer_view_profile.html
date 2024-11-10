@@ -152,23 +152,23 @@
     <header>
         <h1>Customer Portal</h1>
         <ul>
-            <li><a class="active" href="/customer_home/1">Home</a></li>
-            <li><a href="/customer_search/1">Search</a></li>
-            <li><a href="/customer_summary/1">Summary</a></li>
-            <li><a href="/customer_logout/1">Logout</a></li>
+            <li><a class="active" href="/customer_home/{{customer.id}}">Home</a></li>
+            <li><a href="/customer_search/{{customer.id}}">Search</a></li>
+            <li><a href="/customer_summary/{{customer.id}}">Summary</a></li>
+            <li><a href="/customer_logout/{{customer.id}}">Logout</a></li>
         </ul>
         <div id="user-info">
             <img id="user-pic" src="/static/anant-pic.jpg" alt="Profile Picture">
-            <div>Shivam Kumar</div>
+            <div>{{customer.fullname}}</div>
         </div>
     </header>
 
-    <button id="edit_profile_button" onclick="gotoroute('/customer_home/edit_profile/2')">Edit Profile</button>
+    <button id="edit_profile_button" onclick="gotoroute('/customer_home/edit_profile/{{customer.id}}')">Edit Profile</button>
 
     <div id="box">
         <div id="box1">
             <img id="user-pic" src="/static/default_user_pic.png" alt="Profile Picture">
-            <h2 style="font-size: 40px;">Shivam Kumar</h2>
+            <h2 style="font-size: 40px;">{{customer.fullname}}</h2>
         </div>
         <div id="box2">
             <div class="tables">
@@ -182,23 +182,27 @@
                     <tbody>
                         <tr>
                             <td>Name</td>
-                            <td>Shivam Dwivedi</td>
+                            <td>{{customer.fullname}}</td>
                         </tr>
                         <tr>
                             <td>Gmail</td>
-                            <td>shivam.mail@gmail.com</td>
+                            <td>{{customer.email_id}}</td>
                         </tr>
                         <tr>
                             <td>Password</td>
-                            <td>gOOd123(129)98(*&&)</td>
+                            <td>{{customer.password}}</td>
                         </tr>
                         <tr>
                             <td>Address</td>
-                            <td>1234 Elm Street, Springfield, IL 62704</td>
+                            <td>{{customer.address}}</td>
+                        </tr>
+                        <tr>
+                            <td>Gender</td>
+                            <td>{{customer.gender}}</td>
                         </tr>
                         <tr>
                             <td>Pin Code</td>
-                            <td>600036</td>
+                            <td>{{customer.pin_code}}</td>
                         </tr>
                     </tbody>
                 </table>

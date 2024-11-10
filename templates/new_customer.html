@@ -47,6 +47,19 @@
             font-size: 20px;
         }
 
+        input[type="radio"] {
+            margin-left: 10px;
+            margin-right: 5px;
+        }
+
+        label {
+            margin-right: 20px;
+        }
+
+        #male {
+            margin-left: 60px;
+        }
+
         #notlogined {
             font-size: 20px;
         }
@@ -68,7 +81,6 @@
         #options {
             margin-left: 30px;
         }
-
     </style>
 </head>
 
@@ -92,6 +104,13 @@
                     name="fullname" placeholder="David Malhan" required>
             </div>
             <div class="credentials" style="margin-left: 78px;">
+                Gender:
+                <input type="radio" id="male" name="gender" value="male" required>
+                <label for="male">Male</label>
+                <input type="radio" id="female" name="gender" value="female" required>
+                <label for="female">Female</label>
+            </div>
+            <div class="credentials" style="margin-left: 78px;">
                 Address: <textarea
                     style="margin-left: 64px; width: 232px; height: 100px; text-align: left; vertical-align: top;"
                     class="input-box" name="address" placeholder="54/2 Humphery Street" required></textarea>
@@ -100,6 +119,13 @@
                 Pin Code: <input style="margin-left: 55px; width: 232px;" class="input-box" size="x-large" type="number"
                     name="pincode" required>
             </div>
+            {% if message == "acc_created" %}
+                    <div style="color: black; margin-bottom: 10px">Account Created Succesfully!! Now you can login!</div>
+            {% elif message == "acc_exists" %}
+                    <div style="color: red; margin-bottom: 10px;">Account already exists with this email! <br>Either create account with different email or Login with this one!</div>
+            {% elif message == "error" %}
+                    <div style="color: red; margin-bottom: 10px;">We got some error</div>
+            {% endif %}
             <div>
                 <input type="submit" value="Register"
                     style="margin-right: 20px; font-size: x-large;font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; margin-top: 16px; margin-bottom: 13px;">

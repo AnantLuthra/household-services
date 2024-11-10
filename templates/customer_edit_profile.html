@@ -112,40 +112,40 @@
     <header>
         <h1>Customer Portal</h1>
         <ul>
-            <li><a class="active" href="/customer_home/1">Home</a></li>
-            <li><a href="/customer_search/1">Search</a></li>
-            <li><a href="/customer_summary/1">Summary</a></li>
-            <li><a href="/customer_logout/1">Logout</a></li>
+            <li><a class="active" href="/customer_home/{{customer.id}}">Home</a></li>
+            <li><a href="/customer_search/{{customer.id}}">Search</a></li>
+            <li><a href="/customer_summary/{{customer.id}}">Summary</a></li>
+            <li><a href="/customer_logout/{{customer.id}}">Logout</a></li>
         </ul>
     </header>
 
-    <button id="edit_profile_button" onclick="gotoroute('/customer_home/view_profile/2')">View Profile</button>
+    <button id="edit_profile_button" onclick="gotoroute('/customer_home/view_profile/{{customer.id}}')">View Profile</button>
 
     <div id="box">
         <div id="box1">
             <img id="user-pic" src="/static/default_user_pic.png" alt="Profile Picture">
-            <h2 style="font-size: 40px;">Shivam Kumar</h2>
+            <h2 style="font-size: 40px;">{{customer.fullname}}</h2>
         </div>
         <div id="box2">
             <div id="form-box">
-                <form action="/customer_home/edit_profile/2" method="POST">
+                <form action="/customer_home/edit_profile/{{customer.id}}" method="POST">
                     <div class="credentials" style="margin-left: 78px; margin-top: -3px;">
                         Password: <input style="margin-left: 55px; width: 232px;" class="input-box" size="x-large"
-                            type="text" name="password" value="gOOd123(129)98(*&&)" required>
+                            type="text" name="password" value="{{customer.password}}" required>
                     </div>
                     <div class="credentials" style="margin-left: 78px;">
                         Fullname: <input style="margin-left: 55px; width: 232px;" class="input-box" size="x-large"
-                            type="text" name="fullname" placeholder="David Malhan" value="Shivam Dwivedi" required>
+                            type="text" name="fullname" placeholder="David Malhan" value="{{customer.fullname}}" required>
                     </div>
                     <div class="credentials" style="margin-left: 78px;">
                         Address: <textarea
                             style="margin-left: 64px; width: 232px; height: 100px; text-align: left; vertical-align: top; border: 1px solid #ccc; background-color: #f9f9f9;"
                             class="input-box" name="address" placeholder="54/2 Humphery Street"
-                            required>1234 Elm Street, Springfield, IL 62704</textarea>
+                            required>{{customer.address}}</textarea>
                     </div>
                     <div class="credentials" style="margin-left: 78px;">
                         Pin Code: <input style="margin-left: 55px; width: 232px;" class="input-box" size="x-large"
-                            type="number" name="pincode" value="600036" required>
+                            type="number" name="pincode" value="{{customer.pin_code}}" required>
                     </div>
                     <div class="credentials" style="margin-left: 30px;">
                         New Profile Pic: <input style="margin-left: 43px; width: 232px;" class="file-upload"

@@ -28,11 +28,11 @@ class professional(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String, nullable=False)
     date_created = db.Column(db.Date, nullable=False)
-    service_type = db.Column()
+    service_type_id = db.Column(db.Integer, db.ForeignKey('service.id'), nullable=False)
     experience = db.Column(db.Integer, nullable=False)
     request = db.Column(db.Boolean, default=None)
 
-    service = relationship("service", backref=backref("professionals", lazy=True))
+    service_type = relationship("service", backref=backref("professionals", lazy=True))
 
 class customer(db.Model):
 
@@ -41,12 +41,13 @@ class customer(db.Model):
     email_id = db.Column(db.String, nullable=False)
     password = db.Column(db.String, nullable=False)
     fullname = db.Column(db.String, nullable=False)
+    gender = db.Column(db.String, nullable=False)
     address = db.Column(db.String, nullable=False)
     pin_code = db.Column(db.Integer, nullable=False)
 
 
 class service(db.Model):
-    
+
     __tablename__ = "service"
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String, nullable=False)
@@ -54,7 +55,7 @@ class service(db.Model):
     time_required = db.Column(db.Integer, nullable=False)
     description = db.Column(db.String, nullable=False)
 
-    professionals = relationship("professional", backref=backref("service", lazy=True))
+    professional_list = relationship("professional", backref=backref("service", lazy=True))
 
 
 class service_reqest(db.Model):
@@ -147,14 +148,27 @@ def customer_login():
     if request.method == 'GET':
         # if current_user.is_authenticated:
             # return redirect("/professional")
-        return render_template("customer_login.html")
+        return render_template("customer_login.html", message = None)
 
     elif request.method == 'POST':
         
         email = request.form.get('mail')
         password = request.form.get('password')
 
-        return f"Email: {email}, Password: {password}"
+        search = customer.query.filter_by(email_id = email).first()
+        
+        if not search:
+            return render_template("customer_login.html", message = "no_account")
+        
+        else:
+            if search.email_id == email:
+                if search.password == password:
+                    return redirect(f"/customer_home/{search.id}")
+                else:
+                    return render_template("customer_login.html", message = "wrong_pass")
+
+            
+ 
 
 
 #--------------------- New Customer Page --------------------------#
@@ -163,17 +177,37 @@ def customer_login():
 def new_customer():
 
     if request.method == 'GET':
-        return render_template("new_customer.html")
+        return render_template("new_customer.html", message = None)
     
     elif request.method == 'POST':
 
         email = request.form.get('mail')
         password = request.form.get('password')
         fullname = request.form.get('fullname')
+        gender = request.form.get('gender')
         address = request.form.get('address')
         pin_code = request.form.get('pincode')
 
-        return f"Email: {email}, Password: {password}, Fullname: {fullname}, Address: {address}, Pin Code: {pin_code}"
+        check = customer.query.filter_by(email_id = email).first()
+        
+        if check:  # if email already exists - user already their.
+            return render_template("new_customer.html", message = "acc_exists")
+        
+        else:
+            # Making new cutomer
+            new_cust = customer(
+                email_id = email, 
+                password = password, 
+                fullname = fullname,
+                gender = gender,
+                address = address,
+                pin_code = pin_code
+                )
+            db.session.add(new_cust)
+            db.session.commit()
+            
+            return render_template("new_customer.html", message = "acc_created")
+
 
 #-------------------- Admin Home page -------------------------#
 
@@ -351,29 +385,37 @@ def customer_home(id):
         service_id = params.get('service_id')
         service_name = "Cleaning"
 
+        cus = customer.query.filter_by(id = id).first()
+
         if service_id == None:
-            return render_template("customer_home.html", service_name = False)
+            return render_template("customer_home.html", service_name = False, customer = cus)
         else:
-            return render_template("customer_home.html", service_name = service_name)
+            return render_template("customer_home.html", service_name = service_name, customer = cus)
             
-#----------------------- Professional view profile ----------------------#
+#----------------------- Customer view profile ----------------------#
 
 @app.route('/customer_home/view_profile/<int:id>', methods=['GET', 'POST'])
 def customer_view_profile(id):
 
     if request.method == 'GET':
-        return render_template("customer_view_profile.html")
+
+        cus = customer.query.filter_by(id = id).first()
+
+        return render_template("customer_view_profile.html", customer = cus)
 
     elif request.method == 'POST':
         return f"form edited"
     
-#----------------------- Professional Edit Profile ------------------------#
+#----------------------- Customer Edit Profile ------------------------#
 
 @app.route('/customer_home/edit_profile/<int:id>', methods=['GET', 'POST'])
 def customer_profile_edit(id):
 
     if request.method == 'GET':
-        return render_template("customer_edit_profile.html")
+
+        cus = customer.query.filter_by(id = id).first()
+
+        return render_template("customer_edit_profile.html", customer = cus)
 
     elif request.method == 'POST':
         
@@ -382,15 +424,19 @@ def customer_profile_edit(id):
         address = request.form.get('address')
         pin_code = request.form.get('pincode')
         new_pic = request.form.get('new_pic')
+        
+        # Fetching the user.
+        cus = customer.query.filter_by(id = id).first() 
+        
+        cus.password = password
+        cus.fullname = fullname
+        cus.address = address
+        cus.pin_code = pin_code
+        # cus.pic = new_pic
 
-        return {
-        "Id": id,
-        "Password": password,
-        "Fullname": fullname,
-        "Address": address,
-        "Pin Code": pin_code,
-        "New_pic": new_pic
-    }
+        db.session.commit()
+
+        return redirect(f"/customer_home/view_profile/{id}")
 
 
 #------------------------ Customer Book Service request ---------------------------#
@@ -440,7 +486,10 @@ def close_service_request(id, service_request_id):
 def customer_search(id):
 
     if request.method == 'GET':
-        return render_template("customer_search.html")
+
+        cus = customer.query.filter_by(id = id).first() 
+
+        return render_template("customer_search.html", customer = cus)
 
     elif request.method == 'POST':
         search_by = request.form.get('searchBy')
@@ -456,7 +505,10 @@ def customer_search(id):
 def customer_summary(id):
     
     if request.method == 'GET':
-        return render_template("customer_summary.html")
+
+        cus = customer.query.filter_by(id = id).first() 
+
+        return render_template("customer_summary.html", customer = cus)
 
     elif request.method == 'POST':
         return 'POST request made'
