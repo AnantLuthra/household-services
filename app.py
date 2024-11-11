@@ -273,7 +273,12 @@ def new_customer():
 def admin_home():
 
     if request.method == 'GET':
-        return render_template('admin_home.html', admin_name = ADMIN_NAME)
+
+        prof = professional.query.all()
+        cus = customer.query.all()
+        services = service.query.all()
+
+        return render_template('admin_home.html', admin_name = ADMIN_NAME, professionals = prof, customers = cus, services = services)
     
     elif request.method == 'POST':
 
@@ -281,8 +286,27 @@ def admin_home():
         base_price = request.form.get('price')
         time_required = request.form.get('time_required')
         description = request.form.get('description')
-    
-        return f"Service name: {service_name}, Price: {base_price}, Time Req: {time_required}, Description: {description}"
+        
+        search = service.query.filter_by(name = service_name).first()
+
+        if not search:
+            new_ser = service(
+                name = service_name,
+                price = base_price,
+                time_required = time_required,
+                description = description
+            )
+            db.session.add(new_ser)
+            db.session.commit()
+            return redirect('/admin_home')
+        
+        else:
+            print(search)
+            return """
+                <div>Service already Exists!!</div>
+                <a href="/admin_home">Go Back</a>
+                    """
+
 
 #---------------------- View Service page ------------------------#
 
