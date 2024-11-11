@@ -75,14 +75,14 @@
     <header>
         <h1>Professional Portal</h1>
         <ul>
-            <li><a href="/professional_home/1">Home</a></li>
-            <li><a href="/professional_search/1">Search</a></li>
-            <li><a class="active" href="/professional_summary/1">Summary</a></li>
-            <li><a href="/professional_logout/1">Logout</a></li>
+            <li><a href="/professional_home/{{professional.id}}">Home</a></li>
+            <li><a href="/professional_search/{{professional.id}}">Search</a></li>
+            <li><a class="active" href="/professional_summary/{{professional.id}}">Summary</a></li>
+            <li><a href="/professional_logout/{{professional.id}}">Logout</a></li>
         </ul>
         <div id="user-info">
             <img id="user-pic" src="/static/anant-pic.jpg" alt="Profile Picture">
-            <div>Shivam Kumar</div>
+            <div>{{professional.fullname}}</div>
         </div>
     </header>
     

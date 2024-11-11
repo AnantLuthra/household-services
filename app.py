@@ -1,7 +1,7 @@
 from flask import Flask
 from flask import render_template, request, redirect
 from flask_sqlalchemy import SQLAlchemy
-from datetime import date
+from datetime import datetime
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import relationship, backref
 from flask_login import LoginManager, UserMixin, current_user, login_user, logout_user, login_required
@@ -26,13 +26,21 @@ class professional(db.Model):
 
     __tablename__ = "professional"
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    name = db.Column(db.String, nullable=False)
+    email_id = db.Column(db.String, nullable=False)
+    fullname = db.Column(db.String, nullable=False)
+    password = db.Column(db.String, nullable=False)
     date_created = db.Column(db.Date, nullable=False)
     service_type_id = db.Column(db.Integer, db.ForeignKey('service.id'), nullable=False)
     experience = db.Column(db.Integer, nullable=False)
+    gender = db.Column(db.String, nullable=False)
+    address = db.Column(db.String, nullable=False)
+    pin_code = db.Column(db.Integer, nullable=False)
+    #user bytesIO
+    documents = db.Column(db.String, nullable=False)
     request = db.Column(db.Boolean, default=None)
+    blocked = db.Column(db.Boolean, default=False)
 
-    service_type = relationship("service", backref=backref("professionals", lazy=True))
+    service_type = db.relationship('service', back_populates='professionals')
 
 class customer(db.Model):
 
@@ -44,6 +52,7 @@ class customer(db.Model):
     gender = db.Column(db.String, nullable=False)
     address = db.Column(db.String, nullable=False)
     pin_code = db.Column(db.Integer, nullable=False)
+    blocked = db.Column(db.Boolean, default=False)
 
 
 class service(db.Model):
@@ -55,8 +64,7 @@ class service(db.Model):
     time_required = db.Column(db.Integer, nullable=False)
     description = db.Column(db.String, nullable=False)
 
-    professional_list = relationship("professional", backref=backref("service", lazy=True))
-
+    professionals = db.relationship('professional', back_populates='service_type')
 
 class service_reqest(db.Model):
 
@@ -105,17 +113,35 @@ def admin_login():
 def prof_login():
 
     if request.method == 'GET':
-        # if current_user.is_authenticated:
-        #     return redirect("/professional")
-        return render_template("prof_login.html")
+        return render_template("prof_login.html", message = None)
 
     elif request.method == 'POST':
         
         email = request.form.get('mail')
         password = request.form.get('password')
 
-        return f"Email: {email}, Password: {password}"
 
+        search = professional.query.filter_by(email_id = email).first()
+        
+        if not search:
+            return render_template("prof_login.html", message = "no_account")
+        
+        else:
+            if search.email_id == email:
+
+                if search.password == password:
+
+                    if search.request:
+                        return render_template("prof_login.html", message = "req_pending")
+                    
+                    elif search.blocked:
+                        return render_template("prof_login.html", message = "blocked")
+                        
+                    else:
+                        return redirect(f"/professional_home/{search.id}")
+                        
+                else:
+                    return render_template("prof_login.html", message = "wrong_pass")
 
 
 #-------------------- New Professional Page -----------------------#
@@ -123,22 +149,55 @@ def prof_login():
 @app.route("/new_professional", methods = ['GET', 'POST'])
 def new_professional():
 
-    if request.method == 'GET':
-        return render_template("new_professional.html")
+    all_services = service.query.all()
+
+    if request.method == 'GET':    
+
+        return render_template("new_professional.html", message = None, services = all_services)
     
     elif request.method == 'POST':
 
         email = request.form.get('mail')
         password = request.form.get('password')
         fullname = request.form.get('fullname')
-        service_type = request.form.get('service_type')
+        service_id = request.form.get('service_id')
         experience = request.form.get('experience')
+        gender = request.form.get('gender')
         documents = request.form.get('documents')
         address = request.form.get('address')
         pin_code = request.form.get('pincode')
 
-        return f"Email: {email}, Password: {password}, Fullname: {fullname}, Service Type: {service_type}, Experience: {experience}, Documents: {documents}, Address: {address}, Pin Code: {pin_code}"
-    
+        check = professional.query.filter_by(email_id = email).first()
+        
+        if check:  # if email already exists - user already their.
+
+            if not check.request:   
+                return render_template("new_professional.html", message = "acc_exists", services = all_services)
+            
+            else:       #if account is not pending for approval by admin.
+                return render_template("new_professional.html", message = "req_pending", services = all_services)
+                
+        
+        else:
+            # Making new professional
+            new_prof = professional(
+                email_id = email, 
+                password = password, 
+                fullname = fullname,
+                date_created = datetime.now(),
+                service_type_id = service_id,
+                gender = gender,
+                experience = experience,
+                documents = documents,
+                address = address,
+                pin_code = pin_code,
+                request = True
+                )
+            db.session.add(new_prof)
+            db.session.commit()
+            
+            return render_template("new_professional.html", message = "req_sent", services = all_services)
+
 
 #-------------------- Customer Login page --------------------------#
 
@@ -167,7 +226,6 @@ def customer_login():
                 else:
                     return render_template("customer_login.html", message = "wrong_pass")
 
-            
  
 
 
@@ -297,7 +355,11 @@ def admin_logout():
 def prof_home(id):
 
     if request.method == 'GET':
-        return render_template("prof_home.html")
+
+        prof = professional.query.filter_by(id = id).first()
+
+        return render_template("prof_home.html", professional = prof)
+
 
 #----------------------- Professional view profile ----------------------#
 
@@ -305,7 +367,9 @@ def prof_home(id):
 def prof_view_profile(id):
 
     if request.method == 'GET':
-        return render_template("prof_view_profile.html")
+
+        prof = professional.query.filter_by(id = id).first()
+        return render_template("prof_view_profile.html", professional = prof)
 
     elif request.method == 'POST':
         return f"form edited"
@@ -316,7 +380,9 @@ def prof_view_profile(id):
 def prof_profile_edit(id):
 
     if request.method == 'GET':
-        return render_template("prof_edit_profile.html")
+
+        prof = professional.query.filter_by(id = id).first()
+        return render_template("prof_edit_profile.html", professional = prof)
 
     elif request.method == 'POST':
         
@@ -327,15 +393,19 @@ def prof_profile_edit(id):
         pin_code = request.form.get('pincode')
         new_pic = request.form.get('new_pic')
 
-        return {
-        "Id": id,
-        "Password": password,
-        "Fullname": fullname,
-        "Experience": experience,
-        "Address": address,
-        "Pin Code": pin_code,
-        "New_pic": new_pic
-    }
+        prof = professional.query.filter_by(id = id).first()
+        
+        prof.password = password
+        prof.fullname = fullname
+        prof.experience = experience
+        prof.address = address
+        prof.pin_code = pin_code
+        # cus.pic = new_pic
+
+        db.session.commit()
+
+        return redirect(f"/professional_home/view_profile/{id}")
+    
 
 #------------------------ Professional Search page ---------------#
 
@@ -343,7 +413,10 @@ def prof_profile_edit(id):
 def prof_search(id):
 
     if request.method == 'GET':
-        return render_template("prof_search.html")
+
+        prof = professional.query.filter_by(id = id).first()
+
+        return render_template("prof_search.html", professional = prof)
 
     elif request.method == 'POST':
         search_by = request.form.get('searchBy')
@@ -358,7 +431,9 @@ def prof_search(id):
 def prof_summary(id):
     
     if request.method == 'GET':
-        return render_template("prof_summary.html")
+
+        prof = professional.query.filter_by(id = id).first()
+        return render_template("prof_summary.html", professional = prof)
 
     elif request.method == 'POST':
         return 'POST request made'

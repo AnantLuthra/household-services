@@ -48,10 +48,6 @@
             width: 200px;
         }
 
-        /* Style for the dropdown options */
-        /* #searchBy option {
-            padding: 10px;
-        } */
 
         #valueofsearch {
             margin-right: 20px;
@@ -93,19 +89,19 @@
     <header>
         <h1>Professional Portal</h1>
         <ul>
-            <li><a href="/professional_home/1">Home</a></li>
-            <li><a class="active" href="/professional_search/1">Search</a></li>
-            <li><a href="/professional_summary/1">Summary</a></li>
-            <li><a href="/professional_logout/1">Logout</a></li>
+            <li><a href="/professional_home/{{professional.id}}">Home</a></li>
+            <li><a class="active" href="/professional_search/{{professional.id}}">Search</a></li>
+            <li><a href="/professional_summary/{{professional.id}}">Summary</a></li>
+            <li><a href="/professional_logout/{{professional.id}}">Logout</a></li>
         </ul>
         <div id="user-info">
             <img id="user-pic" src="/static/anant-pic.jpg" alt="Profile Picture">
-            <div>Shivam Kumar</div>
+            <div>{{professional.fullname}}</div>
         </div>
     </header>
     
     <div id="search-box">
-        <form action="/professional_search/1" method="POST">
+        <form action="/professional_search/{{professional.id}}" method="POST">
             <label for="searchBy">Search By:</label>
             <select name="searchBy" id="searchBy" onchange="updateInputType()">
                 <option value="date">Date</option>

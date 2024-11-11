@@ -67,6 +67,20 @@
             font-size: 20px;
         }
 
+        
+        input[type="radio"] {
+            margin-left: 10px;
+            margin-right: 5px;
+        }
+
+        label {
+            margin-right: 20px;
+        }
+
+        #male {
+            margin-left: 60px;
+        }
+
         #notlogined {
             font-size: 20px;
         }
@@ -107,13 +121,19 @@
                 Fullname: <input style="margin-left: 55px; width: 232px;" class="input-box" size="x-large" type="text"
                     name="fullname" placeholder="David Malhan" required>
             </div>
+            <div class="credentials" style="margin-left: 78px;">
+                Gender:
+                <input type="radio" id="male" name="gender" value="male" required>
+                <label for="male">Male</label>
+                <input type="radio" id="female" name="gender" value="female" required>
+                <label for="female">Female</label>
+            </div>
             <div id="servicesdiv" class="credentials">
-                <label for="searchCriteria">Search On:</label>
-                <select name="service_type" id="service_type">
-                    <option value="dusting">Dusting</option>
-                    <option value="clearning">Cleaning</option>
-                    <option value="ac_cleaning">AC clearning</option>
-                    <option value="roof_clearning">Roof Clearning</option>
+                <label for="searchCriteria">Service : </label>
+                <select name="service_id" id="service_type">
+                    {% for service in services %}
+                        <option value="{{service.id}}">{{service.name}}</option>
+                    {% endfor %}
                 </select>
             </div>
             <div class="credentials" style="margin-left: 30px;">
@@ -133,6 +153,15 @@
                 Pin Code: <input style="margin-left: 55px; width: 232px;" class="input-box" size="x-large" type="number"
                     name="pincode" required>
             </div>
+            {% if message == "req_sent" %}
+                    <div style="color: black; margin-bottom: 10px">Details Sent to admin for approval! Wait for approval!</div>
+            {% elif message == "req_pending" %}
+                    <div style="color: black; margin-bottom: 10px">Your account details is not approved by admin yet! Wait more!</div>
+            {% elif message == "acc_exists" %}
+                    <div style="color: red; margin-bottom: 10px;">Account already exists with this email! <br>Either create account with different email or Login with this one!</div>
+            {% elif message == "error" %}
+                    <div style="color: red; margin-bottom: 10px;">We got some error</div>
+            {% endif %}
             <div>
                 <input type="submit" value="Register"
                     style="margin-right: 20px; font-size: x-large;font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; margin-top: 16px; margin-bottom: 13px;">

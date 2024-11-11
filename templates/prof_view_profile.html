@@ -71,19 +71,13 @@
 
 
         table {
-            /* padding-top: 10px;
-            padding-left: 20px; */
             border-collapse: separate;
-            /* Ensure border-radius works */
             border-spacing: 0;
-            /* Remove spacing between cells */
             width: 100%;
             max-width: 600px;
             margin: 20px auto;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            /* Optional: Add shadow for better appearance */
             border-radius: 15px;
-            /* Round the corners */
             overflow: hidden;
         }
 
@@ -93,7 +87,6 @@
             width: 100%;
             border-collapse: collapse;
             font-size: 19px;
-            /* Remove space between table cells */
         }
 
         .styled-table th {
@@ -152,23 +145,23 @@
     <header>
         <h1>Professional Portal</h1>
         <ul>
-            <li><a class="active" href="/professional_home/1">Home</a></li>
-            <li><a href="/professional_search/1">Search</a></li>
-            <li><a href="/professional_summary/1">Summary</a></li>
-            <li><a href="/professional_logout/1">Logout</a></li>
+            <li><a class="active" href="/professional_home/{{professional.id}}">Home</a></li>
+            <li><a href="/professional_search/{{professional.id}}">Search</a></li>
+            <li><a href="/professional_summary/{{professional.id}}">Summary</a></li>
+            <li><a href="/professional_logout/{{professional.id}}">Logout</a></li>
         </ul>
         <div id="user-info">
             <img id="user-pic" src="/static/anant-pic.jpg" alt="Profile Picture">
-            <div>Shivam Kumar</div>
+            <div>{{professional.fullname}}</div>
         </div>
     </header>
 
-    <button id="edit_profile_button" onclick="gotoroute('/professional_home/edit_profile/2')">Edit Profile</button>
+    <button id="edit_profile_button" onclick="gotoroute('/professional_home/edit_profile/{{professional.id}}')">Edit Profile</button>
 
     <div id="box">
         <div id="box1">
             <img id="user-pic" src="/static/default_user_pic.png" alt="Profile Picture">
-            <h2 style="font-size: 40px;">Shivam Kumar</h2>
+            <h2 style="font-size: 40px;">{{professional.fullname}}</h2>
         </div>
         <div id="box2">
             <div class="tables">
@@ -182,35 +175,39 @@
                     <tbody>
                         <tr>
                             <td>Name</td>
-                            <td>Shivam Dwivedi</td>
+                            <td>{{professional.fullname}}</td>
                         </tr>
                         <tr>
                             <td>Gmail</td>
-                            <td>shivam.mail@gmail.com</td>
+                            <td>{{professional.email_id}}</td>
                         </tr>
                         <tr>
                             <td>Password</td>
-                            <td>gOOd123(129)98(*&&)</td>
+                            <td>{{professional.password}}</td>
                         </tr>
                         <tr>
                             <td>Account Created on</td>
-                            <td>20-11-2023</td>
+                            <td>{{professional.date_created}}</td>
+                        </tr>
+                        <tr>
+                            <td>Gender</td>
+                            <td>{{professional.gender}}</td>
                         </tr>
                         <tr>
                             <td>Address</td>
-                            <td>1234 Elm Street, Springfield, IL 62704</td>
+                            <td>{{professional.address}}</td>
                         </tr>
                         <tr>
                             <td>Pin Code</td>
-                            <td>600036</td>
+                            <td>{{professional.pin_code}}</td>
                         </tr>
                         <tr>
                             <td>Service Type</td>
-                            <td>Dusting</td>
+                            <td>{{professional.service_type.name}}</td>
                         </tr>
                         <tr>
                             <td>Experience (Yrs)</td>
-                            <td>5</td>
+                            <td>{{professional.experience}}</td>
                         </tr>
                     </tbody>
                 </table>
