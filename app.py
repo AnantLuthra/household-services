@@ -16,7 +16,7 @@ app.app_context().push()
 
 #------------ Global Variables --------------#
 ADMIN_PASS = "good123"
-ADMIN_NAME = "Anant Luthra"
+ADMIN_NAME = "Anant Sharma"
 DUMMY_PROFESSION_PASS = ADMIN_PASS
 DUMMY_CUSTOMER_PASS = ADMIN_PASS
 
@@ -95,7 +95,7 @@ def admin_login():
     if request.method == 'GET':
         # if current_user.is_authenticated:
         #     return redirect("/professional")
-        return render_template("admin_login.html")
+        return render_template("admin_login.html", message = False)
 
     elif request.method == 'POST':
         
@@ -104,7 +104,7 @@ def admin_login():
         if ADMIN_PASS == password:
             return redirect("/admin_home")
         else:
-            return f"Wrong password"
+            return render_template("admin_login.html", message = "wrong_pass")
 
 
 #------------------ Professional Login -----------------------#
@@ -222,11 +222,15 @@ def customer_login():
         else:
             if search.email_id == email:
                 if search.password == password:
-                    return redirect(f"/customer_home/{search.id}")
+
+                    if search.blocked: # if that user is blocked
+                        return render_template("customer_login.html", message = "blocked")
+
+                    else:
+                        return redirect(f"/customer_home/{search.id}")
                 else:
                     return render_template("customer_login.html", message = "wrong_pass")
 
- 
 
 
 #--------------------- New Customer Page --------------------------#
@@ -272,13 +276,13 @@ def new_customer():
 @app.route('/admin_home', methods = ['GET', 'POST'])
 def admin_home():
 
+    prof = professional.query.all()
+    cus = customer.query.all()
+    services = service.query.all()
+
     if request.method == 'GET':
 
-        prof = professional.query.all()
-        cus = customer.query.all()
-        services = service.query.all()
-
-        return render_template('admin_home.html', admin_name = ADMIN_NAME, professionals = prof, customers = cus, services = services)
+        return render_template('admin_home.html', admin_name = ADMIN_NAME, professionals = prof, customers = cus, services = services, message = False)
     
     elif request.method == 'POST':
 
@@ -289,7 +293,7 @@ def admin_home():
         
         search = service.query.filter_by(name = service_name).first()
 
-        if not search:
+        if not search: #If that new service doesn't already exists.
             new_ser = service(
                 name = service_name,
                 price = base_price,
@@ -300,21 +304,121 @@ def admin_home():
             db.session.commit()
             return redirect('/admin_home')
         
-        else:
-            print(search)
+        else: # If service Exists.
+            return render_template('admin_home.html', admin_name = ADMIN_NAME, professionals = prof, customers = cus, services = services, message = "service_exists")
+
+#---------------------- Delete Service ---------------------------#
+@app.route("/admin_home/delete_service/<int:id>")
+def del_service(id):
+    
+    if request.method == 'GET':
+        ser = service.query.get(id)
+
+        if ser:  #If that service exists
+            db.session.delete(ser)
+            db.session.commit()
+            return redirect("/admin_home")
+        
+        else:   #if service doesn't exists
             return """
-                <div>Service already Exists!!</div>
-                <a href="/admin_home">Go Back</a>
+    <div>Service that you're trying to delete doesn't exists!</div>
+    <a href="/admin_home">Go Back</a>
                     """
 
 
+#---------------------- Block/Unblock person -----------------------#
+
+@app.route("/admin_home/action/<string:action>/<string:person>/<int:id>")
+def block_unblock_person(action, person, id):
+    
+    users = ['professional', 'customer']
+    
+    def call_error(person):
+        return f"""
+            <div>{person} that you're trying to {action} doesn't exists!</div>
+            <a href="/admin_home">Go Back</a>
+                """
+    
+    if request.method == 'GET':
+        
+        if action not in ['block', 'unblock']:
+            return f"""
+            <div>This action isn't allowed</div>
+            <a href="/admin_home">Go Back</a>
+                """
+
+        if person.lower() in users:
+            if person.lower() == users[0]:
+                prof = professional.query.get(id)
+
+                if prof:
+                    prof.blocked = True if action == "block" else False
+                    db.session.commit()
+                    return redirect('/admin_home')
+
+                else:  #if person doesn't exists
+                    return call_error(person)
+                    
+            elif person.lower() == users[1]:
+                cus = customer.query.get(id)
+
+                if cus:
+                    cus.blocked = True if action == "block" else False
+                    db.session.commit()
+                    return redirect('/admin_home')
+
+                else:  #if person doesn't exists
+                    return call_error(person)
+                
+        else:
+            return f"""
+            <div>This type of person doesn't exists!</div>
+            <a href="/admin_home">Go Back</a>
+                    """
+
+#---------------------- Approve/Reject professional ---------------#
+
+@app.route('/admin_home/appr/<string:action>/<int:id>')
+def appr(action, id):
+
+    if request.method == 'GET':
+
+        prof = professional.query.get(id)
+        actions = ['approve', 'reject']
+        if prof:
+            if action.lower() in actions:
+                if action.lower() == actions[0]:
+                    prof.request = False
+                    db.session.commit()
+                    return redirect('/admin_home')
+                
+                else:
+                    db.session.delete(prof)
+                    db.session.commit()
+                    return redirect('/admin_home')
+
+            else:
+                return f"""
+            <div>This Actions ins't allowed</div>
+            <a href="/admin_home">Go Back</a>
+                    """
+
+        else:   
+            return f"""
+            <div>This professional doesn't exists.</div>
+            <a href="/admin_home">Go Back</a>
+                    """
+
 #---------------------- View Service page ------------------------#
 
-@app.route("/view_service")
-def view_service():     
+@app.route("/view_service/<int:id>")
+def view_service(id):     
 
     if request.method == "GET":
-        return render_template("view_service.html")
+
+        ser = service.query.filter_by(id = id).first()
+
+        return render_template("view_service.html", service = ser, admin_name = ADMIN_NAME)
 
     else:
         return "Invalid Request"
@@ -322,11 +426,13 @@ def view_service():
 
 #---------------------- View Professional Page --------------------#
 
-@app.route("/view_professional")
-def view_professional():
+@app.route("/view_professional/<int:id>")
+def view_professional(id):
 
     if request.method == "GET":
-        return render_template("view_professional.html")
+
+        prof = professional.query.filter_by(id = id).first()
+        return render_template("view_professional.html", professional = prof, admin_name = ADMIN_NAME)
 
     else:
         return "Invalid Request"
@@ -338,16 +444,105 @@ def view_professional():
 def admin_search():
 
     if request.method == 'GET':
-        return render_template('admin_search.html', admin_name = ADMIN_NAME)
+        return render_template('admin_search.html', admin_name = ADMIN_NAME, searched = False, message = None)
     
     elif request.method == 'POST':
 
         search_criteria = request.form.get('searchCriteria')
         search_by = request.form.get('searchBy')
         value_of_search = request.form.get('valueofsearch')
-    
-    # Process the data as needed
-    return f"Received: {search_criteria}, {search_by}, {value_of_search}"
+        
+        if search_criteria == 'services':
+
+            search = 0
+
+            if search_by == 'service name':
+                search = service.query.filter(service.name.like(f"%{value_of_search}%")).all()
+            
+            elif search_by == "price >=":
+                search = service.query.filter(service.price > int(value_of_search)).all()
+
+            if search:
+                return render_template('admin_search.html',
+                        admin_name = ADMIN_NAME,
+                        searched = True,
+                        services = search,
+                        message = None,
+                        searched_by = search_by,
+                        searched_term = value_of_search
+                    )
+            else:
+                return render_template('admin_search.html',
+                    admin_name = ADMIN_NAME,
+                    searched = True,
+                    message = "no_results"
+                    )
+                                        
+
+        elif search_criteria == 'customers':
+            search = 0
+            
+            if search_by == 'email id':
+                search = customer.query.filter(customer.email_id.like(f"%{value_of_search}%")).all()
+            
+            elif search_by == 'name':
+                search = customer.query.filter(customer.fullname.like(f"%{value_of_search}%")).all()
+                
+            elif search_by == 'pin code':
+                search = customer.query.filter_by(pin_code = int(value_of_search)).all()
+
+
+            if search:
+                return render_template('admin_search.html',
+                        admin_name = ADMIN_NAME,
+                        searched = True,
+                        customers = search,
+                        message = None,
+                        searched_by = search_by,
+                        searched_term = value_of_search
+                    )
+            else:
+                return render_template('admin_search.html',
+                    admin_name = ADMIN_NAME,
+                    searched = True,
+                    message = "no_results"
+                    )
+            
+        elif search_criteria == 'professional':
+            search = 0
+
+            if search_by == 'experience >=':
+                search = professional.query.filter(professional.experience > int(value_of_search)).all()
+            
+            elif search_by == 'name':
+
+                print(search_by, value_of_search)
+
+                search = professional.query.filter(professional.fullname.like(f"%{value_of_search}%")).all()
+                
+            elif search_by == 'service name':
+                search = professional.query.join(service).filter(service.name.like(f"%{value_of_search}%")).all()
+
+            if search:
+                return render_template('admin_search.html',
+                        admin_name = ADMIN_NAME,
+                        searched = True,
+                        professionals = search,
+                        message = None,
+                        searched_by = search_by,
+                        searched_term = value_of_search
+                    )
+            else:
+                return render_template('admin_search.html',
+                    admin_name = ADMIN_NAME,
+                    searched = True,
+                    message = "no_results"
+                    )    
+            
+
+
+        # Process the data as needed
+        return f"Received: {search_criteria}, {search_by}, {value_of_search}"
 
 
 #----------------------- Admin Summary -----------------------------#
@@ -382,7 +577,17 @@ def prof_home(id):
 
         prof = professional.query.filter_by(id = id).first()
 
-        return render_template("prof_home.html", professional = prof)
+        if prof:
+            if not prof.blocked:
+                if not prof.request:
+                    return render_template("prof_home.html", professional = prof)
+                else:
+                    return redirect('/professional_login')
+            else:
+                return redirect('/professional_login')
+        else:
+            return redirect('/professional_login')
+
 
 
 #----------------------- Professional view profile ----------------------#
@@ -393,7 +598,17 @@ def prof_view_profile(id):
     if request.method == 'GET':
 
         prof = professional.query.filter_by(id = id).first()
-        return render_template("prof_view_profile.html", professional = prof)
+
+        if prof:
+            if not prof.blocked:
+                if not prof.request:
+                    return render_template("prof_view_profile.html", professional = prof)
+                else:
+                    return redirect('/professional_login')
+            else:
+                return redirect('/professional_login')
+        else:
+            return redirect('/professional_login')
 
     elif request.method == 'POST':
         return f"form edited"
@@ -406,7 +621,17 @@ def prof_profile_edit(id):
     if request.method == 'GET':
 
         prof = professional.query.filter_by(id = id).first()
-        return render_template("prof_edit_profile.html", professional = prof)
+
+        if prof: #if professional exists
+            if not prof.blocked:      # if not blocked
+                if not prof.request:        # if not on request period.
+                    return render_template("prof_edit_profile.html", professional = prof)
+                else:
+                    return redirect('/professional_login')
+            else:
+                return redirect('/professional_login')
+        else:
+            return redirect('/professional_login')
 
     elif request.method == 'POST':
         
@@ -440,7 +665,16 @@ def prof_search(id):
 
         prof = professional.query.filter_by(id = id).first()
 
-        return render_template("prof_search.html", professional = prof)
+        if prof:
+            if not prof.blocked:
+                if not prof.request:
+                    return render_template("prof_search.html", professional = prof)
+                else:
+                    return redirect('/professional_login')
+            else:
+                return redirect('/professional_login')
+        else:
+            return redirect('/professional_login')
 
     elif request.method == 'POST':
         search_by = request.form.get('searchBy')
@@ -457,7 +691,16 @@ def prof_summary(id):
     if request.method == 'GET':
 
         prof = professional.query.filter_by(id = id).first()
-        return render_template("prof_summary.html", professional = prof)
+        if prof:
+            if not prof.blocked:
+                if not prof.request:
+                    return render_template("prof_summary.html", professional = prof)
+                else:
+                    return redirect('/professional_login')
+            else:
+                return redirect('/professional_login')
+        else:
+            return redirect('/professional_login')
 
     elif request.method == 'POST':
         return 'POST request made'
@@ -471,7 +714,18 @@ def prof_summary(id):
 def prof_logout(id):
 
     if request.method == 'GET':
-        return redirect("/")
+        prof = professional.query.get(id)
+
+        if prof:
+            if not prof.blocked:
+                if not prof.request:
+                    return redirect("/")
+                else:
+                    return redirect('/professional_login')
+            else:
+                return redirect('/professional_login')
+        else:
+            return redirect('/professional_login')
 
 #------------------------ Customer home -------------------------#
 
@@ -485,12 +739,22 @@ def customer_home(id):
         service_name = "Cleaning"
 
         cus = customer.query.filter_by(id = id).first()
+        
+        if cus: #if that customer exists
 
-        if service_id == None:
-            return render_template("customer_home.html", service_name = False, customer = cus)
-        else:
-            return render_template("customer_home.html", service_name = service_name, customer = cus)
+            if not cus.blocked:  # if that customer is not blocked
+                if service_id == None:
+                    return render_template("customer_home.html", service_name = False, customer = cus)
+                else:
+                    return render_template("customer_home.html", service_name = service_name, customer = cus)
             
+            else:
+                return redirect('/customer_login')
+
+        else:
+            return redirect('/customer_login')
+    
+
 #----------------------- Customer view profile ----------------------#
 
 @app.route('/customer_home/view_profile/<int:id>', methods=['GET', 'POST'])
@@ -499,8 +763,14 @@ def customer_view_profile(id):
     if request.method == 'GET':
 
         cus = customer.query.filter_by(id = id).first()
-
-        return render_template("customer_view_profile.html", customer = cus)
+        
+        if cus:
+            if not cus.blocked:
+                return render_template("customer_view_profile.html", customer = cus)
+            else:
+                return redirect('/cutomer_login')
+        else:
+            return redirect('/customer_login')
 
     elif request.method == 'POST':
         return f"form edited"
@@ -512,9 +782,16 @@ def customer_profile_edit(id):
 
     if request.method == 'GET':
 
+        
         cus = customer.query.filter_by(id = id).first()
 
-        return render_template("customer_edit_profile.html", customer = cus)
+        if cus:
+            if not cus.blocked:
+                return render_template("customer_edit_profile.html", customer = cus)
+            else:
+                return redirect('/cutomer_login')
+        else:
+            return redirect('/customer_login')
 
     elif request.method == 'POST':
         
@@ -560,7 +837,16 @@ def service_book_req(id, service_id):
 def close_service_request(id, service_request_id):
 
     if request.method == 'GET':
-        return render_template("customer_close_service.html")
+
+        cus = customer.query.get(id)
+
+        if cus:
+            if not cus.blocked:
+                return render_template("customer_close_service.html")
+            else:
+                return redirect('/customer_login')
+        else:
+            return redirect('/customer_login')
 
     elif request.method == 'POST':
 
@@ -587,8 +873,14 @@ def customer_search(id):
     if request.method == 'GET':
 
         cus = customer.query.filter_by(id = id).first() 
-
-        return render_template("customer_search.html", customer = cus)
+        
+        if cus:
+            if not cus.blocked:
+                return render_template("customer_search.html", customer = cus)
+            else:
+                return redirect('/cutomer_login')
+        else:
+            return redirect('/cutomer_login')
 
     elif request.method == 'POST':
         search_by = request.form.get('searchBy')
@@ -607,7 +899,13 @@ def customer_summary(id):
 
         cus = customer.query.filter_by(id = id).first() 
 
-        return render_template("customer_summary.html", customer = cus)
+        if cus:
+            if not cus.blocked:
+                return render_template("customer_summary.html", customer = cus)
+            else:
+                return redirect('/cutomer_login')
+        else:
+            return redirect('/cutomer_login')
 
     elif request.method == 'POST':
         return 'POST request made'
@@ -621,7 +919,16 @@ def customer_summary(id):
 def customer_logout(id):
 
     if request.method == 'GET':
-        return redirect("/")
+
+        cus = customer.query.get(id)
+
+        if cus:
+            if not cus.blocked:
+                return redirect("/")
+            else:
+                return redirect('/cutomer_login')
+        else:
+            return redirect('/cutomer_login')
 
 
 if __name__ == '__main__':

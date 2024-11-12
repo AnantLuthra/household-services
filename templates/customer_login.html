@@ -62,13 +62,21 @@
             <div>
                 <input type="submit" value="Login" style="margin-right: 20px; font-size: x-large;font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; margin-top: 30px; margin-bottom: 20px;" >
                 {% if message == "wrong_pass" %}
-                    <div style="color: red; margin-bottom: 10px;">Wrong password! Try Again!</div>
+                    <div id="message" style="color: red; margin-bottom: 10px;">Wrong password! Try Again!</div>
                 {% elif message == "no_account" %}
-                    <div style="color: red; margin-bottom: 10px;">No Account found with this email! SignUp First!!</div>
+                    <div id="message" style="color: red; margin-bottom: 10px;">No Account found with this email! SignUp First!!</div>
+                {% elif message == "blocked" %}
+                    <div id="message" style="color: red; margin-bottom: 10px;">You've been blocked by the admin!! Mail to support for queries. <a href="mailto:23f2004159@ds.study.iitm.ac.in">Mail</a></div>
                 {% endif %}
             </div>
             <span id="notlogined">Don't have an account? <strong><a href="/new_customer">Sign up</a></strong></span>
         </form>
     </div>
+    <script>
+        let a = setTimeout(() => {
+            let message = document.getElementById("message");
+            message.remove()
+        }, 4000);
+    </script>
 </body>
 </html>

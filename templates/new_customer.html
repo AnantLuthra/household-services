@@ -120,11 +120,11 @@
                     name="pincode" required>
             </div>
             {% if message == "acc_created" %}
-                    <div style="color: black; margin-bottom: 10px">Account Created Succesfully!! Now you can login!</div>
+                    <div id="message" style="color: black; margin-bottom: 10px">Account Created Succesfully!! Now you can login!</div>
             {% elif message == "acc_exists" %}
-                    <div style="color: red; margin-bottom: 10px;">Account already exists with this email! <br>Either create account with different email or Login with this one!</div>
+                    <div id="message" style="color: red; margin-bottom: 10px;">Account already exists with this email! <br>Either create account with different email or Login with this one!</div>
             {% elif message == "error" %}
-                    <div style="color: red; margin-bottom: 10px;">We got some error</div>
+                    <div id="message" style="color: red; margin-bottom: 10px;">We got some error</div>
             {% endif %}
             <div>
                 <input type="submit" value="Register"
@@ -136,6 +136,11 @@
                         href="/customer_login">Login Here</a></strong></span>
         </form>
     </div>
+    <script>
+        let a = setTimeout(() => {
+            let message = document.getElementById("message");
+            message.remove()
+        }, 4000);
+    </script>
 </body>
-
 </html>

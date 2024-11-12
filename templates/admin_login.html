@@ -47,11 +47,19 @@
             <div id="pass">
                 Password: <input style="width: 180px; height: 28px; font-size: 20px;" size="x-large" type="password" name="password" required>
             </div>
+            {% if message == "wrong_pass" %}
+                    <div id="message" style="color: red; margin-bottom: 10px;">Wrong password! Try Again!</div>
+            {% endif %}
             <div>
                 <input type="submit" value="Login" style="margin-right: 20px; font-size: x-large;font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; margin-top: 30px; margin-bottom: 20px;" >
             </div>
-            
         </form>
     </div>
+    <script>
+        let a = setTimeout(() => {
+            let message = document.getElementById("message");
+            message.remove()
+        }, 4000);
+    </script>
 </body>
 </html>

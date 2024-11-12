@@ -154,13 +154,13 @@
                     name="pincode" required>
             </div>
             {% if message == "req_sent" %}
-                    <div style="color: black; margin-bottom: 10px">Details Sent to admin for approval! Wait for approval!</div>
+                    <div id="message" style="color: black; margin-bottom: 10px">Details Sent to admin for approval! Wait for approval!</div>
             {% elif message == "req_pending" %}
-                    <div style="color: black; margin-bottom: 10px">Your account details is not approved by admin yet! Wait more!</div>
+                    <div id="message" style="color: black; margin-bottom: 10px">Your account details is not approved by admin yet! Wait more!</div>
             {% elif message == "acc_exists" %}
-                    <div style="color: red; margin-bottom: 10px;">Account already exists with this email! <br>Either create account with different email or Login with this one!</div>
+                    <div id="message" style="color: red; margin-bottom: 10px;">Account already exists with this email! <br>Either create account with different email or Login with this one!</div>
             {% elif message == "error" %}
-                    <div style="color: red; margin-bottom: 10px;">We got some error</div>
+                    <div id="message" style="color: red; margin-bottom: 10px;">We got some error</div>
             {% endif %}
             <div>
                 <input type="submit" value="Register"
@@ -172,6 +172,12 @@
                         href="/professional_login">Login Here</a></strong></span>
         </form>
     </div>
+    <script>
+        let a = setTimeout(() => {
+            let message = document.getElementById("message");
+            message.remove()
+        }, 4000);
+    </script>
 </body>
 
 </html>

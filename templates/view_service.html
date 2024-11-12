@@ -4,51 +4,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dusting Service</title>
+    <link rel="stylesheet" href="/static/css/profile-block.css">
+    <link rel="stylesheet" href="/static/css/basic.css">
+    <title>{{service.name}}</title>
     <style>
-        * {
-            padding: 0;
-            margin: 0;
-        }
-
-        body {
-            background-color: rgb(220, 255, 226);
-            align-items: center;
-            text-align: center;
-        }
-
-        header {
-            align-items: center;
-            display: flex;
-            padding: 15px;
-            background-color: rgb(164, 252, 164);
-        }
 
         h1 {
             margin-right: 21vw;
             margin-left: 3vw;
             font-size: 40px;
-        }
-
-        ul {
-            display: flex;
-            list-style-type: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        ul li {
-            padding-inline: 15px;
-        }
-
-        ul li a {
-            font-size: 23px;
-            text-decoration: none;
-            color: black;
-        }
-
-        ul li a:hover {
-            text-decoration: underline;
         }
 
 
@@ -79,6 +43,7 @@
             margin: auto;
             margin-top: 50px;
             margin-bottom: 30px;
+            text-align: center;
         }
 
         .styled-table {
@@ -92,7 +57,8 @@
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
-        .styled-table th, .styled-table td {
+        .styled-table th,
+        .styled-table td {
             padding: 12px 15px;
             border: 1px solid #ddd;
         }
@@ -108,6 +74,10 @@
 
         .styled-table tr:hover {
             background-color: #ddd;
+        }
+
+        main {
+            height: 70vh;
         }
 
         footer {
@@ -135,37 +105,43 @@
             <li><a href="/admin_summary">Summary</a></li>
             <li><a href="/admin_logout">Logout</a></li>
         </ul>
+        <div id="user-info">
+            <img id="user-pic" src="/static/anant-pic.jpg" alt="Profile Picture">
+            <div>{{admin_name}}</div>
+        </div>
     </header>
 
-    <h1 id="logheading">Dusting Service</h1>
-    <div id="main">
-        <table class="styled-table">
-            <thead>
-                <tr>
-                    <th>Attribute</th>
-                    <th>Value</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Service Name</td>
-                    <td>Dusting</td>
-                </tr>
-                <tr>
-                    <td>Base Price</td>
-                    <td>500</td>
-                </tr>
-                <tr>
-                    <td>Time Required (Hrs)</td>
-                    <td>3</td>
-                </tr>
-                <tr>
-                    <td>Description</td>
-                    <td>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam non urna vitae odio bibendum tincidunt. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam enim perferendis rem ducimus, error facilis laborum adipisci magnam est! Cumque aspernatur quod ipsam porro nemo. Magni cum optio inventore dolorum consectetur reprehenderit soluta dignissimos adipisci, excepturi, tempore nam accusamus aut aperiam expedita.</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+    <main>
+        <h1 id="logheading">Dusting Service</h1>
+        <div id="main">
+            <table class="styled-table">
+                <thead>
+                    <tr>
+                        <th>Attribute</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Service Name</td>
+                        <td>{{service.name}}</td>
+                    </tr>
+                    <tr>
+                        <td>Base Price</td>
+                        <td>{{service.price}}</td>
+                    </tr>
+                    <tr>
+                        <td>Time Required (Hrs)</td>
+                        <td>{{service.time_required}}</td>
+                    </tr>
+                    <tr>
+                        <td>Description</td>
+                        <td>{{service.description}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
 
     <footer>
         <p>

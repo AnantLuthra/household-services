@@ -4,53 +4,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shivam</title>
+    <link rel="stylesheet" href="/static/css/profile-block.css">
+    <link rel="stylesheet" href="/static/css/basic.css">
+    <title>{{professional.fullname}}</title>
     <style>
-        * {
-            padding: 0;
-            margin: 0;
-        }
-
-        body {
-            background-color: rgb(220, 255, 226);
-            align-items: center;
-            text-align: center;
-        }
-
-        header {
-            align-items: center;
-            display: flex;
-            padding: 15px;
-            background-color: rgb(164, 252, 164);
-        }
-
         h1 {
             margin-right: 21vw;
             margin-left: 3vw;
             font-size: 40px;
         }
-
-        ul {
-            display: flex;
-            list-style-type: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        ul li {
-            padding-inline: 15px;
-        }
-
-        ul li a {
-            font-size: 23px;
-            text-decoration: none;
-            color: black;
-        }
-
-        ul li a:hover {
-            text-decoration: underline;
-        }
-
 
         #main {
             margin: auto;
@@ -79,6 +41,7 @@
             margin: auto;
             margin-top: 70px;
             margin-bottom: 30px;
+            text-align: center;
         }
 
         .styled-table {
@@ -140,10 +103,14 @@
             <li><a href="/admin_summary">Summary</a></li>
             <li><a href="/admin_logout">Logout</a></li>
         </ul>
+        <div id="user-info">
+            <img id="user-pic" src="/static/anant-pic.jpg" alt="Profile Picture">
+            <div>{{admin_name}}</div>
+        </div>
     </header>
     <main>
 
-        <h1 id="logheading">Shivam Dwivedi</h1>
+        <h1 id="logheading">{{professional.fullname}}</h1>
         <div id="main">
             <table class="styled-table">
                 <thead>
@@ -155,35 +122,39 @@
                 <tbody>
                     <tr>
                         <td>Name</td>
-                        <td>Shivam Dwivedi</td>
+                        <td>{{professional.fullname}}</td>
                     </tr>
                     <tr>
                         <td>Gmail</td>
-                        <td>shivam.mail@gmail.com</td>
+                        <td>{{professional.email_id}}</td>
                     </tr>
                     <tr>
                         <td>Password</td>
-                        <td>gOOd123(129)98(*&&)</td>
+                        <td>{{professional.password}}</td>
+                    </tr>
+                    <tr>
+                        <td>Gender</td>
+                        <td>{{professional.gender}}</td>
                     </tr>
                     <tr>
                         <td>Account Created on</td>
-                        <td>20-11-2023</td>
+                        <td>{{professional.date_created}}</td>
                     </tr>
                     <tr>
                         <td>Address</td>
-                        <td>1234 Elm Street, Springfield, IL 62704</td>
+                        <td>{{professional.address}}</td>
                     </tr>
                     <tr>
                         <td>Pin Code</td>
-                        <td>600036</td>
+                        <td>{{professional.pin_code}}</td>
                     </tr>
                     <tr>
                         <td>Service Type</td>
-                        <td>Dusting</td>
+                        <td>{{professional.service_type.name}}</td>
                     </tr>
                     <tr>
                         <td>Experience (Yrs)</td>
-                        <td>5</td>
+                        <td>{{professional.experience}}</td>
                     </tr>
                 </tbody>
             </table>

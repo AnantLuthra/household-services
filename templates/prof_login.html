@@ -63,16 +63,22 @@
                 <input type="submit" value="Login" style="margin-right: 20px; font-size: x-large;font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; margin-top: 30px; margin-bottom: 20px;" >
             </div>
             {% if message == "wrong_pass" %}
-                    <div style="color: red; margin-bottom: 10px;">Wrong password! Try Again!</div>
+                    <div id="message" style="color: red; margin-bottom: 10px;">Wrong password! Try Again!</div>
             {% elif message == "no_account" %}
-                    <div style="color: red; margin-bottom: 10px;">No Account found with this email! SignUp First!!</div>
+                    <div id="message" style="color: red; margin-bottom: 10px;">No Account found with this email! SignUp First!!</div>
             {% elif message == "blocked" %}
-                    <div style="color: red; margin-bottom: 10px;">You've been blocked by the admin!! Mail to support for queries.</div>
+                    <div id="message" style="color: red; margin-bottom: 10px;">You've been blocked by the admin!! Mail to support for queries. <a href="mailto:23f2004159@ds.study.iitm.ac.in">Mail</a></div>
             {% elif message == "req_pending" %}
-                    <div style="color: black; margin-bottom: 10px;">Your request is not approved by admin yet! Wait more!</div>
+                    <div id="message" style="color: black; margin-bottom: 10px;">Your request is not approved by admin yet! Wait more!</div>
             {% endif %}
             <span id="notlogined">Don't have an account? <strong><a href="/new_professional">Sign up</a></strong></span>
         </form>
     </div>
+    <script>
+        let a = setTimeout(() => {
+            let message = document.getElementById("message");
+            message.remove()
+        }, 4000);
+    </script>
 </body>
 </html>

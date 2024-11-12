@@ -96,7 +96,7 @@
         }
 
         footer {
-            margin-top: 50px;
+            margin-top: 50vh;
             align-items: center;
             text-align: center;
             background-color: rgb(164, 252, 164);
@@ -127,6 +127,7 @@
         </div>
     </header>
     
+    
     <div id="search-box">
         <form action="/admin_search" method="POST">
             <label for="searchCriteria">Search On:</label>
@@ -149,151 +150,157 @@
         </form>
     </div>
 
-    <h2>Services (Dusting)</h2>
-    <div class="tables">
-        <table class="styled-table">
-            <tr>
-                <th>ID</th>
-                <th>Service Name</th>
-                <th>Base Price</th>
-                <th>Action</th>
-            </tr>
-            <tr>
-                <td><a href="/view_service">1</a></td>
-                <td>Dusting</td>
-                <td>500</td>
-                <td><a href="">Edit</a>/<a href="">Delete</a></td>
-            </tr>
-            <tr>
-                <td><a href="/view_service">2</a></td>
-                <td>Dusting</td>
-                <td>1000</td>
-                <td><a href="">Edit</a>/<a href="">Delete</a></td>
-            </tr>
-            <tr>
-                <td><a href="/view_service">3</a></td>
-                <td>Dusting</td>
-                <td>1000</td>
-                <td><a href="">Edit</a>/<a href="">Delete</a></td>
-            </tr>
-        </table>
-    </div>
+    {% if searched %}
+        
+        {% if services %}
+            <h2>Services - ({{searched_by}}) ({{searched_term}})</h2>
+            <div class="tables">
+                <table class="styled-table">
+                    <tr>
+                        <th>ID</th>
+                        <th>Service Name</th>
+                        <th>Base Price</th>
+                        <th>Action</th>
+                    </tr>
+                    {% for service in services %}
+                        <tr>
+                            <td><a href="/view_service/{{service.id}}">{{loop.index}}</a></td>
+                            <td>{{service.name}}</td>
+                            <td>{{service.price}}</td>
+                            <td><a href="/admin_home/edit_service/{{service.id}}">Edit</a>/<a href="/admin_home/delete_service/{{service.id}}">Delete</a></td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
 
-    <br>
-    <h2>Customer - Pincode (253001)</h2>
-    <div class="tables">
-        <table class="styled-table">
-            <tr>
-                <th>ID</th>
-                <th>Email ID</th>
-                <th>Full Name</th>
-                <th>Address</th>
-                <th>Pin Code</th>
-                <th>Action</th>
-            </tr>
-            <tr>
-                <td>1</td>
-                <td>anant@gmail.com</td>
-                <td>Anant Luthra</td>
-                <td>Shaun sheep mall road</td>
-                <td>253001</td>
-                <td><a href="">Approve</a>/<a href="">Reject</a>/<a href="">Delete</a></td>
-            </tr>
-            <tr>
-                <td>2</td>
-                <td>shivam@gmail.com</td>
-                <td>Shivam kumar</td>
-                <td>Toun mark, stefen, mall road</td>
-                <td>253001</td>
-                <td><a href="">Approve</a>/<a href="">Reject</a>/<a href="">Delete</a></td>
-            </tr>
-            <tr>
-                <td>3</td>
-                <td>sam@gmail.com</td>
-                <td>Sam sheep</td>
-                <td>Ifel tower, England, Afrika</td>
-                <td>253001</td>
-                <td><a href="">Approve</a>/<a href="">Reject</a>/<a href="">Delete</a></td>
-            </tr>
-        </table>
-    </div>
+        {% elif customers %}
+            <br>
+            <h2>Customer - ({{searched_by}}) ({{searched_term}})</h2>
+            <div class="tables">
+                <table class="styled-table">
+                    <tr>
+                        <th>ID</th>
+                        <th>Email ID</th>
+                        <th>Full Name</th>
+                        <th>Address</th>
+                        <th>Pin Code</th>
+                        <th>Action</th>
+                    </tr>
+                    {% for customer in customers %}
+                        <tr>
+                            <td>{{loop.index}}</td>
+                            <td>{{customer.email_id}}</td>
+                            <td>{{customer.fullname}}</td>
+                            <td>{{customer.address}}</td>
+                            <td>{{customer.pin_code}}</td>
+                            <td>
+                                {% if customer.blocked %}
+                                    <a href="/admin_home/action/unblock/customer/{{customer.id}}">Unblock</a>
+                                {% else %}
+                                    <a href="/admin_home/action/block/customer/{{customer.id}}">Block</a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        
+        {% elif professionals %}
+            <br>
 
-    <br>
+            <h2>Professionals - ({{searched_by}}) ({{searched_term}})</h2>
+            <div class="tables">
+                <table class="styled-table">
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Experience(Yrs)</th>
+                        <th>Gender</th>
+                        <th>Address</th>
+                        <th>Pin Code</th>
+                        <th>Service Name</th>
+                        <th>Action</th>
+                    </tr>
+                    {% for professional in professionals %}
+                        <tr>
+                            <td><a href="/view_professional/{{professional.id}}">{{loop.index}}</a></td>
+                            <td>{{professional.fullname}}</td>
+                            <td>{{professional.experience}}</td>
+                            <td>{{professional.gender}}</td>
+                            <td>{{professional.address}}</td>
+                            <td>{{professional.pin_code}}</td>
+                            <td>{{professional.service_type.name}}</td>
+                            <td>
+                                {% if professional.request %}
+                                <a href="/admin_home/appr/approve/{{professional.id}}">Approve</a>/<a href="/admin_home/appr/reject/{{professional.id}}">Reject</a>
+                                {% elif not professional.blocked %}
+                                <a href="/admin_home/action/block/professional/{{professional.id}}">Block</a>
+                                {% elif professional.blocked %}
+                                <a href="/admin_home/action/unblock/professional/{{professional.id}}">Unblock</a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
 
-    <h2>Professionals - Experience (5)</h2>
-    <div class="tables">
-        <table class="styled-table">
-            <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Experience(Yrs)</th>
-                <th>Service Name</th>
-                <th>Action</th>
-            </tr>
-            <tr>
-                <td><a href="/view_professional">1</a></td>
-                <td>Anant</td>
-                <td>5</td>
-                <td>Moping floor</td>
-                <td><a href="">Approve</a>/<a href="">Reject</a>/<a href="">Delete</a></td>
-            </tr>
-            <tr>
-                <td><a href="/view_professional">2</a></td>
-                <td>Deepa</td>
-                <td>3</td>
-                <td>Dusting</td>
-                <td><a href="">Approve</a>/<a href="">Reject</a>/<a href="">Delete</a></td>
-            </tr>
-            <tr>
-                <td><a href="/view_professional">3</a></td>
-                <td>Deepa</td>
-                <td>3</td>
-                <td>Dusting</td>
-                <td><a href="">Approve</a>/<a href="">Reject</a>/<a href="">Delete</a></td>
-            </tr>
-        </table>
-    </div>
+        {% elif service_request %}
+            <br>
 
-    <br>
+            <h2>Service Requests (Requested)</h2>
+            <div class="tables">
+                <table class="styled-table">
+                    <tr>
+                        <th>ID</th>
+                        <th>Assigned Professional</th>
+                        <th>Customer Requested</th>
+                        <th>Reqested Date</th>
+                        <th>Status</th>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>Anant</td>
+                        <td>Shivam</td>
+                        <td>20-05-2024</td>
+                        <td>Requested</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Deepa</td>
+                        <td>Sheja</td>
+                        <td>20-06-2024</td>
+                        <td>Requested</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Deepa</td>
+                        <td>Sam</td>
+                        <td>20-06-2024</td>
+                        <td>Requested</td>
+                    </tr>
+                </table>
+            </div>
+        
+        {% elif message %}
+            <div style="text-align: center; font-size: 40px; margin-top: 20vh; margin-bottom: 20vh;">No results</div>
+        {% endif %}
+    {% else %}
+    <div style="text-align: center; font-size: 45px; margin-top: 100px;">Waiting for you search</div>
+    {% endif %}
 
-    <h2>Service Requests (Requested)</h2>
-    <div class="tables">
-        <table class="styled-table">
-            <tr>
-                <th>ID</th>
-                <th>Assigned Professional</th>
-                <th>Customer Requested</th>
-                <th>Reqested Date</th>
-                <th>Status</th>
-            </tr>
-            <tr>
-                <td>1</td>
-                <td>Anant</td>
-                <td>Shivam</td>
-                <td>20-05-2024</td>
-                <td>Requested</td>
-            </tr>
-            <tr>
-                <td>2</td>
-                <td>Deepa</td>
-                <td>Sheja</td>
-                <td>20-06-2024</td>
-                <td>Requested</td>
-            </tr>
-            <tr>
-                <td>2</td>
-                <td>Deepa</td>
-                <td>Sam</td>
-                <td>20-06-2024</td>
-                <td>Requested</td>
-            </tr>
-        </table>
-    </div>
-    <footer>
-        <p>
-            Developed with ❤️ by some Developer
-        </p>
-    </footer>
+    {% if searched %}
+        <footer>
+            <p>
+                Developed with ❤️ by some Developer
+            </p>
+        </footer>
+    {% else %}
+        <footer style="margin-top: 50vh;">
+            <p>
+                Developed with ❤️ by some Developer
+            </p>
+        </footer>
+    {% endif %}
     <script>
         function updateSecondDropdown() {
             const searchCriteria = document.getElementById('searchCriteria').value;

@@ -4,7 +4,6 @@
     align-items: center;
     justify-content: center;
     width: 60vw;
-    height: 20vh;
     border-radius: 25px;
     padding: 20px;
 }
@@ -12,8 +11,6 @@
 /* Common styling class for tables */
 .styled-table {
     width: 100%;
-    /* border-collapse: separate; */
-    /* border-spacing: 0; */
     border: 1px solid black;
 }
 
