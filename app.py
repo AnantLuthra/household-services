@@ -1,7 +1,7 @@
 from flask import Flask
 from flask import render_template, request, redirect
 from flask_sqlalchemy import SQLAlchemy
-from datetime import datetime
+from datetime import date
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import relationship, backref,joinedload
 from flask_login import LoginManager, UserMixin, current_user, login_user, logout_user, login_required
@@ -194,7 +194,7 @@ def new_professional():
                 email_id = email, 
                 password = password, 
                 fullname = fullname,
-                date_created = datetime.now(),
+                date_created = date.today(),
                 service_type_id = service_id,
                 gender = gender,
                 price = price,
@@ -912,7 +912,8 @@ def service_book_req(customer_id, professional_id, service_id):
             service_id = service_id,
             customer_id = customer_id,
             professional_id = professional_id,
-            date_of_request = datetime.now(),
+            date_of_request = date.today(),
+            date_of_completion=date.today(),  #make change when actually completed.
             service_status = "requested",
         )
         db.session.add(new_ser)

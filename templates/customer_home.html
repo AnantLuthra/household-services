@@ -163,10 +163,10 @@
         {% else %}
             <ol>
                 {% for result in searched_results %}
-                    <li>{{result.name}}, {{result.type}} services - <br>
+                    <li>{{result.service_type.name}} services - <br>
                         Name - {{result.fullname}}, Completed services - {{result.services_completed}}, <br>
-                        Rating - {{result.rating}}, Price - {{result.price}}. <br>
-                        &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; 
+                        Rating - {{result.rating}}, Price - {{result.price}}. 
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; 
                         <a href="/customer_home/{{customer.id}}/service_book/{{result.id}}/{{result.service_type.id}}">Book</a>
                     </li>
                 {% endfor %}
