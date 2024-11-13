@@ -119,7 +119,7 @@
             text-align: center;
             background-color: rgb(164, 252, 164);
             height: 60px;
-            margin-top: 20vh;
+            margin-top: 40vh;
         }
 
         footer p {
@@ -158,84 +158,67 @@
     {% if service_name %}
 
     <div id="service-select" style="flex-direction: column; align-items: center; width:40vw;">
-        <ol>
-            <li>Full Home cleaning services - ratings, price, etc. Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum praesentium reiciendis vel quos ab ut maxime libero, in dolor veniam aperiam veritatis quod quasi nisi, eos rerum esse cumque molestias, aliquam illo minus ducimus officiis expedita. Blanditiis, iste, nemo et architecto dolore voluptate incidunt aut dolorum repudiandae sapiente cum hic?<a href="/customer_home/{{id}}/{{service_id}}">Book</a></li>
-            <li>Toilet cleaning services - ratings, price, etc.<a href="/customer_home/1/service_book/1">Book</a></li>
-            <li>Kitchen cleaning services - ratings, price, etc.<a href="/customer_home/{{id}}/service_book/{{service_id}}">Book</a></li>
-            <li>Sofa/Carpet cleaning services - ratings, price, etc.<a href="/customer_home/{{id}}/service_book/{{service_id}}">Book</a></li>
-            <li>Sofa/Carpet cleaning services - ratings, price, etc.<a href="/customer_home/{{id}}/service_book/{{service_id}}">Book</a></li>
-            <li>Sofa/Carpet cleaning services - ratings, price, etc.<a href="/customer_home/{{id}}/service_book/{{service_id}}">Book</a></li>
-            <li>Sofa/Carpet cleaning services - ratings, price, etc.<a href="/customer_home/{{id}}/service_book/{{service_id}}">Book</a></li>
-            <li>Sofa/Carpet cleaning services - ratings, price, etc.<a href="/customer_home/{{id}}/service_book/{{service_id}}">Book</a></li>
-        </ol>
+        {% if searched_results == 'no_data' %}
+            <div id="no_data">No data to show!</div>
+        {% else %}
+            <ol>
+                {% for result in searched_results %}
+                    <li>{{result.name}}, {{result.type}} services - <br>
+                        Name - {{result.fullname}}, Completed services - {{result.services_completed}}, <br>
+                        Rating - {{result.rating}}, Price - {{result.price}}. <br>
+                        &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; 
+                        <a href="/customer_home/{{customer.id}}/service_book/{{result.id}}/{{result.service_type.id}}">Book</a>
+                    </li>
+                {% endfor %}
+            </ol>
+        {% endif %}
     </div>
 
     {% else %}
 
     <div id="service-select">
-        <div class="service-box"><a href="/customer_home/1?service_id=1">AC Repair</a></div>
-        <div class="service-box"><a href="/customer_home/1?service_id=2">Saloon</a></div>
-        <div class="service-box"><a href="/customer_home/1?service_id=3">Clearning</a></div>
-        <div class="service-box"><a href="/customer_home/1?service_id=4">Electrician</a></div>
-        <div class="service-box"><a href="/customer_home/1?service_id=5">Floor Clearning</a></div>
-        <div class="service-box"><a href="/customer_home/1?service_id=6">Mop Floor</a></div>
-        <div class="service-box"><a href="/customer_home/1?service_id=7">Barbar</a></div>
-        <div class="service-box"><a href="/customer_home/1?service_id=8">Waxing service</a></div>
-        <div class="service-box"><a href="/customer_home/1?service_id=9">Electrician</a></div>
-        <div class="service-box"><a href="/customer_home/1?service_id=10">Electrician</a></div>
-        <div class="service-box"><a href="/customer_home/1?service_id=11">Electrician</a></div>
-        <div class="service-box"><a href="/customer_home/1?service_id=12">Electrician</a></div>
-        <div class="service-box"><a href="/customer_home/1?service_id=13">Electrician</a></div>
-        <div class="service-box"><a href="/customer_home/1?service_id=14">Electrician</a></div>
-        <div class="service-box"><a href="/customer_home/1?service_id=15">Electrician</a></div>
-        <div class="service-box"><a href="/customer_home/1?service_id=16">Electrician</a></div>
+        {% for service_name in all_types %}
+            <div class="service-box">
+                <a href="/customer_home/{{customer.id}}?service_name={{service_name | replace(' ', '+') }}">{{service_name}}</a>
+            </div>
+        {% endfor %}
     </div>
 
     {% endif %}
 
     <h2>Service History</h2>
-    <div class="tables">
-        <table class="styled-table">
-            <tr>
-                <th>ID</th>
-                <th>Service Name</th>
-                <th>Professional Name</th>
-                <th>Phone No.</th>
-                <th>Status</th>
-            </tr>
-            <tr>
-                <td>1</td>
-                <td>House Clearning</td>
-                <td>Shivam Sharma</td>
-                <td>98965854475</td>
-                <td>Closed</td>
-            </tr>
-            <tr>
-                <td>2</td>
-                <td>Floor Moping</td>
-                <td>Priya Rastogi</td>
-                <td>9896815226</td>
-                <td><a href="/customer_home/close_service/1/1">Close it</a></td>
-            </tr>
-            <tr>
-                <td>3</td>
-                <td>House Clearning</td>
-                <td>Shivam Sharma</td>
-                <td>98965854475</td>
-                <td>Requested</td>
-            </tr>
-            <tr>
-                <td>4</td>
-                <td>Barber</td>
-                <td>Shivalik Tomer</td>
-                <td>98965253654</td>
-                <td><a href="/customer_home/close_service/1/2">Close it</a></td>
-            </tr>
-
-        </table>
-
-    </div>
-
+    {% if service_history %}
+        <div class="tables">
+            <table class="styled-table">
+                <tr>
+                    <th>ID</th>
+                    <th>Service Name</th>
+                    <th>Professional Name</th>
+                    <th>Email ID</th>
+                    <th>Status</th>
+                </tr>
+                {% for service_req in service_history %}
+                    <tr>
+                        <td>{{loop.index}}</td>
+                        <td>{{service_req.service.name}}</td>
+                        <td>{{service_req.professional.fullname}}</td>
+                        <td>{{service_req.professional.email_id}}</td>
+                        <td>
+                            {% if service_req.service_status == "requested" %}
+                                <p>Requested</p>
+                            {% elif service_req.service_status == "accepted" %}
+                                <a href="/customer_home/close_service/{{customer.id}}/{{service_req.id}}">Close it</a>
+                            {% elif service_req.service_status == "closed" %}
+                                <p>Closed</p>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    {% else %}
+        <div id="no_data">No data to show!</div>
+    {% endif %}
     <br>
 
     <footer>

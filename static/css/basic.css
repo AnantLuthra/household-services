@@ -41,3 +41,8 @@ ul li a:hover {
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     font-weight: bold;
 }
+
+#no_data{
+    font-size: 25px;
+    margin-left: 70px;
+}

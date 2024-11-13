@@ -63,7 +63,7 @@
             padding-top: 5px;
             border-radius: 10px;
             width: 400px;
-            height: 400px;
+            height: 450px;
             text-align: center;
         }
 
@@ -124,28 +124,39 @@
     </header>
 
     <h2>Services</h2>
-    <div class="tables">
-        <table class="styled-table">
-            <tr>
-                <th>ID</th>
-                <th>Service Name</th>
-                <th>Base Price</th>
-                <th>Action</th>
-            </tr>
-            {% for service in services %}
-            <tr>
-                <td><a href="/view_service/{{service.id}}">{{loop.index}}</a></td>
-                <td>{{service.name}}</td>
-                <td>{{service.price}}</td>
-                <td><a href="/admin_home/edit_service/{{service.id}}">Edit</a>/<a
-                        href="/admin_home/delete_service/{{service.id}}">Delete</a></td>
-            </tr>
-            {% endfor %}
-        </table>
-        {% if message == "service_exists" %}
-        <div id="message" style="color: red; margin-bottom: 10px;">Service by this name already exists! Try making with
-            some new name.</div>
-        {% endif %}
+    {% if services %}
+        <div class="tables">
+            <table class="styled-table">
+                <tr>
+                    <th>ID</th>
+                    <th>Service Name</th>
+                    <th>Base Price</th>
+                    <th>Action</th>
+                </tr>
+                {% for service in services %}
+                <tr>
+                    <td><a href="/view_service/{{service.id}}">{{loop.index}}</a></td>
+                    <td>{{service.name}}</td>
+                    <td>{{service.base_price}}</td>
+                    <td>
+                        <a href="/admin_home/edit_service/{{service.id}}">Edit</a>/
+                        {% if service.status %}
+                            <a href="/admin_home/action_service/activate/{{service.id}}">Activate</a>
+                        {% else %}
+                            <a href="/admin_home/action_service/deactivate/{{service.id}}">Deactivate</a>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+            {% if message == "service_exists" %}
+            <div id="message" style="color: red; margin-bottom: 10px;">Service by this name already exists! Try making with
+                some new name.</div>
+            {% endif %}
+    {% else %}
+        <div id="no_data">No data to show!</div>
+    {% endif %}
+
 
         <!-- Button Added for popup window.. -->
         <button class="open-modal-btn" onclick="openPopup()">+New Service</button>
@@ -161,6 +172,10 @@
                         <div id="service_name" style="margin-top: 10px;">
                             Service name: <input style="margin-left: 40px; width: 190px; height: 28px; font-size: 20px;"
                                 size="x-large" type="text" name="name" required>
+                        </div>
+                        <div id="service_type" style="margin-top: 10px;">
+                            Service type: <input style="margin-left: 40px; width: 190px; height: 28px; font-size: 20px;"
+                                size="x-large" type="text" name="type" required>
                         </div>
                         <div id="base_price" style="margin-top: 10px;">
                             Base Price: <input style="margin-left: 60px; width: 190px; height: 28px; font-size: 20px;"
@@ -191,106 +206,109 @@
     <br>
 
     <h2>Professionals</h2>
-    <div class="tables">
-        <table class="styled-table">
-            <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Experience(Yrs)</th>
-                <th>Gender</th>
-                <th>Address</th>
-                <th>Pin Code</th>
-                <th>Service Name</th>
-                <th>Action</th>
-            </tr>
-            {% for professional in professionals %}
-            <tr>
-                <td><a href="/view_professional/{{professional.id}}">{{loop.index}}</a></td>
-                <td>{{professional.fullname}}</td>
-                <td>{{professional.experience}}</td>
-                <td>{{professional.gender}}</td>
-                <td>{{professional.address}}</td>
-                <td>{{professional.pin_code}}</td>
-                <td>{{professional.service_type.name}}</td>
-                <td>
-                    {% if professional.request %}
-                    <a href="/admin_home/appr/approve/{{professional.id}}">Approve</a>/<a
-                        href="/admin_home/appr/reject/{{professional.id}}">Reject</a>
-                    {% elif not professional.blocked %}
-                    <a href="/admin_home/action/block/professional/{{professional.id}}">Block</a>
-                    {% elif professional.blocked %}
-                    <a href="/admin_home/action/unblock/professional/{{professional.id}}">Unblock</a>
-                    {% endif %}
-                </td>
-            </tr>
-            {% endfor %}
-        </table>
-    </div>
+    {% if professionals %}
+        <div class="tables">
+            <table class="styled-table">
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Experience(Yrs)</th>
+                    <th>Gender</th>
+                    <th>Address</th>
+                    <th>Pin Code</th>
+                    <th>Service Name</th>
+                    <th>Action</th>
+                </tr>
+                {% for professional in professionals %}
+                <tr>
+                    <td><a href="/view_professional/{{professional.id}}">{{loop.index}}</a></td>
+                    <td>{{professional.fullname}}</td>
+                    <td>{{professional.experience}}</td>
+                    <td>{{professional.gender}}</td>
+                    <td>{{professional.address}}</td>
+                    <td>{{professional.pin_code}}</td>
+                    <td>{{professional.service_type.name}}</td>
+                    <td>
+                        {% if professional.request %}
+                        <a href="/admin_home/appr/approve/{{professional.id}}">Approve</a>/<a
+                            href="/admin_home/appr/reject/{{professional.id}}">Reject</a>
+                        {% elif not professional.blocked %}
+                        <a href="/admin_home/action/block/professional/{{professional.id}}">Block</a>
+                        {% elif professional.blocked %}
+                        <a href="/admin_home/action/unblock/professional/{{professional.id}}">Unblock</a>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    {% else %}
+        <div id="no_data">No data to show!</div>
+    {% endif %}
 
     <br>
 
     <h2>Service Requests</h2>
-    <div class="tables">
-        <table class="styled-table">
-            <tr>
-                <th>ID</th>
-                <th>Assigned Professional</th>
-                <th>Reqested Date</th>
-                <th>Status</th>
-            </tr>
-            <tr>
-                <td>1</td>
-                <td>Anant</td>
-                <td>20-05-2024</td>
-                <td>Requested/Assigned/Closed</td>
-            </tr>
-            <tr>
-                <td>2</td>
-                <td>Deepa</td>
-                <td>20-06-2024</td>
-                <td>Requested/Assigned/Closed</td>
-            </tr>
-            <tr>
-                <td>2</td>
-                <td>Deepa</td>
-                <td>20-06-2024</td>
-                <td>Requested/Assigned/Closed</td>
-            </tr>
-        </table>
-    </div>
+    {% if service_requests %}
+        <div class="tables">
+            <table class="styled-table">
+                <tr>
+                    <th>ID</th>
+                    <th>Assigned Professional</th>
+                    <th>Reqested Date</th>
+                    <th>Status</th>
+                </tr>
+                {% for service_req in service_requests %}
+                    <tr>
+                        <td>{{loop.index}}</td>
+                        <td>{{service_req.professional.fullname}}</td>
+                        <td>{{service_req.date_of_request}}</td>
+                        <td>{{service_req.service_status}}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    {% else %}
+        <div id="no_data">No data to show!</div>
+    {% endif %}
 
     <br>
     <h2>Customer</h2>
-    <div class="tables">
-        <table class="styled-table">
-            <tr>
-                <th>ID</th>
-                <th>Email ID</th>
-                <th>Full Name</th>
-                <th>Address</th>
-                <th>Pin Code</th>
-                <th>Action</th>
-            </tr>
-            {% for customer in customers %}
-            <tr>
-                <td>{{loop.index}}</td>
-                <td>{{customer.email_id}}</td>
-                <td>{{customer.fullname}}</td>
-                <td>{{customer.address}}</td>
-                <td>{{customer.pin_code}}</td>
-                <td>
-                    {% if customer.blocked %}
-                    <a href="/admin_home/action/unblock/customer/{{customer.id}}">Unblock</a>
-                    {% else %}
-                    <a href="/admin_home/action/block/customer/{{customer.id}}">Block</a>
-                    {% endif %}
-                </td>
-            </tr>
-            {% endfor %}
-        </table>
-    </div>
+    {% if customers %}
+        <div class="tables">
+            <table class="styled-table">
+                <tr>
+                    <th>ID</th>
+                    <th>Email ID</th>
+                    <th>Full Name</th>
+                    <th>Address</th>
+                    <th>Pin Code</th>
+                    <th>Action</th>
+                </tr>
+                {% for customer in customers %}
+                <tr>
+                    <td>{{loop.index}}</td>
+                    <td>{{customer.email_id}}</td>
+                    <td>{{customer.fullname}}</td>
+                    <td>{{customer.address}}</td>
+                    <td>{{customer.pin_code}}</td>
+                    <td>
+                        {% if customer.blocked %}
+                        <a href="/admin_home/action/unblock/customer/{{customer.id}}">Unblock</a>
+                        {% else %}
+                        <a href="/admin_home/action/block/customer/{{customer.id}}">Block</a>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    {% else %}
+        <div id="no_data">No data to show!</div>
+    {% endif %}
+    
 
-    <footer>
+    <footer style="margin-top: 50px;">
         <p>
             Developed with ❤️ by some Developer
         </p>

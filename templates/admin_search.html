@@ -166,8 +166,15 @@
                         <tr>
                             <td><a href="/view_service/{{service.id}}">{{loop.index}}</a></td>
                             <td>{{service.name}}</td>
-                            <td>{{service.price}}</td>
-                            <td><a href="/admin_home/edit_service/{{service.id}}">Edit</a>/<a href="/admin_home/delete_service/{{service.id}}">Delete</a></td>
+                            <td>{{service.base_price}}</td>
+                            <td>
+                                <a href="/admin_home/edit_service/{{service.id}}">Edit</a>/
+                                {% if service.status %}
+                                    <a href="/admin_home/action_service/activate/{{service.id}}">Activate</a>
+                                {% else %}
+                                    <a href="/admin_home/action_service/deactivate/{{service.id}}">Deactivate</a>
+                                {% endif %}
+                            </td>
                         </tr>
                     {% endfor %}
                 </table>
@@ -247,7 +254,7 @@
         {% elif service_request %}
             <br>
 
-            <h2>Service Requests (Requested)</h2>
+            <h2>Service Requests - ({{searched_by}}) - ({{searched_term}})</h2>
             <div class="tables">
                 <table class="styled-table">
                     <tr>
@@ -257,27 +264,15 @@
                         <th>Reqested Date</th>
                         <th>Status</th>
                     </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>Anant</td>
-                        <td>Shivam</td>
-                        <td>20-05-2024</td>
-                        <td>Requested</td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>Deepa</td>
-                        <td>Sheja</td>
-                        <td>20-06-2024</td>
-                        <td>Requested</td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>Deepa</td>
-                        <td>Sam</td>
-                        <td>20-06-2024</td>
-                        <td>Requested</td>
-                    </tr>
+                    {% for service_req in service_request %}
+                        <tr>
+                            <td>{{loop.index}}</td>
+                            <td>{{service_req.professional.fullname}}</td>
+                            <td>{{service_req.customer.fullname}}</td>
+                            <td>{{service_req.date_of_request}}</td>
+                            <td>{{service_req.service_status}}</td>
+                        </tr>
+                    {% endfor %}
                 </table>
             </div>
         

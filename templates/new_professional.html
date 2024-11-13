@@ -54,7 +54,7 @@
             border-radius: 4px;
             background-color: #f9f9f9;
             width: 240px;
-            margin-left: 66px;
+            margin-left: 32px;
         }
 
         #service_type option {
@@ -129,12 +129,16 @@
                 <label for="female">Female</label>
             </div>
             <div id="servicesdiv" class="credentials">
-                <label for="searchCriteria">Service : </label>
-                <select name="service_id" id="service_type">
+                <label style="margin-left: 40px;" for="searchCriteria">Service: </label>
+                <select name="service_id" id="service_type" onchange="updateBasePrice()">
                     {% for service in services %}
                         <option value="{{service.id}}">{{service.name}}</option>
                     {% endfor %}
                 </select>
+            </div>
+            <div class="credentials" style="margin-left: 110px;">
+                Price: <input id="base_price" style="margin-left: 60px; width: 232px;" class="input-box" size="x-large"
+                    type="number" name="price" placeholder="set >= base price" required>
             </div>
             <div class="credentials" style="margin-left: 30px;">
                 Experience(In years): <input style="margin-left: 10px; width: 232px;" class="input-box" size="x-large"
@@ -173,10 +177,25 @@
         </form>
     </div>
     <script>
+
+        function updateBasePrice(){
+            const service_id = document.getElementById('service_type').value;
+            const base_price = document.getElementById('base_price');
+
+            fetch(`/service_base_price/${service_id}`)
+            .then(value => value.json())
+            .then(data => {
+                base_price.value = data.base_price;
+            })
+            .catch(error => console.error('Error fetching base price:', error));
+        }
+
         let a = setTimeout(() => {
             let message = document.getElementById("message");
             message.remove()
         }, 4000);
+
+        document.addEventListener('DOMContentLoaded', updateBasePrice);
     </script>
 </body>
 
