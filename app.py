@@ -333,6 +333,51 @@ def admin_home():
         else: # If service Exists.
             return render_template('admin_home.html', admin_name = ADMIN_NAME, professionals = prof, customers = cus, services = services, service_requests = ser_req, message = "service_exists")
 
+#---------------------- Edit service -------------------------------------#
+
+@app.route("/admin_home/edit_service/<int:id>", methods = ['GET', 'POST'])
+def edit_service(id):
+
+    if request.method == 'GET':
+
+        ser = service.query.filter_by(id = id).first()
+
+        if ser: # if service exists
+            return render_template("edit_service.html", service = ser, admin_name = ADMIN_NAME)
+        
+        else:
+            return "Invalid service id", 404
+    
+    elif request.method == 'POST':
+        
+        
+        service_name = request.form.get('name')
+        service_type = request.form.get('type')
+        base_price = request.form.get('price')
+        time_required = request.form.get('time_required')
+        description = request.form.get('description')
+        
+        ser = service.query.filter_by(id = id).first()
+
+        if ser:
+            ser.name = service_name
+            ser.type = service_type
+            ser.base_price = base_price
+            ser.time_required = time_required
+            ser.description = description
+
+            db.session.commit()
+        
+            return redirect('/admin_home')
+
+        else:
+            return "No such service id present!", 404
+
+    
+    else:
+        return "This Request is not handled here.", 404
+
+
 #---------------------- Activate/Deactivate Service ---------------------------#
 @app.route("/admin_home/action_service/<string:action>/<int:id>")
 def act_service(action, id):
@@ -1028,7 +1073,7 @@ def close_service_request(id, service_request_id):
     elif request.method == 'POST':
 
         print(f"got to close- customer id: {id}, service_request_id {service_request_id}")
-        
+
         rating = float(request.form.get('rating'))
         remarks = request.form.get('remarks')
 

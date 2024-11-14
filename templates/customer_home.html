@@ -195,6 +195,7 @@
                     <th>Service Name</th>
                     <th>Professional Name</th>
                     <th>Email ID</th>
+                    <th>Last Action On</th>
                     <th>Status</th>
                 </tr>
                 {% for service_req in service_history %}
@@ -203,6 +204,7 @@
                         <td>{{service_req.service.name}}</td>
                         <td>{{service_req.professional.fullname}}</td>
                         <td>{{service_req.professional.email_id}}</td>
+                        <td>{{service_req.date_of_completion}}</td>
                         <td>
                             {% if service_req.service_status == "requested" %}
                                 <p>Requested</p>
