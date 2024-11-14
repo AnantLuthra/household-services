@@ -255,6 +255,8 @@
                 <tr>
                     <th>ID</th>
                     <th>Assigned Professional</th>
+                    <th>Customer Requested</th>
+                    <th>Service requested</th>
                     <th>Reqested Date</th>
                     <th>Status</th>
                 </tr>
@@ -262,6 +264,8 @@
                     <tr>
                         <td>{{loop.index}}</td>
                         <td>{{service_req.professional.fullname}}</td>
+                        <td>{{service_req.customer.fullname}}</td>
+                        <td>{{service_req.service.name}}</td>
                         <td>{{service_req.date_of_request}}</td>
                         <td>{{service_req.service_status}}</td>
                     </tr>

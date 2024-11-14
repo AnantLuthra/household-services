@@ -24,7 +24,7 @@
 
         #container {
             width: 80vw;
-            min-height: 75vh;
+            min-height: 80vh;
             border: 1px solid black;
             border-radius: 20px;
             background-color: rgb(201, 255, 201);
@@ -137,14 +137,14 @@
     <header>
         <h1>Customer Portal</h1>
         <ul>
-            <li><a class="active" href="/customer_home/1">Home</a></li>
-            <li><a href="/customer_search/1">Search</a></li>
-            <li><a href="/customer_summary/1">Summary</a></li>
-            <li><a href="/customer_logout/1">Logout</a></li>
+            <li><a class="active" href="/customer_home/{{customer.id}}">Home</a></li>
+            <li><a href="/customer_search/{{customer.id}}">Search</a></li>
+            <li><a href="/customer_summary/{{customer.id}}">Summary</a></li>
+            <li><a href="/customer_logout/{{customer.id}}">Logout</a></li>
         </ul>
         <div id="user-info">
             <img id="user-pic" src="/static/anant-pic.jpg" alt="Profile Picture">
-            <div>Shivam Kumar</div>
+            <div>{{customer.fullname}}</div>
         </div>
     </header>
 
@@ -152,17 +152,17 @@
         <div id="heading">
             Service Remarks
             <br>
-            Request ID: {{service_request_id}}
+            Request ID: {{service_request.id}}
         </div>
         <div id="details-box">
-            <div class="details-part">Floor Cleaning</div>
-            <div class="details-part">Cleaning Floor with 0 dust, excellent for mappy floors.</div>
-            <div class="details-part">25-12-2024</div>
-            <div class="details-part">3</div>
-            <div class="details-part">Shivam Rastogi</div>
-            <div class="details-part">9998657245</div>
+            <div class="details-part">Service Name:  &emsp;<strong>{{service_request.service.name}}</strong></div>
+            <div class="details-part">Desc:&emsp;<strong>{{service_request.service.description}}</strong></div>
+            <div class="details-part">Date of Req: &emsp; <strong>{{service_request.date_of_request}}</strong></div>
+            <div class="details-part">Professional ID:  &emsp; <strong>{{service_request.professional_id}}</strong></div>
+            <div class="details-part">Professional Name:  &emsp; <strong>{{service_request.professional.fullname}}</strong></div>
+            <div class="details-part">Professional email:  &emsp;<strong>{{service_request.professional.email_id}}</strong> </div>
         </div>
-        <form action="/customer_home/close_service/1/1" method="POST">
+        <form action="/customer_home/close_service/{{customer.id}}/{{service_request.id}}" method="POST">
             <div id="rating-bar">
                 <span>Service Rating:</span>
                 <div class="stars">

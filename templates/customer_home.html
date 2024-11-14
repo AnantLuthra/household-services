@@ -165,8 +165,8 @@
                 {% for result in searched_results %}
                     <li>{{result.service_type.name}} services - <br>
                         Name - {{result.fullname}}, Completed services - {{result.services_completed}}, <br>
-                        Rating - {{result.rating}}, Price - {{result.price}}. 
-                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; 
+                        Rating - {{result.rating}}, Price - {{result.price}}, PinCode - {{result.pin_code}}.
+                        &emsp;&emsp; &emsp; &emsp; &emsp; 
                         <a href="/customer_home/{{customer.id}}/service_book/{{result.id}}/{{result.service_type.id}}">Book</a>
                     </li>
                 {% endfor %}
@@ -210,6 +210,8 @@
                                 <a href="/customer_home/close_service/{{customer.id}}/{{service_req.id}}">Close it</a>
                             {% elif service_req.service_status == "closed" %}
                                 <p>Closed</p>
+                            {% elif service_req.service_status == "rejected" %}
+                                <p>Rejected</p>
                             {% endif %}
                         </td>
                     </tr>

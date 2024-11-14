@@ -549,8 +549,6 @@ def admin_search():
             
             elif search_by == 'name':
 
-                print(search_by, value_of_search)
-
                 search = professional.query.filter(professional.fullname.like(f"%{value_of_search}%")).all()
                 
             elif search_by == 'service name':
@@ -643,7 +641,52 @@ def prof_home(id):
         if prof:
             if not prof.blocked:
                 if not prof.request:
-                    return render_template("prof_home.html", professional = prof)
+                    
+                    #Requests or service going on.
+                    ser = service_request.query.join(professional, service_request.professional_id == professional.id).join(
+                        customer, service_request.customer_id == customer.id).join(
+                        service, service_request.service_id == service.id).filter(
+                        service_request.professional_id == id,
+                        service_request.service_status.in_(['requested', 'accepted']),
+                        customer.blocked == False,
+                        service.status == False
+                    ).all()
+
+
+                    #Service history not present
+                    ser_history = service_request.query.join(
+                        professional, service_request.professional_id == professional.id).join(
+                        customer, service_request.customer_id == customer.id).join(service, service_request.service_id == service.id).filter(
+                        service_request.professional_id == id,
+                        service_request.service_status.in_(['closed', 'rejected']),
+                        customer.blocked == False,
+                        service.status == False
+                    ).all()
+
+                    if ser: #Requests or service going on.
+
+                        if ser_history: #if service history present.
+                                return render_template("prof_home.html",
+                                    professional = prof,
+                                    request_details = ser,
+                                    service_history = ser_history,
+                                    )
+
+                        else: #Service history not present
+                            return render_template("prof_home.html",
+                                    professional = prof,
+                                    request_details = ser,
+                                    service_history = ser_history,
+                                    )
+                            
+                        
+                    else: #No service requests, no service_history
+                        return render_template("prof_home.html",
+                                    professional = prof,
+                                    request_details = ser,
+                                    service_history = ser_history
+                                    )
+                    
                 else:
                     return redirect('/professional_login')
             else:
@@ -651,6 +694,30 @@ def prof_home(id):
         else:
             return redirect('/professional_login')
 
+
+#----------------------- accept service request -------------------------#
+@app.route('/professional_home/service_action/<string:action>/<int:service_id>')
+def acc_service(action, service_id):
+    
+    if request.method == 'GET':
+
+        ser = service_request.query.filter_by(id = service_id).first()
+
+        if ser:
+            if action == 'accept':
+                ser.service_status = 'accepted'
+                db.session.commit()
+            elif action == 'reject':
+                ser.service_status = 'rejected'
+                db.session.commit()
+
+            return redirect(request.referrer)
+
+        else:
+            return f"""
+            <div>This action isn't allowed</div>
+            <a href="/">Go Back</a>
+                """
 
 
 #----------------------- Professional view profile ----------------------#
@@ -803,9 +870,18 @@ def customer_home(id):
         service_name = params.get('service_name') #it will contain service name if any service is selected.
 
 
+        #Customer details fetch
         cus = customer.query.filter_by(id = id).first()
         
-        ser = service_request.query.filter_by(customer_id = id).all()
+        # service request history search.
+        ser = service_request.query.join(professional).join(service).filter(
+            service_request.customer_id == id,
+            professional.blocked == False,
+            professional.request == False,
+            service.status == False
+        ).all()
+
+        #All service types name fetched distinctively and passed in list.
         all_services = [service_type[0] for service_type in db.session.query(service.type).distinct().all()]
 
         if cus: #if that customer exists
@@ -815,9 +891,15 @@ def customer_home(id):
                     return render_template("customer_home.html", service_name = False, customer = cus, service_history = ser, all_types = all_services)
                 else:
                     
-                    searched_professionals = professional.query.join(service).filter_by(type = service_name).order_by(professional.rating.desc()).all()
+                    searched_professionals = professional.query.join(service).filter(
+                        service.type == service_name,
+                        professional.blocked == False,
+                        professional.request == False,
+                        service.status == False
+                    ).order_by(professional.rating.desc()).all()
 
-                    if searched_professionals:
+
+                    if searched_professionals:  #If results are their.
 
                         return render_template("customer_home.html",
                                             service_name = service_name,
@@ -931,12 +1013,13 @@ def service_book_req(customer_id, professional_id, service_id):
 def close_service_request(id, service_request_id):
 
     if request.method == 'GET':
-
-        cus = customer.query.get(id)
+        print(f"got to close- customer id: {id}, service_request_id {service_request_id}")
+        cus = customer.query.filter_by(id = id).first()
+        ser_req = service_request.query.filter_by(id = service_request_id).first()
 
         if cus:
             if not cus.blocked:
-                return render_template("customer_close_service.html")
+                return render_template("customer_close_service.html", customer = cus, service_request = ser_req)
             else:
                 return redirect('/customer_login')
         else:
@@ -944,16 +1027,35 @@ def close_service_request(id, service_request_id):
 
     elif request.method == 'POST':
 
-        rating = request.form.get('rating')
+        print(f"got to close- customer id: {id}, service_request_id {service_request_id}")
+        
+        rating = float(request.form.get('rating'))
         remarks = request.form.get('remarks')
 
-        
-        return {
-            "id": id,
-            "service_request_id": service_request_id,
-            "Rating": rating,
-            "Remarks": remarks
-        }
+        ser_req = service_request.query.filter_by(id=service_request_id).first()
+
+        if ser_req:
+
+            ser_req.professional.services_completed += 1
+
+            # Calculating new average rating
+            new_rating = ((ser_req.professional.rating * (ser_req.professional.services_completed - 1)) + rating) / ser_req.professional.services_completed
+            ser_req.professional.rating = round(new_rating, 1)
+
+
+            # Updating service request status & feedback
+            ser_req.service_status = 'closed'
+            ser_req.rstars = rating
+            ser_req.rfeedback = remarks
+            ser_req.date_of_completion = date.today()
+
+            db.session.commit()
+
+            print(f'Redirecting to /customer_home/{id}')
+            return redirect(f'/customer_home/{id}')
+            
+        else:
+            return "Service request not found", 404
 
 
     else:

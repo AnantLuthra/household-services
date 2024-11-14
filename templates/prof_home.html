@@ -39,7 +39,7 @@
             text-align: center;
             background-color: rgb(164, 252, 164);
             height: 60px;
-            margin-top: 50px;
+            margin-top: 45vh;
         }
 
         footer p {
@@ -71,80 +71,69 @@
     <button id="edit_profile_button" onclick="gotoroute('/professional_home/view_profile/{{professional.id}}')">View/Edit Profile</button>
 
 
-    <h2>Today Services</h2>
-    <div class="tables">
-        <table class="styled-table">
-            <tr>
-                <th>ID</th>
-                <th>Customer Name</th>
-                <th>Contact Phone</th>
-                <th>Location(with pin code)</th>
-                <th>Action</th>
-            </tr>
-            <tr>
-                <td>1</td>
-                <td>Shivam dwivedi</td>
-                <td>9965866698</td>
-                <td>Lal Bihar delhi</td>
-                <td><a href="">Accept</a>/<a href="">Reject</a></td>
-            </tr>
-            <tr>
-                <td>2</td>
-                <td>thela dwivedi</td>
-                <td>354635135135</td>
-                <td>Lal Bihar haryana</td>
-                <td><a href="">Accept</a>/<a href="">Reject</a></td>
-            </tr>
-            <tr>
-                <td>3</td>
-                <td>CHimkandi dwivedi</td>
-                <td>9965866698</td>
-                <td>Lal Bihar punjab</td>
-                <td><a href="">Accept</a>/<a href="">Reject</a></td>
-            </tr>
-            
-        </table>
-
-    </div>
+    <h2>Service Request panel</h2>
+    {% if request_details %}
+        <div class="tables">
+            <table class="styled-table">
+                <tr>
+                    <th>ID</th>
+                    <th>Customer Name</th>
+                    <th>Email Id</th>
+                    <th>Location(with pin code)</th>
+                    <th>Action</th>
+                </tr>
+                {% for request in request_details %}
+                    <tr>
+                        <td>{{loop.index}}</td>
+                        <td>{{request.customer.fullname}}</td>
+                        <td>{{request.customer.email_id}}</td>
+                        <td>{{request.customer.address}},{{request.customer.pin_code}}</td>
+                        {% if request.service_status == 'requested' %}
+                            <td>
+                                <a href="/professional_home/service_action/accept/{{request.id}}">Accept</a>/
+                                <a href="/professional_home/service_action/reject/{{request.id}}">Reject</a>
+                            </td>
+                        {% else %}
+                            <td>accepted</td>
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    {% else %}
+        <div id="no_data">No data to show!</div>
+    {% endif %}
     <br>
-
+    
     <h2>Closed Services</h2>
-    <div class="tables">
-        <table class="styled-table">
-            <tr>
-                <th>ID</th>
-                <th>Customer Name</th>
-                <th>Contact Phone</th>
-                <th>Location(with pin code)</th>
-                <th>Date</th>
-                <th>Rating</th>
-            </tr>
-            <tr>
-                <td>1</td>
-                <td>Shivam dwivedi</td>
-                <td>2536658965</td>
-                <td>New York, Punjab</td>
-                <td>20-05-2024</td>
-                <td>4.6</td>
-            </tr>
-            <tr>
-                <td>2</td>
-                <td>Stephen Haukins</td>
-                <td>96589586226</td>
-                <td>New York, Delhi</td>
-                <td>21-05-2024</td>
-                <td>5</td>
-            </tr>
-            <tr>
-                <td>3</td>
-                <td>Shivam dwivedi</td>
-                <td>2536658965</td>
-                <td>New York, Punjab</td>
-                <td>20-08-2024</td>
-                <td>4.9</td>
-            </tr>
-        </table>
-    </div>
+    {% if service_history %}
+        <div class="tables">
+            <table class="styled-table">
+                <tr>
+                    <th>ID</th>
+                    <th>Customer Name</th>
+                    <th>Contact Phone</th>
+                    <th>Location(with pin code)</th>
+                    <th>Date</th>
+                    <th>Rating</th>
+                    <th>Feedback</th>
+                </tr>
+                {% for ser_his in service_history %}
+                    <tr>
+                        <td>{{loop.index}}</td>
+                        <td>{{ser_his.customer.fullname}}</td>
+                        <td>{{ser_his.customer.email_id}}</td>
+                        <td>{{ser_his.customer.address}}, {{ser_his.customer.pin_code}}</td>
+                        <td>{{ser_his.date_of_completion}}</td>
+                        <td>{{ser_his.rstars}}</td>
+                        <td>{{ser_his.rfeedback}}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    {% else %}
+        <div id="no_data">No data to show!</div>
+    {% endif %}
 
     <br>
 
