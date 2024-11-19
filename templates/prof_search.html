@@ -69,7 +69,7 @@
         }
 
         footer {
-            margin-top: 35vh;
+            margin-top: 48vh;
             align-items: center;
             text-align: center;
             background-color: rgb(164, 252, 164);
@@ -119,43 +119,38 @@
 
     <br>
 
-    <h2>Pin Code (600036)</h2>
-    <div class="tables">
-        <table class="styled-table">
-            <tr>
-                <th>ID</th>
-                <th>Customer Name</th>
-                <th>Contact Phone</th>
-                <th>Location</th>
-                <th>Date</th>
-                <th>Rating</th>
-            </tr>
-            <tr>
-                <td>1</td>
-                <td>Anant</td>
-                <td>9998756145</td>
-                <td>Lal Colony, Raj bihar, New York, 600036</td>
-                <td>20-05-2024</td>
-                <td>Pending</td>
-            </tr>
-            <tr>
-                <td>2</td>
-                <td>Rudra</td>
-                <td>9998756145</td>
-                <td>Lal Colony, Raj bihar, New York, 600036</td>
-                <td>20-05-2024</td>
-                <td>3.2</td>
-            </tr>
-            <tr>
-                <td>3</td>
-                <td>Shivam</td>
-                <td>6586965875</td>
-                <td>Phool Colony, Raj bihar, Punjab, 600036</td>
-                <td>30-05-2024</td>
-                <td>4.5</td>
-            </tr>
-        </table>
-    </div>
+    {% if searched %}
+        <h2>{{searched_by}} - ({{search_value}})</h2>
+        {% if searched_results == 'no_data' %}
+            <div id="no_data">No data to show!</div>
+        {% else %}
+            <div class="tables">
+                <table class="styled-table">
+                    <tr>
+                        <th>ID</th>
+                        <th>Customer Name</th>
+                        <th>Email ID</th>
+                        <th>Location</th>
+                        <th>Date</th>
+                        <th>Rating</th>
+                    </tr>
+                    {% for result in searched_results %}
+                        <tr>
+                            <td>{{loop.index}}</td>
+                            <td>{{result.customer.fullname}}</td>
+                            <td>{{result.customer.email_id}}</td>
+                            <td>{{result.customer.address}}, {{result.customer.pin_code}}</td>
+                            <td>{{result.date_of_request}}</td>
+                            <td>{{result.rstars}}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        {% endif %}
+    {% else %}
+        <div style="text-align: center; font-size: 45px; margin-top: 100px;">Waiting for you search</div>
+    {% endif %}
+
     <footer>
         <p>
             Developed with ❤️ by some Developer

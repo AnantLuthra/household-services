@@ -151,7 +151,7 @@
         }
 
         footer {
-            margin-top: 35vh;
+            margin-top: 45vh;
             align-items: center;
             text-align: center;
             background-color: rgb(164, 252, 164);
@@ -183,7 +183,7 @@
     </header>
     
     <div id="search-box">
-        <form action="/customer_search/1" method="POST">
+        <form action="/customer_search/{{customer.id}}" method="POST">
             <label for="searchBy">Search By:</label>
             <select name="searchBy" id="searchBy" onchange="updateInputType()">
                 <option value="service_name">Service Name</option>
@@ -191,7 +191,7 @@
             </select>
             
             <label for="value">Value:</label>
-            <input id="valueofsearch" name="valueofsearch" type="text" value="" required>
+            <input id="valueofsearch" name="valueofsearch" type="text" required>
             
             <input id="search_submit_button" type="submit" value="Search">
         </form>
@@ -199,29 +199,42 @@
 
     <br>
 
-    <div id="box-heading">
-        Best {{service_name}} Packages
-    </div>
+    {% if searched %}
+        <div id="box-heading">
+            {% if searched_by == 'service_name' %}
+                Results related to - {{service_name}}
+            {% elif searched_by == 'pincode' %}
+                Professionals with {{service_name}} pincode
+            {% endif %}
+        </div>
+        <div id="service-select" style="flex-direction: column; align-items: center; width:50vw;">
+            {% if searched_results == 'no_data' %}
+                <div id="no_data">No data to show!</div>
+            {% else %}
+            <ol>
+                {% for result in searched_results %}
+                    <li>{{result.service_type.name}} services - <br>
+                        Name - {{result.fullname}}, Completed services - {{result.services_completed}}, <br>
+                        Rating - {{result.rating}}, Price - {{result.price}}, PinCode - {{result.pin_code}}.
+                        &emsp;&emsp; &emsp; &emsp; &emsp; 
+                        <a href="/customer_home/{{customer.id}}/service_book/{{result.id}}/{{result.service_type.id}}">Book</a>
+                    </li>
+                {% endfor %}
+            </ol>
+            {% endif %}
+        </div>
 
-    <div id="service-select" style="flex-direction: column; align-items: center; width:50vw;">
-        <ol>
-            <li>Full Home cleaning services - ratings, price, etc. Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum praesentium reiciendis vel quos ab ut maxime libero, in dolor veniam.<a href="/customer_home/{{customer.id}}/{{service_id}}">Book</a></li>
-            <li>Toilet cleaning services - ratings, price, etc.<a href="/customer_home/{{customer.id}}/service_book/1">Book</a></li>
-            <li>Kitchen cleaning services - ratings, price, etc.<a href="/customer_home/{{id}}/service_book/{{service_id}}">Book</a></li>
-            <li>Sofa/Carpet cleaning services - ratings, price, etc.<a href="/customer_home/{{id}}/service_book/{{service_id}}">Book</a></li>
-            <li>Sofa/Carpet cleaning services - ratings, price, etc.<a href="/customer_home/{{id}}/service_book/{{service_id}}">Book</a></li>
-            <li>Sofa/Carpet cleaning services - ratings, price, etc.<a href="/customer_home/{{id}}/service_book/{{service_id}}">Book</a></li>
-            <li>Sofa/Carpet cleaning services - ratings, price, etc.<a href="/customer_home/{{id}}/service_book/{{service_id}}">Book</a></li>
-            <li>Sofa/Carpet cleaning services - ratings, price, etc.<a href="/customer_home/{{id}}/service_book/{{service_id}}">Book</a></li>
-        </ol>
-    </div>
+    {% else %}
+        <div style="text-align: center; font-size: 45px; margin-top: 100px;">Waiting for you search</div>
+    {% endif %}
+
     <footer>
         <p>
             Developed with ❤️ by some Developer
         </p>
     </footer>
     <script>
-        
+    
         function updateInputType() {
             const searchBy = document.getElementById('searchBy').value;
             const valueOfSearch = document.getElementById('valueofsearch');

@@ -4,7 +4,6 @@ from flask_sqlalchemy import SQLAlchemy
 from datetime import date
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import relationship, backref,joinedload
-from flask_login import LoginManager, UserMixin, current_user, login_user, logout_user, login_required
 
 
 #------------ Initialisations ---------------#
@@ -14,11 +13,9 @@ db = SQLAlchemy()
 db.init_app(app)
 app.app_context().push()
 
-#------------ Global Variables --------------#
+#------------ Admin Details --------------#
 ADMIN_PASS = "good123"
 ADMIN_NAME = "Anant Sharma"
-DUMMY_PROFESSION_PASS = ADMIN_PASS
-DUMMY_CUSTOMER_PASS = ADMIN_PASS
 
 #------------ Database classes ---------------#
 
@@ -102,8 +99,6 @@ def landing():
 def admin_login():
 
     if request.method == 'GET':
-        # if current_user.is_authenticated:
-        #     return redirect("/professional")
         return render_template("admin_login.html", message = False)
 
     elif request.method == 'POST':
@@ -619,11 +614,9 @@ def admin_search():
             search = 0
             
             if search_by == 'status':
-                # search = service_request.query.options(joinedload(service_request.customer), joinedload(service_request.professional)).all()
                 search = service_request.query.filter_by(service_status = value_of_search).all()
             
-            elif search_by == 'customer requested': #joinload thing for 
-                # search = service_request.query.options(joinedload(service_request.customer), joinedload(service_request.professional)).join(customer).filter(customer.fullname.like(f"%{value_of_search}%")).all()
+            elif search_by == 'customer requested': 
                 search = service_request.query.join(customer).filter(customer.fullname.like(f"%{value_of_search}%")).all()
                 
             elif search_by == 'professional assigned':
@@ -838,10 +831,9 @@ def prof_profile_edit(id):
 @app.route('/professional_search/<int:id>', methods = ['GET', 'POST'])
 def prof_search(id):
 
+    prof = professional.query.filter_by(id = id).first()
+
     if request.method == 'GET':
-
-        prof = professional.query.filter_by(id = id).first()
-
         if prof:
             if not prof.blocked:
                 if not prof.request:
@@ -856,9 +848,61 @@ def prof_search(id):
     elif request.method == 'POST':
         search_by = request.form.get('searchBy')
         value_of_search = request.form.get('valueofsearch')
-    
-        # Process the data as needed
-        return f"Received: {search_by}, {value_of_search}"
+
+
+        if search_by == 'date':
+            search = service_request.query.join(customer).filter(
+                                service_request.date_of_request == value_of_search,
+                                customer.blocked == False,
+                                service.status == False,
+                                service_request.professional_id == prof.id,
+                            ).order_by(service_request.rstars.desc()).all()
+            
+            
+        elif search_by == 'location_name':
+            search = service_request.query.join(customer).filter(
+                                customer.address.ilike(f"%{value_of_search}%"),
+                                customer.blocked == False,
+                                service.status == False,
+                                service_request.professional_id == prof.id,
+                            ).order_by(service_request.rstars.desc()).all()
+            
+        elif search_by == 'pincode':
+            search = service_request.query.join(customer).filter(
+                                customer.pin_code == int(value_of_search),
+                                customer.blocked == False,
+                                service.status == False,
+                                service_request.professional_id == prof.id,
+                            ).order_by(service_request.rstars.desc()).all()
+
+        elif search_by == 'rating >=':
+            search = service_request.query.join(customer).filter(
+                                service_request.rstars >= int(value_of_search),
+                                customer.blocked == False,
+                                service.status == False,
+                                service_request.professional_id == prof.id,
+                            ).order_by(service_request.rstars.desc()).all()
+
+        else:
+            return "We don't know about this request", 404
+        
+        if search:
+            return render_template("prof_search.html",
+                                professional = prof,
+                                search_value = value_of_search,
+                                searched_by = search_by,
+                                searched_results = search,
+                                searched = True)
+
+        else:
+            return render_template("prof_search.html",
+                                professional = prof,
+                                search_value = value_of_search,
+                                searched_by = search_by,
+                                searched_results = "no_data",
+                                searched = True)
+
+
 
 #------------------------ Professional Summary --------------------#
 
@@ -1058,7 +1102,6 @@ def service_book_req(customer_id, professional_id, service_id):
 def close_service_request(id, service_request_id):
 
     if request.method == 'GET':
-        print(f"got to close- customer id: {id}, service_request_id {service_request_id}")
         cus = customer.query.filter_by(id = id).first()
         ser_req = service_request.query.filter_by(id = service_request_id).first()
 
@@ -1072,7 +1115,6 @@ def close_service_request(id, service_request_id):
 
     elif request.method == 'POST':
 
-        print(f"got to close- customer id: {id}, service_request_id {service_request_id}")
 
         rating = float(request.form.get('rating'))
         remarks = request.form.get('remarks')
@@ -1096,7 +1138,6 @@ def close_service_request(id, service_request_id):
 
             db.session.commit()
 
-            print(f'Redirecting to /customer_home/{id}')
             return redirect(f'/customer_home/{id}')
             
         else:
@@ -1111,9 +1152,9 @@ def close_service_request(id, service_request_id):
 @app.route('/customer_search/<int:id>', methods = ['GET', 'POST'])
 def customer_search(id):
 
-    if request.method == 'GET':
+    cus = customer.query.filter_by(id = id).first() 
 
-        cus = customer.query.filter_by(id = id).first() 
+    if request.method == 'GET':
         
         if cus:
             if not cus.blocked:
@@ -1126,10 +1167,60 @@ def customer_search(id):
     elif request.method == 'POST':
         search_by = request.form.get('searchBy')
         value_of_search = request.form.get('valueofsearch')
-    
-        # Process the data as needed
-        return f"Received: {search_by}, {value_of_search}"
 
+
+        if search_by == 'service_name':
+
+            search = professional.query.join(service).filter(
+                        service.name.ilike(f"%{value_of_search}%"),  #case insensitive search.
+                        professional.blocked == False,
+                        professional.request == False,
+                        service.status == False
+                    ).order_by(professional.rating.desc()).all()
+
+
+            if search:
+                return render_template("customer_search.html",
+                                    customer = cus,
+                                    service_name = value_of_search,
+                                    searched_by = search_by,
+                                    searched_results = search,
+                                    searched = True)
+            
+            else:  #if no results
+                return render_template("customer_search.html",
+                                    customer = cus,
+                                    service_name = value_of_search,
+                                    searched_by = search_by,
+                                    searched_results = "no_data",
+                                    searched = True)
+
+        elif search_by == 'pincode':
+            
+            search = professional.query.join(service).filter(
+                        professional.pin_code == int(value_of_search),
+                        professional.blocked == False,
+                        professional.request == False,
+                        service.status == False
+                    ).order_by(professional.rating.desc()).all()
+            
+
+            if search:
+                return render_template("customer_search.html",
+                                    customer = cus,
+                                    searched_results = search,
+                                    searched_by = search_by,
+                                    service_name = value_of_search,
+                                    searched = True)
+            
+            else:  #if no results
+                return render_template("customer_search.html",
+                                    customer = cus,
+                                    searched_results = "no_data",
+                                    searched_by = search_by,
+                                    service_name = value_of_search,
+                                    searched = True)
+        
 
 #------------------------ Customer Summary --------------------#
 
