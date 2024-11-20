@@ -2,6 +2,10 @@ from flask import Flask
 from flask import render_template, request, redirect
 from flask_sqlalchemy import SQLAlchemy
 from datetime import date
+import os
+import matplotlib
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import relationship, backref,joinedload
 
@@ -902,7 +906,61 @@ def prof_search(id):
                                 searched_results = "no_data",
                                 searched = True)
 
+def professional_graphs(id):
+    """
+    function will generate graph images for professional's summary
+    """
 
+    sear = service_request.query.filter_by(professional_id = id).all()
+
+    if not sear:
+        return False
+
+    types = {'accepted': 0, 'requested': 0, 'closed': 0, 'rejected': 0}
+    stars = {}
+
+    for request in sear:
+        types[request.service_status] += 1
+
+    for request in sear:
+
+        if request.rstars in stars:
+            stars[request.rstars] += 1
+
+        else:
+            stars[request.rstars] = 1
+
+    if 0 in stars:
+        del stars[0]
+
+    # Sort the types dictionary by values in descending order
+    sorted_types = dict(sorted(types.items(), key=lambda item: item[1], reverse=True))
+
+    # Creating bar graph for service status for the professional
+    plt.figure(figsize=(12, 8))
+    plt.bar(sorted_types.keys(), sorted_types.values(), color=['lightgreen', 'yellowgreen', 'lightcoral', 'lightgrey'])
+    plt.xlabel('Status Name', fontsize=20)
+    plt.ylabel('Number of Requests', fontsize=20)
+    plt.title('Service Request Status Graph', fontsize=30)
+    plt.xticks(fontsize=18)
+    plt.yticks(fontsize=18)
+    bar_graph_path = os.path.join('static', 'professional graphs', f'service_status_for_{id}.png')
+    plt.savefig(bar_graph_path)
+    plt.close()
+
+    # Creating pie chart for service type requests for that professional
+    plt.figure(figsize=(12, 8))
+    labels = stars.keys()
+    sizes = stars.values()
+    colors = ['gold', 'yellowgreen', 'lightcoral', 'lightskyblue', 'lightgreen', 'lightpink']
+    plt.pie(sizes, labels=labels, colors=colors, autopct='%1.0f%%', startangle=140, wedgeprops={'edgecolor': 'black'}, textprops={'fontsize': 20})
+    plt.axis('equal')
+    plt.title('Service Ratings Chart', fontsize=30)
+    pie_chart_path = os.path.join('static', 'professional graphs', f'rating_for_{id}.png')
+    plt.savefig(pie_chart_path)
+    plt.close()
+
+    return True
 
 #------------------------ Professional Summary --------------------#
 
@@ -915,7 +973,13 @@ def prof_summary(id):
         if prof:
             if not prof.blocked:
                 if not prof.request:
-                    return render_template("prof_summary.html", professional = prof)
+                    #this function will generate graph images for professional summary
+                    if professional_graphs(id):
+                        return render_template("prof_summary.html", professional = prof)
+                
+                    else: #if no service requests history is present.
+                        return render_template("prof_summary.html",professional = prof, message = 'no_data')
+                    
                 else:
                     return redirect('/professional_login')
             else:
@@ -1222,6 +1286,62 @@ def customer_search(id):
                                     searched = True)
         
 
+def customer_graphs(id):
+    """
+    function will generate graph images for customer's summary
+    """
+
+    sear = service_request.query.filter_by(customer_id = id).all()
+
+    if not sear:
+        return False
+
+    types = {'accepted': 0, 'requested': 0, 'closed': 0, 'rejected': 0}
+    service_types = {}
+    total_requests = len(sear)
+
+
+
+    for request in sear:
+        types[request.service_status] += 1
+
+    for request in sear:
+
+        if request.service.type in service_types:
+            service_types[request.service.type] += 1
+
+        else:
+            service_types[request.service.type] = 1
+
+    # Sort the types dictionary by values in descending order
+    sorted_types = dict(sorted(types.items(), key=lambda item: item[1], reverse=True))
+
+    # Creating bar graph for service status for the customer
+    plt.figure(figsize=(12, 8))
+    plt.bar(sorted_types.keys(), sorted_types.values(), color=['lightblue', 'lightgreen', 'lightpink', 'lightskyblue'])
+    plt.xlabel('Status Name', fontsize=20)
+    plt.ylabel('Number of Requests', fontsize=20)
+    plt.title('Service Request Status Graph', fontsize=30)
+    plt.xticks(fontsize=18)
+    plt.yticks(fontsize=18)
+    bar_graph_path = os.path.join('static', 'customer graphs', f'service_status_for_{id}.png')
+    plt.savefig(bar_graph_path)
+    plt.close()
+
+    # Creating pie chart for service type requests for that customer
+    plt.figure(figsize=(12, 8))
+    labels = service_types.keys()
+    sizes = service_types.values()
+    colors = ['lightblue', 'lightgreen', 'lightpink', 'lightskyblue', 'lightblack']
+    plt.pie(sizes, labels=labels, colors=colors, autopct='%1.0f%%', startangle=140, wedgeprops={'edgecolor': 'black'}, textprops={'fontsize': 20})
+    plt.axis('equal')
+    plt.title('Service requests under service type', fontsize=30)
+    pie_chart_path = os.path.join('static', 'customer graphs', f'service_types_for_{id}.png')
+    plt.savefig(pie_chart_path)
+    plt.close()
+
+    return True
+
 #------------------------ Customer Summary --------------------#
 
 @app.route('/customer_summary/<int:id>', methods = ['GET', 'POST'])
@@ -1233,17 +1353,24 @@ def customer_summary(id):
 
         if cus:
             if not cus.blocked:
-                return render_template("customer_summary.html", customer = cus)
+                
+                #this function will generate graph images for customer summary
+                if customer_graphs(id):
+                    return render_template("customer_summary.html", customer = cus)
+                
+                else: #if no service requests history is present.
+                    return render_template("customer_summary.html", customer = cus, message = 'no_data')
+
             else:
                 return redirect('/customer_login')
         else:
             return redirect('/customer_login')
 
     elif request.method == 'POST':
-        return 'POST request made'
+        return 'POST request not allowed', 404
     
     else:
-        return f"I don't know this."
+        return f"I don't know this.", 404
 
 #------------------------ Customer Logout --------------------#
 
