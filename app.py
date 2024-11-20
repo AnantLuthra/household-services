@@ -19,7 +19,7 @@ app.app_context().push()
 
 #------------ Admin Details --------------#
 ADMIN_PASS = "good123"
-ADMIN_NAME = "Anant Sharma"
+ADMIN_NAME = "Anant Luthra"
 
 #------------ Database classes ---------------#
 
@@ -648,13 +648,127 @@ def admin_search():
         return f"Received: {search_criteria}, {search_by}, {value_of_search}"
 
 
+def admin_graphs():
+    """
+    function will generate graph images for admin's summary page
+    """
+
+    sear = service_request.query.all()
+
+    types = {'accepted': 0, 'requested': 0, 'closed': 0, 'rejected': 0}
+    stars = {}
+
+    # for graph showing service requests status.
+    for request in sear:
+        types[request.service_status] += 1
+
+    # for graph telling customer ratings given by users to professionals.
+    for request in sear:
+
+        if request.rstars in stars:
+            stars[request.rstars] += 1
+
+        else:
+            stars[request.rstars] = 1
+
+    if 0 in stars:
+        del stars[0]
+
+
+    # for graph telling service request under all service types.
+    service_types = {}
+
+    for request in sear:
+
+        if request.service.type in service_types:
+            service_types[request.service.type] += 1
+
+        else:
+            service_types[request.service.type] = 1
+
+
+    # for graph showing professional with their rating.
+    prof = professional.query.all()
+    
+    prof_rating = {}
+
+    for one in prof:
+        prof_rating[one.fullname] = one.rating
+    
+
+    # Sort the types dictionary by values in descending order
+    sorted_types = dict(sorted(types.items(), key=lambda item: item[1], reverse=True))
+
+    # Creating bar graph for service status for the admin
+    plt.figure(figsize=(12, 8))
+    plt.bar(sorted_types.keys(), sorted_types.values(), color=['lightgreen', 'yellowgreen', 'lightcoral', 'lightgrey'])
+    plt.xlabel('Status Name', fontsize=20)
+    plt.ylabel('Number of Requests', fontsize=20)
+    plt.title('Overall Service Request Status Graph', fontsize=30)
+    plt.xticks(fontsize=18)
+    plt.yticks(fontsize=18)
+    bar_graph_path = os.path.join('static', 'admin graphs', f'overall_service_status.png')
+    plt.savefig(bar_graph_path)
+    plt.close()
+
+    # Creating pie chart for service type requests for that admin
+    plt.figure(figsize=(12, 8))
+    labels = stars.keys()
+    sizes = stars.values()
+    colors = ['gold', 'yellowgreen', 'lightcoral', 'lightskyblue', 'lightgreen', 'lightpink']
+    plt.pie(sizes, labels=labels, colors=colors, autopct='%1.0f%%', startangle=140, wedgeprops={'edgecolor': 'black'}, textprops={'fontsize': 20})
+    plt.axis('equal')
+    plt.title('Customer Service Ratings Chart', fontsize=30)
+    pie_chart_path = os.path.join('static', 'admin graphs', f'overall_rating.png')
+    plt.savefig(pie_chart_path)
+    plt.close()
+
+
+ 
+    # Creating pie chart for showing overall request under each service type.
+    plt.figure(figsize=(12, 8))
+    labels = service_types.keys()
+    sizes = service_types.values()
+    colors = ['lightblue', 'lightgreen', 'lightpink', 'lightskyblue', 'lightblack']
+    plt.pie(sizes, labels=labels, colors=colors, autopct='%1.0f%%', startangle=140, wedgeprops={'edgecolor': 'black'}, textprops={'fontsize': 20})
+    plt.axis('equal')
+    plt.title('Service requests under service type', fontsize=30)
+    pie_chart_path = os.path.join('static', 'admin graphs', f'service_request_under_types.png')
+    plt.savefig(pie_chart_path)
+    plt.close()
+
+
+    # Sort the professionals by rating in descending order and take the top 3
+    top_prof_rating = dict(sorted(prof_rating.items(), key=lambda item: item[1], reverse=True)[:3])
+    formatted_names = [name.replace(' ', '\n') for name in top_prof_rating.keys()]
+    plt.figure(figsize=(20, 14))
+    plt.barh(formatted_names, list(top_prof_rating.values()), color='skyblue')
+    plt.xlabel('Rating', fontsize=35)
+    plt.ylabel('Professionals', fontsize=45)
+    plt.title('Top 3 Professionals based on Ratings', fontsize=55)
+    plt.xticks(fontsize=30)
+    plt.yticks(fontsize=30)
+    plt.gca().invert_yaxis()  # Reverse the order to show the highest rating at the top
+    rating_graph_path = os.path.join('static', 'admin graphs', 'professional_according_to_ratings.png')
+    plt.savefig(rating_graph_path)
+    plt.close()
+
+    return True
+
 #----------------------- Admin Summary -----------------------------#
 
 @app.route('/admin_summary', methods = ['GET', 'POST'])
 def admin_summary():
 
     if request.method == 'GET':
-        return render_template('admin_summary.html', admin_name = ADMIN_NAME)
+
+        #this function will generate graph images for admin summary page
+        if admin_graphs():
+            return render_template("admin_summary.html", admin_name = ADMIN_NAME)
+    
+        else: #if no service requests history is present.
+            return render_template("admin_summary.html",admin_name = ADMIN_NAME, message = 'no_data')
+
     
     elif request.method == 'POST':
 
@@ -861,8 +975,8 @@ def prof_search(id):
                                 service.status == False,
                                 service_request.professional_id == prof.id,
                             ).order_by(service_request.rstars.desc()).all()
-            
-            
+        
+        
         elif search_by == 'location_name':
             search = service_request.query.join(customer).filter(
                                 customer.address.ilike(f"%{value_of_search}%"),
@@ -1298,9 +1412,6 @@ def customer_graphs(id):
 
     types = {'accepted': 0, 'requested': 0, 'closed': 0, 'rejected': 0}
     service_types = {}
-    total_requests = len(sear)
-
-
 
     for request in sear:
         types[request.service_status] += 1
