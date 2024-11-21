@@ -1,8 +1,9 @@
 from flask import Flask
-from flask import render_template, request, redirect
+from flask import render_template, request, redirect, send_file
 from flask_sqlalchemy import SQLAlchemy
 from datetime import date
 import os
+from io import BytesIO
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
@@ -36,8 +37,8 @@ class professional(db.Model):
     gender = db.Column(db.String, nullable=False)
     address = db.Column(db.String, nullable=False)
     pin_code = db.Column(db.Integer, nullable=False)
-    #user bytesIO
-    documents = db.Column(db.String, nullable=False)
+    #using bytesIO
+    documents = db.Column(db.LargeBinary, nullable=False)
     request = db.Column(db.Boolean, default=None)
     blocked = db.Column(db.Boolean, default=False)
     services_completed = db.Column(db.Integer, default = 0)
@@ -172,9 +173,11 @@ def new_professional():
         price = request.form.get('price')
         experience = request.form.get('experience')
         gender = request.form.get('gender')
-        documents = request.form.get('documents')
+        
         address = request.form.get('address')
         pin_code = request.form.get('pincode')
+
+        documents = request.files['documents']
 
         check = professional.query.filter_by(email_id = email).first()
         
@@ -188,6 +191,10 @@ def new_professional():
                 
         
         else:
+
+            # Making a bytesio object and putting bytes data into it.
+            documents_data = BytesIO(documents.read())
+
             # Making new professional
             new_prof = professional(
                 email_id = email, 
@@ -198,7 +205,7 @@ def new_professional():
                 gender = gender,
                 price = price,
                 experience = experience,
-                documents = documents,
+                documents = documents_data.getvalue(), #gettings bytes data and storing it into instance.
                 address = address,
                 pin_code = pin_code,
                 request = True
@@ -207,6 +214,7 @@ def new_professional():
             db.session.commit()
             
             return render_template("new_professional.html", message = "req_sent", services = all_services)
+
 
 #--------------------- API for base price fetch --------------------#
 @app.route('/service_base_price/<int:service_id>')
@@ -402,6 +410,16 @@ def act_service(action, id):
     <a href="/admin_home">Go Back</a>
                     """
 
+#---------------------- View professional documents -------------#
+@app.route('/view_docs/<int:prof_id>')
+def view_docs(prof_id):
+    prof = professional.query.filter_by(id = prof_id).first()
+
+    if prof and prof.documents:
+        return send_file(BytesIO(prof.documents), download_name=f'docs_of_{prof.fullname}.pdf', as_attachment=False)
+    else:
+        return "No document Found", 404
+    
 
 #---------------------- Block/Unblock person -----------------------#
 
@@ -1113,7 +1131,7 @@ def prof_summary(id):
 def prof_logout(id):
 
     if request.method == 'GET':
-        prof = professional.query.get(id)
+        prof = professional.query.filter_by(id = id).first()
 
         if prof:
             if not prof.blocked:

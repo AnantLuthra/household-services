@@ -107,7 +107,7 @@
 
     <h1 id="logheading">Service Professional Signup</h1>
     <div id="main">
-        <form action="/new_professional" method="POST">
+        <form action="/new_professional" method="POST" enctype="multipart/form-data">
             <div class="credentials" style="margin-top: 17px; margin-bottom: -1px;">
                 Email ID (Username): <input style="width: 230px; margin-left: 20px;" class="input-box" type="email"
                     placeholder="Example@gmail.com" name="mail" required>
@@ -146,7 +146,7 @@
             </div>
             <div class="credentials" style="margin-left: 30px;">
                 Attach Docs (.pdf): <input style="margin-left: 10px; width: 232px;" class="input-box" size="x-large"
-                    type="file" name="documents" accept=".pdf" required>
+                    type="file" name="documents" required>
             </div>
             <div class="credentials" style="margin-left: 78px;">
                 Address: <textarea

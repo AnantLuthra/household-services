@@ -190,6 +190,16 @@
                             <td>{{professional.date_created}}</td>
                         </tr>
                         <tr>
+                            <td>Documents</td>
+                            <td>
+                                {% if professional.documents %}
+                                <a href="{{ url_for('view_docs', prof_id=professional.id) }}">View Docs</a>
+                                {% else %}
+                                No Document
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr>
                             <td>Gender</td>
                             <td>{{professional.gender}}</td>
                         </tr>

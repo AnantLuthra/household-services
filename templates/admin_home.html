@@ -213,6 +213,7 @@
                     <th>ID</th>
                     <th>Name</th>
                     <th>Experience(Yrs)</th>
+                    <th>Documents</th>
                     <th>Gender</th>
                     <th>Address</th>
                     <th>Pin Code</th>
@@ -224,6 +225,13 @@
                     <td><a href="/view_professional/{{professional.id}}">{{loop.index}}</a></td>
                     <td>{{professional.fullname}}</td>
                     <td>{{professional.experience}}</td>
+                    <td>
+                        {% if professional.documents %}
+                        <a href="{{ url_for('view_docs', prof_id=professional.id) }}">View Docs</a>
+                        {% else %}
+                        No Document
+                        {% endif %}
+                    </td>
                     <td>{{professional.gender}}</td>
                     <td>{{professional.address}}</td>
                     <td>{{professional.pin_code}}</td>
