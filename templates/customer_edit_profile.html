@@ -123,12 +123,12 @@
 
     <div id="box">
         <div id="box1">
-            <img id="user-pic" src="/static/default_user_pic.png" alt="Profile Picture">
+            <img id="user-pic" src="data:image/jpeg;base64,{{ customer.profile_pic }}" alt="Profile Picture">
             <h2 style="font-size: 40px;">{{customer.fullname}}</h2>
         </div>
         <div id="box2">
             <div id="form-box">
-                <form action="/customer_home/edit_profile/{{customer.id}}" method="POST">
+                <form action="/customer_home/edit_profile/{{customer.id}}" method="POST" enctype="multipart/form-data">
                     <div class="credentials" style="margin-left: 78px; margin-top: -3px;">
                         Password: <input style="margin-left: 55px; width: 232px;" class="input-box" size="x-large"
                             type="text" name="password" value="{{customer.password}}" required>
@@ -149,7 +149,7 @@
                     </div>
                     <div class="credentials" style="margin-left: 30px;">
                         New Profile Pic: <input style="margin-left: 43px; width: 232px;" class="file-upload"
-                            size="x-large" type="file" name="new_pic" accept=".png, .jpg, .jpeg"
+                            size="x-large" type="file" name="profile_pic" 
                             onchange="preview_img(event)">
                     </div>
                     <div>

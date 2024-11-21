@@ -140,7 +140,7 @@
             <li><a href="/customer_logout/{{customer.id}}">Logout</a></li>
         </ul>
         <div id="user-info">
-            <img id="user-pic" src="/static/anant-pic.jpg" alt="Profile Picture">
+            <img id="user-pic" src="data:image/jpeg;base64,{{ customer.profile_pic }}" alt="Profile Picture">
             <div>{{customer.fullname}}</div>
         </div>
     </header>

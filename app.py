@@ -3,6 +3,7 @@ from flask import render_template, request, redirect, send_file
 from flask_sqlalchemy import SQLAlchemy
 from datetime import date
 import os
+import base64
 from io import BytesIO
 import matplotlib
 matplotlib.use('Agg')
@@ -39,6 +40,7 @@ class professional(db.Model):
     pin_code = db.Column(db.Integer, nullable=False)
     #using bytesIO
     documents = db.Column(db.LargeBinary, nullable=False)
+    profile_pic = db.Column(db.Text, nullable=True)
     request = db.Column(db.Boolean, default=None)
     blocked = db.Column(db.Boolean, default=False)
     services_completed = db.Column(db.Integer, default = 0)
@@ -57,6 +59,7 @@ class customer(db.Model):
     fullname = db.Column(db.String, nullable=False)
     gender = db.Column(db.String, nullable=False)
     address = db.Column(db.String, nullable=False)
+    profile_pic = db.Column(db.Text, nullable=True) 
     pin_code = db.Column(db.Integer, nullable=False)
     blocked = db.Column(db.Boolean, default=False)
 
@@ -195,6 +198,12 @@ def new_professional():
             # Making a bytesio object and putting bytes data into it.
             documents_data = BytesIO(documents.read())
 
+
+            with open('static/default_user_pic.png', 'rb') as f:
+                profile_pic_data = base64.b64encode(f.read()).decode('utf-8')
+            
+
+
             # Making new professional
             new_prof = professional(
                 email_id = email, 
@@ -206,10 +215,12 @@ def new_professional():
                 price = price,
                 experience = experience,
                 documents = documents_data.getvalue(), #gettings bytes data and storing it into instance.
+                profile_pic=profile_pic_data,
                 address = address,
                 pin_code = pin_code,
                 request = True
                 )
+            
             db.session.add(new_prof)
             db.session.commit()
             
@@ -286,14 +297,19 @@ def new_customer():
             return render_template("new_customer.html", message = "acc_exists")
         
         else:
+
+            with open('static/default_user_pic.png', 'rb') as f:
+                profile_pic_data = base64.b64encode(f.read()).decode('utf-8')
+
             # Making new customer
             new_cust = customer(
-                email_id = email, 
+                email_id = email,
                 password = password, 
                 fullname = fullname,
                 gender = gender,
                 address = address,
-                pin_code = pin_code
+                pin_code = pin_code,
+                profile_pic=profile_pic_data
                 )
             db.session.add(new_cust)
             db.session.commit()
@@ -945,7 +961,7 @@ def prof_profile_edit(id):
         address = request.form.get('address')
         pin_code = request.form.get('pincode')
         price = request.form.get('price')
-        new_pic = request.form.get('new_pic')
+        profile_pic = request.files.get('profile_pic')
 
         prof = professional.query.filter_by(id = id).first()
         
@@ -955,8 +971,15 @@ def prof_profile_edit(id):
         prof.address = address
         prof.price = price
         prof.pin_code = pin_code
-        # cus.pic = new_pic
 
+        if profile_pic:
+
+            profile_pic_data = base64.b64encode(profile_pic.read()).decode('utf-8')
+            prof.profile_pic = profile_pic_data  # Update the profile picture
+
+
+
+        db.session.add(prof)
         db.session.commit()
 
         return redirect(f"/professional_home/view_profile/{id}")
@@ -1252,7 +1275,7 @@ def customer_profile_edit(id):
         fullname = request.form.get('fullname')
         address = request.form.get('address')
         pin_code = request.form.get('pincode')
-        new_pic = request.form.get('new_pic')
+        profile_pic = request.files.get('profile_pic')
         
         # Fetching the user.
         cus = customer.query.filter_by(id = id).first() 
@@ -1261,7 +1284,10 @@ def customer_profile_edit(id):
         cus.fullname = fullname
         cus.address = address
         cus.pin_code = pin_code
-        # cus.pic = new_pic
+        
+        if profile_pic:
+            profile_pic_data = base64.b64encode(profile_pic.read()).decode('utf-8')
+            cus.profile_pic = profile_pic_data  # Update the profile picture
 
         db.session.commit()
 

@@ -95,7 +95,7 @@
             <li><a href="/professional_logout/{{professional.id}}">Logout</a></li>
         </ul>
         <div id="user-info">
-            <img id="user-pic" src="/static/anant-pic.jpg" alt="Profile Picture">
+            <img id="user-pic" src="data:image/jpeg;base64,{{ professional.profile_pic }}" alt="Profile Picture">
             <div>{{professional.fullname}}</div>
         </div>
     </header>
