@@ -842,15 +842,19 @@ def prof_home(id):
                         service.status == False
                     ).all()
 
+                    check = professional.query.filter_by(id = id).first()
+                    if check.service_type.status == True:
+                        deactivated = True
+                    
+                    else:
+                        deactivated = False
 
                     #Service history not present
                     ser_history = service_request.query.join(
                         professional, service_request.professional_id == professional.id).join(
                         customer, service_request.customer_id == customer.id).join(service, service_request.service_id == service.id).filter(
                         service_request.professional_id == id,
-                        service_request.service_status.in_(['closed', 'rejected']),
-                        customer.blocked == False,
-                        service.status == False
+                        service_request.service_status.in_(['closed', 'rejected'])
                     ).all()
 
                     if ser: #Requests or service going on.
@@ -860,6 +864,7 @@ def prof_home(id):
                                     professional = prof,
                                     request_details = ser,
                                     service_history = ser_history,
+                                    deactivated = deactivated
                                     )
 
                         else: #Service history not present
@@ -867,6 +872,7 @@ def prof_home(id):
                                     professional = prof,
                                     request_details = ser,
                                     service_history = ser_history,
+                                    deactivated = deactivated
                                     )
                             
                         
@@ -874,7 +880,8 @@ def prof_home(id):
                         return render_template("prof_home.html",
                                     professional = prof,
                                     request_details = ser,
-                                    service_history = ser_history
+                                    service_history = ser_history,
+                                    deactivated = deactivated
                                     )
                     
                 else:
@@ -1545,6 +1552,8 @@ def customer_logout(id):
             return redirect('/customer_login')
 
 
+
 if __name__ == '__main__':
 
     app.run(debug=True)
+    

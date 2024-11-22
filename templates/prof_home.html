@@ -70,39 +70,44 @@
 
     <button id="edit_profile_button" onclick="gotoroute('/professional_home/view_profile/{{professional.id}}')">View/Edit Profile</button>
 
-
+    
     <h2>Service Request panel</h2>
-    {% if request_details %}
-        <div class="tables">
-            <table class="styled-table">
-                <tr>
-                    <th>ID</th>
-                    <th>Customer Name</th>
-                    <th>Email Id</th>
-                    <th>Location(with pin code)</th>
-                    <th>Action</th>
-                </tr>
-                {% for request in request_details %}
-                    <tr>
-                        <td>{{loop.index}}</td>
-                        <td>{{request.customer.fullname}}</td>
-                        <td>{{request.customer.email_id}}</td>
-                        <td>{{request.customer.address}},{{request.customer.pin_code}}</td>
-                        {% if request.service_status == 'requested' %}
-                            <td>
-                                <a href="/professional_home/service_action/accept/{{request.id}}">Accept</a>/
-                                <a href="/professional_home/service_action/reject/{{request.id}}">Reject</a>
-                            </td>
-                        {% else %}
-                            <td>accepted</td>
-                        {% endif %}
-                    </tr>
-                {% endfor %}
-            </table>
-        </div>
-    {% else %}
-        <div id="no_data">No data to show!</div>
-    {% endif %}
+        {% if deactivated %}
+            <p style="margin-left: 5vw; font-size: 20px;">The service you are in is currently deactivated by admin! Please wait for admin to activate it again. Untill then you can't accept service requests.</p>
+        {% else %}
+            {% if request_details %}
+                <div class="tables">
+                    <table class="styled-table">
+                        <tr>
+                            <th>ID</th>
+                            <th>Customer Name</th>
+                            <th>Email Id</th>
+                            <th>Location(with pin code)</th>
+                            <th>Action</th>
+                        </tr>
+                        {% for request in request_details %}
+                            <tr>
+                                <td>{{loop.index}}</td>
+                                <td>{{request.customer.fullname}}</td>
+                                <td>{{request.customer.email_id}}</td>
+                                <td>{{request.customer.address}},{{request.customer.pin_code}}</td>
+                                {% if request.service_status == 'requested' %}
+                                    <td>
+                                        <a href="/professional_home/service_action/accept/{{request.id}}">Accept</a>/
+                                        <a href="/professional_home/service_action/reject/{{request.id}}">Reject</a>
+                                    </td>
+                                {% else %}
+                                    <td>accepted</td>
+                                {% endif %}
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            {% else %}
+                <div id="no_data">No data to show!</div>
+            {% endif %}
+        {% endif %}
+
     <br>
     
     <h2>Closed Services</h2>
