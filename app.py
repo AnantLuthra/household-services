@@ -9,7 +9,7 @@ import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from sqlalchemy import ForeignKey
-from sqlalchemy.orm import relationship, backref,joinedload
+from sqlalchemy.orm import joinedload
 
 
 #------------ Initialisations ---------------#
@@ -246,8 +246,6 @@ def api_base_price(service_id):
 def customer_login():
 
     if request.method == 'GET':
-        # if current_user.is_authenticated:
-            # return redirect("/professional")
         return render_template("customer_login.html", message = None)
 
     elif request.method == 'POST':
